@@ -117,8 +117,8 @@ if STUDY == "D_ORB" and Bfield_geom_arr[ind] == 'pfss':
     ax3.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
     ax4.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
         
-if (M_A > 1).any():
-    ax3.axhline(y = 1, ls='-.', color='grey', lw=2)   
+#if (M_A > 1).any():
+ax3.axhline(y = 1, ls='-.', color='grey', lw=2)   
 ax4.set_xlabel(xlabel,fontsize=20)
 
 if STUDY == "D_ORB":

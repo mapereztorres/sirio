@@ -782,7 +782,10 @@ def get_S_reconnect(R_obs, B_sw, v_rel, gamma = 0.5):
         P_d_mks = gamma * np.pi / mu_0_mks * (B_sw/1e4)**2 * (R_obs/1e2)**2 * (v_rel/1e2)
         P_d     = P_d_mks * 1e7 # in cgs units 
         S_reconnect = P_d / EPSILON
-        
+        #print(type(S_reconnect))
+        #print('R_obs') 
+        #print(R_obs)
+
         return S_reconnect, P_d, P_d_mks
 
 def get_Flux(Omega_min, Omega_max, Delta_nu_cycl, d, S_poynt):

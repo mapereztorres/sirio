@@ -306,7 +306,9 @@ for indi in planet_array:
             if STUDY == "B_PL":
                 B_planet_Sano = B_planet_arr # Planet magnetic field at r_orb. 1-element array, in Gauss. 
                 B_planet_arr  = np.linspace(B_PL_MIN, B_PL_MAX, Nsteps)
-            
+                
+
+                    
             # Effective radius of the obstacle, in cm
             # Case 1. À la Saur+2013. (NOT currently used)
             #R_obs_Saur = spi.get_Rmp_Saur(Rp, THETA_M, B_planet_arr, B_sw)
@@ -357,7 +359,9 @@ for indi in planet_array:
             
             
             # Get flux for the reconnection model (Lanza 2009, A&A)
-            S_reconnect, P_d, P_d_mks = spi.get_S_reconnect(R_obs, B_sw, v_rel, gamma = 0.5)
+            R_obs_reconnect=np.copy(R_obs)
+            R_obs_reconnect[np.isclose(R_obs_reconnect, Rp, atol=1e-2)] = np.nan
+            S_reconnect, P_d, P_d_mks = spi.get_S_reconnect(R_obs_reconnect, B_sw, v_rel, gamma = 0.5)
             
             #20250124-TBC: if R_obs < Rp:
             Flux_reconnect_min, Flux_reconnect_max = spi.get_Flux(Omega_min, Omega_max, Delta_nu_cycl, d, S_reconnect)
@@ -489,6 +493,14 @@ for indi in planet_array:
             ################################
             # DIAGNOSTIC PLOTS
             ################################
+            
+            #PLOTTING MAGNETIC FIELD LINES
+            if STUDY=='D_ORB':
+                filename = 'plotting/plot_magnetic_fields.py'
+                with open(filename) as file:
+                    exec(file.read()) 
+                    
+            
             filename = 'plotting/plot_diagnostic_plots.py'
             if STUDY == 'D_ORB':	
                 if Exoplanet=='Trappist-1 b' or Exoplanet=='Proxima b Turnpenney':
@@ -519,7 +531,7 @@ for indi in planet_array:
         if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet[0.5]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_reconnection_model.csv'):
             print('Model B done')
     
-        if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet[0.5]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_reconnection_model.csv') and os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet[0.5]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_reconnection_model.csv') and STUDY == 'D_ORB' :
+        if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet[0.5]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_reconnection_model.csv') and os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet[0.5]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_reconnection_model.csv') and STUDY == 'D_ORB' and Exoplanet=='YZCet b Model B':
             filename = 'plotting/plot_model_comparison_pineda.py'
             with open(filename) as file:
                 exec(file.read())   
