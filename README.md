@@ -1,5 +1,4 @@
-
-<!-- <img src="pics/spirou-logo.png" alt="Alt text" style="width: 40%; transform: rotate(90deg);"> -->
+<img src="pics/spirou-logo.png" alt="Alt text" style="width: 40%; transform: rotate(90deg);">
 
 # SPIROU
 
