@@ -6,16 +6,18 @@ from matplotlib.lines import Line2D
 #matplotlib.rc_file_defaults()
 plt.style.use(['bmh','SPIworkflow/spi.mplstyle'])
 
+
 if not(os.path.isdir('/home/luis/github/spirou/OUTPUT/YZ_Cet_Pineda')):
     os.system('mkdir /home/luis/github/spirou/OUTPUT/YZ_Cet_Pineda') 
 
 print('Generating Pineda-like plots')
 ##comparison plots for the fluxes
-alfven_wing_parker_A = pd.read_csv('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet[0.5]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_alfven_wing_model.csv')
-reconnection_parker_A = pd.read_csv('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet[0.5]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_reconnection_model.csv')
+alfven_wing_parker_A = pd.read_csv('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet[0.194]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_alfven_wing_model.csv')
+reconnection_parker_A = pd.read_csv('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet[0.194]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv')
 
-alfven_wing_pfss_parker_B = pd.read_csv('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet[0.5]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_alfven_wing_model.csv')
-reconnection_pfss_parker_B = pd.read_csv('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet[0.5]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_reconnection_model.csv')
+alfven_wing_pfss_parker_B = pd.read_csv('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet[0.194]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_alfven_wing_model.csv')
+reconnection_pfss_parker_B = pd.read_csv('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet[0.194]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv')
+
 
 plt.figure(figsize=(10, 7.5))
 lw=2
@@ -53,9 +55,8 @@ plt.savefig('/home/luis/github/spirou/OUTPUT/YZ_Cet_Pineda'+'/'+'Flux'+'_model_c
 
 
 ##comparison plots for the stellar wind magnetic field
-bsw_parker_A = pd.read_csv('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/diagnostic-D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet[0.5]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_B_sw.csv')
-bsw_pfss_B = pd.read_csv('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/diagnostic-D_ORB_YZCet_b_Model_B-pfss-Bstar220.0G-Bplanet[0.5]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_B_sw.csv')
-
+bsw_parker_A = pd.read_csv('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/diagnostic-D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet'+'['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_B_sw.csv')
+bsw_pfss_B = pd.read_csv('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/diagnostic-D_ORB_YZCet_b_Model_B-pfss-Bstar220.0G-Bplanet'+'['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_B_sw.csv')
 plt.figure(figsize=(11, 7.5))
 lw=2
 ax2 = plt.subplot2grid((1, 1), (0, 0), rowspan=1, colspan=1)
@@ -98,10 +99,10 @@ plt.savefig('/home/luis/github/spirou/OUTPUT/YZ_Cet_Pineda'+'/'+'B_sw_'+'_model_
 
 
 ##comparison plots for M_A
-M_A_parker_A = pd.read_csv('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/diagnostic-D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet[0.5]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_M_A.csv')
-M_A_PFSS_B = pd.read_csv('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/diagnostic-D_ORB_YZCet_b_Model_B-pfss-Bstar220.0G-Bplanet[0.5]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_M_A.csv')
+M_A_parker_A = pd.read_csv('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/diagnostic-D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet'+'['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_M_A.csv')
+M_A_PFSS_B = pd.read_csv('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/diagnostic-D_ORB_YZCet_b_Model_B-pfss-Bstar220.0G-Bplanet'+'['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_M_A.csv')
 
-M_A_BASE = pd.read_csv('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/diagnostic-D_ORB_YZCet_b_Model_A-pfss-Bstar220.0G-Bplanet[0.5]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_M_A.csv') #M_A_PFSS_A
+M_A_BASE = pd.read_csv('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/diagnostic-D_ORB_YZCet_b_Model_A-pfss-Bstar220.0G-Bplanet'+'['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_M_A.csv') #M_A_PFSS_A
 
 #plt.figure(figsize=(8, 7.5))
 plt.figure(figsize=(11, 7.5))
@@ -140,8 +141,8 @@ plt.savefig('/home/luis/github/spirou/OUTPUT/YZ_Cet_Pineda'+'/'+'M_A_'+'_model_c
 
 
 ##comparison plots for v/v_A
-M_A_parker_A = pd.read_csv('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/diagnostic-D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet[0.5]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_M_A.csv')
-M_A_PFSS_B = pd.read_csv('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/diagnostic-D_ORB_YZCet_b_Model_B-pfss-Bstar220.0G-Bplanet[0.5]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_M_A.csv')
+M_A_parker_A = pd.read_csv('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/diagnostic-D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet'+'['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_M_A.csv')
+M_A_PFSS_B = pd.read_csv('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/diagnostic-D_ORB_YZCet_b_Model_B-pfss-Bstar220.0G-Bplanet'+'['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_M_A.csv')
 
 plt.figure(figsize=(8, 7.5))
 lw=2

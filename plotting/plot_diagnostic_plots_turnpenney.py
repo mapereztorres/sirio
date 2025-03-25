@@ -8,13 +8,20 @@ plt.style.use(['bmh','SPIworkflow/spi.mplstyle'])
 ## All diagnostic plots together 
 
 fig, (ax1, ax2,ax3,ax4) = plt.subplots(4, 1, sharex=True)
-
+x = d_orb / R_star
 fig.subplots_adjust(hspace=0)
 ax1.plot(x, v_orb/1e5*np.ones(len(x)), color='r', linestyle='dotted')
 ax1.plot(x, v_alf/1e5*np.ones(len(x)), color='g', linestyle='dashdot')
 ax1.plot(x, v_sw/1e5*np.ones(len(x)), color='b', linestyle='dashed')
 ax1.plot(x, v_rel/1e5*np.ones(len(x)), color='k', linestyle='solid')
 ax1.plot(x, v_sound/1e5*np.ones(len(x)), color='orange', linestyle=(0,(1,3.5)))
+import sys
+np.set_printoptions(threshold=sys.maxsize)
+#print('v_rel/1e5 :')
+#print(v_rel/1e5)
+#print('x:')
+#print(x)
+#print(d_orb)
 '''
 red_patch = mpatches.Patch(color='red', label=r'v$_{\rm orb}$')
 black_patch = mpatches.Patch(color='black', label=r'v$_{\rm rel}$')
@@ -58,9 +65,8 @@ ax2.legend(handles=legend_elements, loc='upper right', fontsize=12, facecolor='w
 
 
 
-
 ax3.plot(x, M_A*np.ones(len(x)), color='k', lw=lw)
-
+#ax3.plot(x, geom_f*np.ones(len(x)), color='red', lw=lw)
 
 #ax3.plot(x, eta*np.ones(len(x)), color='k', lw=lw)
 #ax3.axyline(y = xnom, ls='--', color='k', lw=2)
@@ -132,29 +138,34 @@ ax2.set_yscale('log')
 ax3.set_yscale('log')  
 ax4.set_yscale('log')  
 
-ax2.set_ylim([1e-5,1e5])
+#ax2.set_ylim([1e-5,1e5])
 
 
 
 print('Plots like in Turnpenny2018')
 
-
+'''
 ax1.set_ylim(1e1,1e5)
 #ax2.set_ylim(1e0,1e10)  
 #ax3.set_ylim(1e-3,1e1)
-ax3.set_ylim([1e-3,1e1])
+ax3.set_ylim([1e-7,1e1])
 ax4.set_ylim(1e-2,1e14)
+'''
+ax1.set_ylim(1e1,1e4)
+#ax2.set_ylim(1e0,1e10)  
+ax3.set_ylim(1e-3,1e1)
+ax4.set_ylim(1,1e14)
 ax4.set_xscale('log')
 
 if Exoplanet=='Trappist-1 b':  
     ax2.set_ylim(1e0,1e10)  
-    
+ 
 if Exoplanet=='Proxima b Turnpenney':  
-    ax2.set_ylim(10**(-2.5),1e10)     
+    ax2.set_ylim(10**(-3),1e8)
  
     
 yticks1 = ax1.get_yticks()
-ax1.set_yticks(yticks1[1:])    
+ax1.set_yticks(yticks1[2:])    
   
 yticks2 = ax2.get_yticks()
 ax2.set_yticks(yticks2[1:]) 
@@ -171,7 +182,7 @@ secax2 = ax2.secondary_yaxis('right', functions=(spi.identity,spi.identity))
 secax3 = ax3.secondary_yaxis('right', functions=(spi.identity,spi.identity))
 secax4 = ax4.secondary_yaxis('right', functions=(spi.identity,spi.identity))      
     
-secax1.set_yticks(yticks1[1:])       
+secax1.set_yticks(yticks1[2:])       
 secax2.set_yticks(yticks2[1:])
 secax3.set_yticks(yticks3[2:-2]) 
 secax4.set_yticks(yticks4[:-2])
@@ -239,8 +250,8 @@ if Exoplanet=='Proxima b Turnpenney' and STUDY == 'D_ORB':
 fig.set_size_inches(10, 10)
 
 #diagnostic_string = "-Bplanet" + str(B_planet_arr[loc_pl]) + "G" +'-'+'T_corona'+str(T_corona/1e6)+'MK'+'-'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'+'.pdf' 
-diagnostic_string = "{:.1f}".format(B_star) + "G" + "-Bplanet" + str(B_planet_arr[loc_pl]) + "G" + '-'+"{:.1e}".format(BETA_EFF_MIN)+'-'+"{:.1e}".format(BETA_EFF_MAX)+'-'+'T_corona'+str(T_corona/1e6)+'MK'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'
-
+#diagnostic_string = "{:.1f}".format(B_star) + "G" + "-Bplanet" + str(B_planet_arr[loc_pl]) + "G" + '-'+"{:.1e}".format(BETA_EFF_MIN)+'-'+"{:.1e}".format(BETA_EFF_MAX)+'-'+'T_corona'+str(T_corona/1e6)+'MK'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'
+diagnostic_string = "{:.1f}".format(B_star) + "G" + "-Bplanet" + '['+"{:.3f}".format(Bplanet_field)+']' + "G" + '-'+"{:.1e}".format(BETA_EFF_MIN)+'-'+"{:.1e}".format(BETA_EFF_MAX)+'-'+'T_corona'+str(T_corona/1e6)+'MK'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'
 #if Bfield_geom_arr[ind] == 'open_parker_spiral':
     #out_diagnos =  FOLDER + '/' + STUDY + "_" + str(Exoplanet.replace(" ", "_")) + "-diagnostic" + "-Open-Bstar" + diagnostic_string 
 #    geometry = "-Open-spiral-Bstar" 
@@ -264,6 +275,7 @@ df_M_A = pd.DataFrame({
     'M_A': M_A*np.ones(len(x))
 })  
 df_M_A.to_csv(FOLDER + '/CSV/' +"diagnostic-" + STUDY + "_" + str(Exoplanet.replace(" ", "_")) +  geometry + diagnostic_string +'_M_A.csv')
+
 
 
 

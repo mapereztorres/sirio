@@ -243,7 +243,7 @@ def bfield_sano(M_planet = 1.0, R_planet = 1.0, Omega_rot_planet = 1.0):
     """
     # Scaling law for the planet's core radius, from Curtis & Ness (1986)
     r_core = M_planet**0.44 # in units of r_core_Earth
-    rho_core = M_planet / R_planet**3
+    rho_core = M_planet/R_planet**3
     magn_moment_planet = Omega_rot_planet * rho_core**(1/2) * r_core**(7/2) # Magnetic moment, in units of Earth magn. moment
     B_planet  = magn_moment_planet / R_planet**3 # in units of B_earth
  
@@ -497,10 +497,10 @@ def get_Rmp_Saur(Rp, THETA_M, B_planet_arr, B_sw):
             B_planet_arr (G)  - Array: Planetary magnetic field, in Gauss
             B_sw         (G)  - Array: Stellar wind magnetic field, in Gauss
     """
-    R_obs = Rp * np.sqrt(3*np.cos(THETA_M/2)) * (B_planet_arr/B_sw)**(1./3.) # in cm
-    R_obs[ R_obs < Rp] = Rp # R_obs cannot be smaller than Rplanet    
+    Rmp = Rp * np.sqrt(3*np.cos(THETA_M/2)) * (B_planet_arr/B_sw)**(1./3.) # in cm
+    #R_obs[ R_obs < Rp] = Rp # R_obs cannot be smaller than Rplanet    
 
-    return R_obs
+    return Rmp
 
 def get_P_sw(n_sw, v_rel, T_e, B_sw, mu):
     """

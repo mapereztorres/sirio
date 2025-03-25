@@ -23,9 +23,9 @@ INPUT_TABLE = True
 #######################################################################
 
 # Uncomment the line that applies
-STUDY = "D_ORB"
+#STUDY = "D_ORB"
 #STUDY = "M_DOT"
-#STUDY = "B_PL"
+STUDY = "B_PL"
 
 # STUDY = "D_ORB" SETUP
 D_ORB_LIM = np.nan
@@ -58,7 +58,7 @@ R_SPI = 1.0
 ####################################################
 
 ### Consider free-free absorption (True => Yes; False => No)
-freefree = False
+freefree = True
 
 # Ionization state (Z = 1 - fully ionized hydrogen)
 Z = 1 
@@ -126,8 +126,8 @@ R_ALFVEN_GUESS = 20.0
 # False: Unmagnetized planet 
 # True : Magnetized planet
 # 
-magnetized_pl_arr = [False, True]
-#magnetized_pl_arr = [True]
+#magnetized_pl_arr = [False, True]
+magnetized_pl_arr = [True]
 
 # Default planetary magnetic field, in Tesla
 # bfield_earth is defined in constants.py
@@ -137,8 +137,8 @@ B_PLANET_DEFAULT = bfield_earth
 # Computation of planetary magnetic field 
 # B_pl_law = 'Sano' => Uses Sano's scaling law (Sano 1993)
 # B_pl_law = 'None' => Doesn't use any scaling law. Uses B_PLANET_DEFAULT instead.
-#B_planet_law = 'Sano'
-B_planet_law = 'None'
+B_planet_law = 'Sano'
+#B_planet_law = 'None'
 
 # K_MAGNETOPAUSE - factor by which the magnetopause currents enhance
 # the magnetospheric magnetic field at the magnetopause, which is a value
@@ -255,7 +255,7 @@ FLUX_LOW  = 3*RMS * 1e-1
 FLUX_HIGH = 3*RMS * 1e2
 YLIMLOW   = 1e-3
 YLIMHIGH  = 1e2
-
+#PLOT_R_eff = False
 
 ### WELCOME TO SPIROU
 print('###########################################################')

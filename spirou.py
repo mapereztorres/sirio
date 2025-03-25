@@ -327,11 +327,11 @@ for indi in planet_array:
             eta = spi.get_confinement(P_dyn_sw, P_B_sw)
             #alfven_alt = spi.get_alfven_alt(eta, POLAR_ANGLE)
             # Radius of magnetopause, in cm
-            Rmp = spi.get_Rmp(P_B_planet, P_dyn_sw, P_th_sw, P_B_sw) * Rp
+            Rmp= spi.get_Rmp(P_B_planet, P_dyn_sw, P_th_sw, P_B_sw) * Rp
     
             # The effective radius (in cm) is the radius of the magnetopause
             # If R_pl_eff < R_p, force R_pl_eff = R_p (R_obs cannot be smaller than Rp
-            R_obs = Rmp
+            R_obs = np.copy(Rmp)
             R_obs[R_obs < Rp] = Rp 
             R_obs_normalized = R_obs/Rp 
 
@@ -381,14 +381,13 @@ for indi in planet_array:
             pdn=pd.DataFrame(columns=np.linspace(R_ff_in, R_ff_out, NSTEPS_FF))
 
             # Unabsorbed flux density
-            Flux_r_S_min_no_abs=Flux_r_S_min
-            Flux_r_S_max_no_abs=Flux_r_S_max
-            Flux_r_S_inter_no_abs=Flux_r_S_inter
+            Flux_r_S_min_no_abs=np.copy(Flux_r_S_min)
+            Flux_r_S_max_no_abs=np.copy(Flux_r_S_max)
+            Flux_r_S_inter_no_abs=np.copy(Flux_r_S_inter)
             
-            Flux_reconnect_min_no_abs = Flux_reconnect_min
-            Flux_reconnect_max_no_abs = Flux_reconnect_max
-            Flux_reconnect_inter_no_abs = Flux_reconnect_inter
-
+            Flux_reconnect_min_no_abs = np.copy(Flux_reconnect_min)
+            Flux_reconnect_max_no_abs = np.copy(Flux_reconnect_max)
+            Flux_reconnect_inter_no_abs = np.copy(Flux_reconnect_inter)
             # Compute flux density, taking into account free-free absorption
             if freefree == True:
                 print('Applying ff-absorption')
@@ -413,16 +412,28 @@ for indi in planet_array:
                 Flux_reconnect_min *= absorption_factor
                 Flux_reconnect_max *= absorption_factor
                 Flux_reconnect_inter *= absorption_factor
-             
+
+            
             """
             Moving parts of plotting outside the loop
             """
             # Find out the position of the planet in the distance array
             d_diff = np.abs((d_orb-r_orb)/R_star)
             loc_pl = np.where(d_diff == d_diff.min())
+            
+            #Bplanet_field = B_planet_arr[loc_pl][0]
 
             M_star_dot_diff = np.abs(M_star_dot_arr - M_star_dot)
             M_star_dot_loc  = np.where(M_star_dot_diff == M_star_dot_diff.min())
+            
+            
+            #magnetic field of the planet:
+            v_orb_pl = (G * M_star / r_orb)**0.5
+            Omega_pl =  v_orb_pl / r_orb 
+            _,_,_,Bplanet_field  = spi.bfield_sano(M_planet = Mp / M_earth, R_planet = Rp / R_earth, Omega_rot_planet = Omega_pl / Omega_earth)
+            Bplanet_field  *=  bfield_earth
+            Bplanet_field  *=  Tesla2Gauss
+
 
             ###########################################################################
             ####                  PLOTTING                                         ####
@@ -449,13 +460,20 @@ for indi in planet_array:
             geometry = "-" + Bfield_geom_arr[ind].replace('_','-') + '-Bstar'
 
             ### Plot received flux density as a function of distance from the star
-            filename = 'plotting/plot_flux_density.py'
+            
+            if Exoplanet=='Trappist-1 b' or Exoplanet=='Proxima b Turnpenney': #Specific for comparison with Turnpenney
+                #filename = 'plotting/plot_flux_density_turnpenney.py'
+                filename = 'plotting/plot_flux_density_turnpenney.py'
+            else:
+                filename = 'plotting/plot_flux_density.py'
+                #filename = 'plotting/plot_flux_and_radius.py'            
             with open(filename) as file:
                 exec(file.read())            
 
             
             if freefree == True and STUDY == 'M_DOT': #################
-                plt.figure(figsize=(8,11))
+                #plt.figure(figsize=(8,11))
+                plt.figure(figsize=(8,8))
                 ax = plt.subplot2grid((1,1),(0,0),rowspan=1,colspan=1)
                 ax.plot(M_star_dot_arr, absorption_factor, color='k')
                 ax.set_xscale('log')
@@ -463,8 +481,16 @@ for indi in planet_array:
                 ax.set_ylabel(r"Fraction of transmitted flux")
                 ax.text(1e-1, 0, r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK', fontsize = 22)
                 ax.set_facecolor("white")	
+                
+                #Specific for YZ Cet from Pineda2023
+                if Exoplanet=='YZCet b Model A' or Exoplanet=='YZCet b Model B':
+                    ax.axvline(x = 0.25, ls='--', color='k', lw=2)
+                    ax.axvline(x = 5, ls='--', color='k', lw=2)
+                    ax.text(0.25,1.07,'B')
+                    ax.text(5,1.07,'A')
+                    
                 plt.savefig(FOLDER + '/' + str(Exoplanet.replace(" ", "_"))
-                        +'-'+'absorption_vs_mdot'+'-'+'T_corona'+str(T_corona/1e6)+'MK'+'-'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'+'.pdf')
+                        +'-'+'absorption_vs_mdot'+'-'+'T_corona'+str(T_corona/1e6)+'MK'+'-'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'+'.pdf', bbox_inches='tight')
                 plt.close()
                 
             #### Plot effective radius variation
@@ -502,14 +528,20 @@ for indi in planet_array:
                     
             
             filename = 'plotting/plot_diagnostic_plots.py'
+            #Specific plots to benchmark against Turnpenney 2
             if STUDY == 'D_ORB':	
                 if Exoplanet=='Trappist-1 b' or Exoplanet=='Proxima b Turnpenney':
-                    filename = 'plotting/plot_diagnostic_plots_turnpenny.py'           
+                    filename = 'plotting/plot_diagnostic_plots_turnpenney.py'           
                 elif Exoplanet=='YZCet b Model A' or Exoplanet=='YZCet b Model B':
                     filename = 'plotting/plot_diagnostic_plots_pineda.py'
                     
             with open(filename) as file:
                 exec(file.read())
+            
+            #Plot for just the variation of M_A
+            filename = 'plotting/plot_MA.py'    
+            with open(filename) as file:
+                exec(file.read())    
     
             ###########################################################
             ################### Send OUTPUT to external text file/s
@@ -520,21 +552,31 @@ for indi in planet_array:
 
             out_to_file.write_parameters(T_corona, M_star_dot, mu, d, R_star, M_star, P_rot_star, B_star, Exoplanet, Rp, Mp, r_orb, P_orb, loc_pl, M_star_dot_loc, n_base_corona,
                 nu_plasma_corona, nu_ecm, Flux_r_S_min, Flux_r_S_max, rho_sw_planet, n_sw_planet, v_sw_base, Flux_r_S_Z_min,
-                Flux_r_S_Z_max, v_sw, v_rel, v_alf, M_A, B_sw, Rmp, R_obs,x_larger_rms,x_smaller_rms,STUDY,Omega_min, Omega_max,R_obs_normalized,x_superalfv)
+                Flux_r_S_Z_max, v_sw, v_rel, v_alf, M_A, B_sw,Bplanet_field, Rmp, R_obs,x_larger_rms,x_smaller_rms,STUDY,Omega_min, Omega_max,R_obs_normalized,x_superalfv)
 
             print(f'\nSAVING USEFUL VALUES TO {outfileTXT}')
             
     ################################        
     if Bfield_geom_arr == ['open_parker_spiral','closed_dipole','pfss']:
-        if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet[0.5]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_reconnection_model.csv'):
+        '''
+        if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet'+ '['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv'):
             print('Model A done')
-        if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet[0.5]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_reconnection_model.csv'):
+        if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet'+ '['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv'):
             print('Model B done')
     
-        if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet[0.5]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_reconnection_model.csv') and os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet[0.5]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_reconnection_model.csv') and STUDY == 'D_ORB' and Exoplanet=='YZCet b Model B':
+        if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet'+ '['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv') and os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet'+ '['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv') and STUDY == 'D_ORB' and Exoplanet=='YZCet b Model B':
+        '''
+        ## Specific for the Pineda plots
+        if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet[0.194]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv'):
+            print('Model A done')
+        if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet[0.194]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv'):
+            print('Model B done')
+    
+        if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet[0.194]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv') and os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet[0.194]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv') and STUDY == 'D_ORB' and Exoplanet=='YZCet b Model B':   
             filename = 'plotting/plot_model_comparison_pineda.py'
             with open(filename) as file:
                 exec(file.read())   
+
 
         filename = 'plotting/plot_model_comparison.py'
         with open(filename) as file:
