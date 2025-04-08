@@ -616,6 +616,20 @@ def get_Rmp(P_Bp=1.0, P_dyn_sw=1.0, P_th_sw=1.0, P_B_sw=1.0):
     Rmp = K_MAGNETOPAUSE**(1./3.) * (P_planet / P_sw)**(1./6) 
 
     return Rmp
+ 
+ 
+    
+def get_Reff_lanza( B_sw,B_pl):
+
+    #Reff_lanza in R_pl units
+    
+    Reff_lanza=(B_sw/B_pl)**(-1/3)
+
+
+    return Reff_lanza
+    
+        
+    
     
 def B_starmass(star_mass,Prot):
   """Calculation of the Stellar magnetic field at the surface as a function of the stellar mass and its rotation period

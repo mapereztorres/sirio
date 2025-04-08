@@ -326,8 +326,22 @@ for indi in planet_array:
             P_sw, P_dyn_sw, P_th_sw, P_B_sw = spi.get_P_sw(n_sw_planet, v_rel, T_corona, B_sw, mu)
             eta = spi.get_confinement(P_dyn_sw, P_B_sw)
             #alfven_alt = spi.get_alfven_alt(eta, POLAR_ANGLE)
+            
+            
+            #magnetic field of the planet:
+            v_orb_pl = (G * M_star / r_orb)**0.5
+            Omega_pl =  v_orb_pl / r_orb 
+            _,_,_,Bplanet_field  = spi.bfield_sano(M_planet = Mp / M_earth, R_planet = Rp / R_earth, Omega_rot_planet = Omega_pl / Omega_earth)
+            Bplanet_field  *=  bfield_earth
+            Bplanet_field  *=  Tesla2Gauss
+            
+            Reff_lanza=spi.get_Reff_lanza(B_sw,B_pl=Bplanet_field)
+            
+            
             # Radius of magnetopause, in cm
-            Rmp= spi.get_Rmp(P_B_planet, P_dyn_sw, P_th_sw, P_B_sw) * Rp
+            Rmp_saur= spi.get_Rmp(P_B_planet, P_dyn_sw, P_th_sw, P_B_sw)
+            Rmp=Rmp_saur* Rp
+            #Rmp=Reff_lanza* Rp*np.ones(len(Rmp_saur))
     
             # The effective radius (in cm) is the radius of the magnetopause
             # If R_pl_eff < R_p, force R_pl_eff = R_p (R_obs cannot be smaller than Rp
@@ -361,6 +375,7 @@ for indi in planet_array:
             # Get flux for the reconnection model (Lanza 2009, A&A)
             R_obs_reconnect=np.copy(R_obs)
             R_obs_reconnect[np.isclose(R_obs_reconnect, Rp, atol=1e-2)] = np.nan
+            
             S_reconnect, P_d, P_d_mks = spi.get_S_reconnect(R_obs_reconnect, B_sw, v_rel, gamma = 0.5)
             
             #20250124-TBC: if R_obs < Rp:
@@ -427,12 +442,7 @@ for indi in planet_array:
             M_star_dot_loc  = np.where(M_star_dot_diff == M_star_dot_diff.min())
             
             
-            #magnetic field of the planet:
-            v_orb_pl = (G * M_star / r_orb)**0.5
-            Omega_pl =  v_orb_pl / r_orb 
-            _,_,_,Bplanet_field  = spi.bfield_sano(M_planet = Mp / M_earth, R_planet = Rp / R_earth, Omega_rot_planet = Omega_pl / Omega_earth)
-            Bplanet_field  *=  bfield_earth
-            Bplanet_field  *=  Tesla2Gauss
+
 
 
             ###########################################################################
@@ -494,6 +504,9 @@ for indi in planet_array:
                 plt.close()
                 
             #### Plot effective radius variation
+            
+            
+            
             filename = 'plotting/plot_effective_radius.py'
             with open(filename) as file:
                 exec(file.read())
