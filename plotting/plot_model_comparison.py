@@ -73,7 +73,7 @@ ax2.plot(alfven_wing_parker[STUDY],  reconnection_parker['FLUX']/alfven_wing_par
 ax2.plot(alfven_wing_dipole[STUDY],  reconnection_dipole['FLUX']/alfven_wing_dipole['FLUX'], color='orange', linestyle='dotted')
 ax2.plot(alfven_wing_pfss_parker[STUDY],  reconnection_pfss_parker['FLUX']/alfven_wing_pfss_parker['FLUX'], color='black')
 legend_elements = [
-Line2D([0], [0], color='blue', lw=lw, label='Open Parker Spiral'),
+Line2D([0], [0], color='blue', lw=lw, label='Parker Spiral'),
 Line2D([0], [0], color='orange', linestyle='dotted', lw=lw, label='Dipole'),
 Line2D([0], [0], color='black', linestyle='dashed', lw=lw, label='PFSS'),
 ]
@@ -123,7 +123,7 @@ ax2.plot(bsw_dipole[STUDY], bsw_dipole['Bsw'], color='orange', linestyle='dotted
 #ax2.plot(bsw_hybrid[STUDY], bsw_hybrid['Bsw'], color='blue', linestyle='dashed')
 ax2.plot(bsw_pffs_parker[STUDY], bsw_pffs_parker['Bsw'], color='black')
 legend_elements = [
-Line2D([0], [0], color='blue', linestyle='dashed', lw=lw, label='Open Parker Spiral'),
+Line2D([0], [0], color='blue', linestyle='dashed', lw=lw, label='Parker Spiral'),
 Line2D([0], [0], color='orange', linestyle='dotted', lw=lw, label='Dipole'),
 #Line2D([0], [0], color='blue', linestyle='dashed', lw=2, label='Hybrid'),
 Line2D([0], [0], color='black', lw=lw, label='PFSS'),
@@ -177,29 +177,138 @@ ax2.plot(bsw_dipole[STUDY],  bsw_dipole['M_A'], color='orange', linestyle='dotte
 #ax2.plot(bsw_hybrid[STUDY], bsw_hybrid['Bsw'], color='blue', linestyle='dashed')
 ax2.plot(bsw_pffs_parker[STUDY], bsw_pffs_parker['M_A'], color='black')
 legend_elements = [
-Line2D([0], [0], color='blue', linestyle='dashed', lw=lw, label='Open Parker Spiral'),
+Line2D([0], [0], color='blue', linestyle='dashed', lw=lw, label='Parker Spiral'),
 Line2D([0], [0], color='orange', linestyle='dotted', lw=lw, label='Dipole'),
 #Line2D([0], [0], color='blue', linestyle='dashed', lw=2, label='Hybrid'),
 Line2D([0], [0], color='black', lw=lw, label='PFSS'),
+Line2D([], [], color='none', label=f'$B_{{*}}$ = {B_star} G')
 ]
 
 
 
 
-ax2.legend(handles=legend_elements, loc='upper left', fontsize=12, facecolor='white', edgecolor='white', framealpha=0)
+ax2.legend(handles=legend_elements, loc='lower right', fontsize=16, facecolor='white', edgecolor='white', framealpha=0)
 
 if STUDY == "D_ORB":
     ax2.set_xlim(left=2)     
     ax2.set_xlim(right=d_orb_max)  
     ax2.set_xscale('log')   
+    
+if STUDY == "M_DOT":
+    ax2.set_xscale('log')       
 ax2.set_xlabel(xlabel,fontsize=20)
 ax2.set_ylabel(r"$M_A$")
 secax = ax2.secondary_yaxis('right', functions=(spi.identity,spi.identity))
 
 if Exoplanet=='YZCet b Model A' or Exoplanet=='YZCet b Model B':
     ax2.set_ylim([1e-3, 1e2]) 
-    
-ax2.axvspan(x[0], R_SS, facecolor='gray', alpha=0.7)   
+
+'''
+#if Exoplanet == 'Proxima b Turn-regular' or Exoplanet == 'Proxima b':
+ax2.axvline(x = 0.04856*au/R_star, ls='-.', color='k', lw=1.5)  
+ax2.axvline(x = 0.02885*au/R_star, ls='-.', color='k', lw=1.5)  
+ax2.text(0.04856*au/R_star-1,2e4,'b',ha='center',fontsize=11) 
+ax2.text(0.02885*au/R_star-1,2e4,'d',ha='center',fontsize=11)
+ax2.set_xlim([2,3e3])
+'''
+
+if Exoplanet == 'Proxima b Turn-regular' or Exoplanet == 'Proxima b Turnpenney' or Exoplanet == 'Proxima b kavanagh' or Exoplanet=='Proxima b Reville':
+    if STUDY == 'D_ORB':
+        #ax2.axvline(x = 0.04856*au/R_star, ls='-.', color='k', lw=1.5)  
+        ax2.axvline(x = 0.02885*au/R_star, ls='-.', color='k', lw=1.5)  
+        #ax2.text(0.04856*au/R_star-10,1e4,'b',ha='center',fontsize=15) 
+        #ax2.text(0.02885*au/R_star-7,1e4,'d',ha='center',fontsize=15)
+        #ax2.text(0.04856*au/R_star-10,9e1,'b',ha='center',fontsize=15,bbox=dict(facecolor='white', edgecolor='none', boxstyle='square,pad=0.1')) 
+        #ax2.text(0.02885*au/R_star-7,9e1,'d',ha='center',fontsize=15,bbox=dict(facecolor='white', edgecolor='none', boxstyle='square,pad=0.1'))
+        #ax2.text(0.04856*au/R_star*0.9,6e1,'b',ha='center',fontsize=15,bbox=dict(facecolor='white', edgecolor='none', boxstyle='square,pad=0.1')) 
+        ax2.text(xnom*0.9,6e1,'b',ha='center',fontsize=15,bbox=dict(facecolor='white', edgecolor='none', boxstyle='square,pad=0.1')) 
+        ax2.text(0.02885*au/R_star*0.9,6e1,'d',ha='center',fontsize=15,bbox=dict(facecolor='white', edgecolor='none', boxstyle='square,pad=0.1'))
+        #ax2.set_xlim([2,3e3])
+        ax2.set_xlim([2,2e2])
+        ax2.legend(handles=legend_elements, loc='upper left', fontsize=16, facecolor='white', edgecolor='white', framealpha=1)
+        #ax2.axvline(x = xnom, ls='--', color='k', lw=2)
+'''
+if Exoplanet=='Trappist-1 b' or Exoplanet=='Trappist-1 b Reville':
+    if STUDY == 'D_ORB':
+        ax2.set_xlim([1,31])
+        ax2.legend(handles=legend_elements, loc='upper left', fontsize=16, facecolor='white', edgecolor='white', framealpha=1)
+        #ax2.set_xscale('linear')
+    if STUDY == 'M_DOT':   
+        #ax2.set_xlabel(xlabel,fontsize=20) 
+        ax2.set_xlabel(r"Mass Loss rate [$\dot{M}_\odot$]",fontsize=20)
+        ax2.set_xscale('log')
+'''        
+if Exoplanet == 'GJ1151 hypothetical 2' or Exoplanet == 'GJ1151 hypothetical 1':
+    if STUDY == 'D_ORB':
+        #x_pl1=12.927
+        x_pl1=11.652574895873382
+        print('orbital separation ranging from '+str(x_pl1)+' to '+str(xnom))
+        ax2.axvline(x = x_pl1, ls='--', color='k', lw=2)
+        #ax2.axvline(x = xnom, ls='--', color='k', lw=2)
+        ax2.set_ylim(1e-3,1e1)
+        ax2.set_xlim([2,50])
+        ax2.set_xlabel(xlabel,fontsize=20)
+        yticks2 = ax2.get_yticks()
+        ax2.set_yticks(yticks2[2:-2]) 
+        secax2 = ax2.secondary_yaxis('right', functions=(spi.identity,spi.identity))
+        secax2.set_yticks(yticks2[2:-2]) 
+        ax2.set_xscale('linear')
+        ax2.legend(handles=legend_elements, loc='lower right', fontsize=16, facecolor='white', edgecolor='white', framealpha=1)
+        ax2.set_ylim(1.01e-3,9.9)
+
+
+planet_height_label=7e1
+bbox=dict(facecolor='white', edgecolor='none', boxstyle='square,pad=0.1')
+if 'Trappist' in Exoplanet:
+    if STUDY == 'D_ORB':
+        ax2.set_xlim([1,150])
+        
+        #ax2.set_xscale('linear')
+        #c      
+        ax2.axvline(x = 0.01521*au/R_star, ls='-.', color='k', lw=1.5)     
+        #d
+        ax2.axvline(x = 0.02144*au/R_star, ls='-.', color='k', lw=1.5)   
+        #e       
+        ax2.axvline(x = 0.02817*au/R_star, ls='-.', color='k', lw=1.5)        
+        #f       
+        ax2.axvline(x = 0.0371*au/R_star, ls='-.', color='k', lw=1.5)   
+        #g
+        ax2.axvline(x = 0.0451*au/R_star, ls='-.', color='k', lw=1.5)      
+        #h
+        ax2.axvline(x = 0.063*au/R_star, ls='-.', color='k', lw=1.5)
+        ax2.text(0.01111*au/R_star,planet_height_label,'b',ha='center',fontsize=13,bbox=bbox)
+        ax2.text(0.01521*au/R_star,planet_height_label,'c',ha='center',fontsize=13,bbox=bbox)    
+        ax2.text(0.02144*au/R_star,planet_height_label,'d',ha='center',fontsize=13,bbox=bbox)
+        ax2.text(0.02817*au/R_star,planet_height_label,'e',ha='center',fontsize=13,bbox=bbox)
+        ax2.text(0.0371*au/R_star,planet_height_label,'f',ha='center',fontsize=13,bbox=bbox)
+        ax2.text(0.0451*au/R_star,planet_height_label,'g',ha='center',fontsize=13,bbox=bbox)
+        ax2.text(0.063*au/R_star,planet_height_label,'h',ha='center',fontsize=13,bbox=bbox) 
+        ax2.text(0.063*au/R_star,planet_height_label,'h',ha='center',fontsize=13,bbox=bbox)
+        #ax2.text(xnom,2e-3,'$\dot{M}_{*}$= '+str(M_star_dot_arr[0])+' $\dot{M}_{\odot}$',ha='center',fontsize=16,bbox=bbox)
+        legend_elements = [
+Line2D([0], [0], color='blue', linestyle='dashed', lw=lw, label='Parker Spiral'),
+Line2D([0], [0], color='orange', linestyle='dotted', lw=lw, label='Dipole'),
+#Line2D([0], [0], color='blue', linestyle='dashed', lw=2, label='Hybrid'),
+Line2D([0], [0], color='black', lw=lw, label='PFSS'),
+Line2D([], [], color='none', label=f'$B_{{*}}$ = {B_star} G'),
+Line2D([], [], color='none', label=rf'$\dot{{M}}_{{*}} = {M_star_dot_arr[0]}\ \dot{{M}}_{{\odot}}$')
+        ]
+        ax2.legend(handles=legend_elements, loc='upper left', fontsize=16, facecolor='white', edgecolor='white', framealpha=1)
+    if STUDY == 'M_DOT':   
+        #ax2.set_xlabel(xlabel,fontsize=20) 
+        ax2.set_xlabel(r"Mass Loss rate [$\dot{M}_\odot$]",fontsize=20)
+        ax2.set_xscale('log')	
+
+
+ax2.axvline(x = xnom, ls='--', color='k', lw=2)    
+ax2.axhline(y = 1, ls='-.', color='grey', lw=2)   
+ax2.set_ylim([1e-3,1e2])    
+if STUDY == "D_ORB":    
+    ax2.axvspan(x[0], R_SS, facecolor='gray', alpha=0.7)   
+
+if STUDY == 'M_DOT':   
+    ax2.set_xscale('log')    
+    ax2.set_xlim([1.01e-1,9.9e1])
 ax2.margins(x=0)
 #fig.tight_layout()
 #plt.savefig(FOLDER + '/'+'COMPARISON_PDF'+'/'+'M_A_'+'model_comparison-'+ STUDY + "_" + str(Exoplanet.replace(" ", "_")) + '-hybrid-Bstar'+"{:.1f}".format(B_star) + "G" + "-Bplanet" + str(B_planet_arr[loc_pl]) + "G" + '-'+"{:.1e}".format(BETA_EFF_MIN)+'-'+"{:.1e}".format(BETA_EFF_MAX)+'-'+'T_corona'+str(T_corona/1e6)+'MK'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'+'.pdf', bbox_inches='tight')
