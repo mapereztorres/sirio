@@ -177,3 +177,169 @@ df_M_A.to_csv(FOLDER + '/CSV/' +"diagnostic-" + STUDY + "_" + str(Exoplanet.repl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#Only wind speed and pressure:
+
+
+
+## All diagnostic plots together 
+
+fig, (ax1,ax4) = plt.subplots(2, 1, sharex=True)
+fig.subplots_adjust(hspace=0)
+ax1.plot(x, v_orb/1e5*np.ones(len(x)), color='r', linestyle='dotted')
+ax1.plot(x, v_alf/1e5*np.ones(len(x)), color='g', linestyle='dashdot')
+ax1.plot(x, v_sw/1e5*np.ones(len(x)), color='b', linestyle='dashed')
+ax1.plot(x, v_rel/1e5*np.ones(len(x)), color='k', linestyle='solid')
+ax1.plot(x, v_sound/1e5*np.ones(len(x)), color='orange', linestyle=(0,(1,3.5)))
+'''
+red_patch = mpatches.Patch(color='red', label=r'v$_{\rm orb}$')
+black_patch = mpatches.Patch(color='black', label=r'v$_{\rm rel}$')
+green_patch = mpatches.Patch(color='green', label=r'v$_{\rm alf}$')
+blue_patch = mpatches.Patch(color='blue', label=r'v$_{\rm sw}$')
+orange_patch = mpatches.Patch(color='orange', label=r'v$_{\rm sound}$')      
+#ax1.set_ylim(100,2000)
+ax1.legend(handles=[blue_patch,red_patch,black_patch,orange_patch,green_patch],loc='upper left',fontsize=20,facecolor='white',edgecolor='white', framealpha=0)
+'''
+#ax1.axhline(y = v_sw_terminal/1e5)
+legend_elements = [
+Line2D([0], [0], color='r', linestyle='dotted', label=r'v$_{\rm orb}$'),
+Line2D([0], [0], color='green', linestyle='dashdot', label=r'v$_{\rm alf}$'),
+Line2D([0], [0], color='blue', linestyle='dashed',  label=r'v$_{\rm sw}$'),
+Line2D([0], [0], color='black', linestyle='solid', label=r'v$_{\rm rel}$'),
+Line2D([0], [0], color='orange', linestyle=(0,(1,3.5)), label=r'v$_{\rm sound}$'),
+]
+ax1.legend(handles=legend_elements, loc='upper right', fontsize=18, facecolor='white', edgecolor='white', framealpha=0)
+
+
+
+
+
+ax4.plot(x, P_B_sw*np.ones(len(x)), color='b', linestyle='dashdot')
+ax4.plot(x, P_dyn_sw*np.ones(len(x)), color='r', linestyle='solid')
+ax4.plot(x, P_th_sw*np.ones(len(x)), color='g', linestyle=(0,(1,3.5)))
+# LPM - CHECK IF USEFUL
+#ax4.plot(x, P_sw*np.ones(len(x)), color='k', ls=(0, (1, 2)))
+#ax4.plot(x, P_B_planet*np.ones(len(x)), color='magenta', ls=(0, (1, 2)))
+'''
+black_patch = mpatches.Patch(color='black', label=r'P$_{\rm sw}$') #r'Primary T$_{\rm eff}$')
+red_patch = mpatches.Patch(color='red', label=r'P$_{\rm dyn_{\rm sw}}$')
+green_patch = mpatches.Patch(color='green', label=r'P$_{\rm th_{\rm sw}}$')
+blue_patch = mpatches.Patch(color='blue', label=r'P$_{\rm B_{\rm sw}}$')
+magenta_patch = mpatches.Patch(color='magenta', label=r'P$_{\rm B_planet}$')             
+ax4.legend(handles=[blue_patch,red_patch,green_patch],loc='upper right',fontsize=20,facecolor='white',edgecolor='white', framealpha=0)
+'''
+legend_elements = [
+Line2D([0], [0],  color='r', linestyle='solid', label=r'P$_{\rm dyn_{\rm sw}}$'),
+Line2D([0], [0],color='g', linestyle=(0,(1,3.5)), label=r'P$_{\rm th_{\rm sw}}$'),
+Line2D([0], [0], color='blue', linestyle='dashdot', label=r'P$_{\rm B_{\rm sw}}$'),
+]
+ax4.legend(handles=legend_elements, loc='upper right', fontsize=18, facecolor='white', edgecolor='white', framealpha=0)
+
+
+
+
+ax1.set_ylabel(r"v $[\rm km$ $s^{-1}] $")
+
+ax4.set_ylabel(r"P $[\rm erg$ $\rm cm^{-3}] $")
+        
+ax1.set_facecolor("white")
+
+ax4.set_facecolor("white")
+
+ax1.axvline(x = xnom, ls='-.', color='k', lw=2)
+
+ax4.axvline(x = xnom, ls='-.', color='k', lw=2)
+  
+  
+ax1.axvline(x = 0.02156*au/R_star, ls='-.', color='k', lw=2)
+ax1.axvline(x = 0.02851*au/R_star, ls='-.', color='k', lw=2)
+ax4.axvline(x = 0.02156*au/R_star, ls='-.', color='k', lw=2)
+ax4.axvline(x = 0.02851*au/R_star, ls='-.', color='k', lw=2)
+ax1.text(0.01634*au/R_star-1,1e5,'b',ha='center',fontsize=18)
+ax1.text(0.02156*au/R_star-1,1e5,'c',ha='center',fontsize=18)
+ax1.text(0.02851*au/R_star-1,1e5,'d',ha='center',fontsize=18)
+ 
+secax = ax1.secondary_yaxis('right', functions=(spi.identity,spi.identity))
+
+secax = ax4.secondary_yaxis('right', functions=(spi.identity,spi.identity))  
+
+
+#print('geometry', geometry)
+if STUDY == "D_ORB" and Bfield_geom_arr[ind] == 'pfss':
+    ax1.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
+
+    ax4.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
+        
+#if (M_A > 1).any():
+ 
+ax4.set_xlabel(xlabel,fontsize=20)
+
+if STUDY == "D_ORB":
+    ax4.set_xlim([2,x[-1]])
+
+fig.set_figwidth(8)
+fig.set_figheight(10)
+#ax1.set_xscale('log')
+
+
+
+ax1.set_yscale('log')  
+
+ax4.set_yscale('log')  
+
+ax1.set_ylim([1e1,3e5])
+
+ax1.margins(x=0)  
+
+ax4.margins(x=0)    
+#diagnostic_string = "-Bplanet" + str(B_planet_arr[loc_pl]) + "G" +'-'+'T_corona'+str(T_corona/1e6)+'MK'+'-'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'+'.pdf' 
+#diagnostic_string = "{:.1f}".format(B_star) + "G" + "-Bplanet" + str(B_planet_arr[loc_pl]) + "G" + '-'+"{:.1e}".format(BETA_EFF_MIN)+'-'+"{:.1e}".format(BETA_EFF_MAX)+'-'+'T_corona'+str(T_corona/1e6)+'MK'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'
+diagnostic_string = "{:.1f}".format(B_star) + "G" + "-Bplanet" + '['+"{:.3f}".format(Bplanet_field)+']' + "G" + '-'+"{:.1e}".format(BETA_EFF_MIN)+'-'+"{:.1e}".format(BETA_EFF_MAX)+'-'+'T_corona'+str(T_corona/1e6)+'MK'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'
+#if Bfield_geom_arr[ind] == 'open_parker_spiral':
+    #out_diagnos =  FOLDER + '/' + STUDY + "_" + str(Exoplanet.replace(" ", "_")) + "-diagnostic" + "-Open-Bstar" + diagnostic_string 
+#    geometry = "-Open-spiral-Bstar" 
+#elif Bfield_geom_arr[ind]== 'closed_dipole':
+    #out_diagnos =  FOLDER + '/' + STUDY + "_" + str(Exoplanet.replace(" ", "_")) + "-diagnostic" + "-Closed-Bstar" + diagnostic_string 
+#    geometry = "-Closed-dipole-Bstar"
+#else:
+#    geometry = "-Closed-PFSS-Bstar"
+out_diagnos =  FOLDER + '/'+'/DIAG_PDF'+ '/'+ STUDY +"-diagnostic-speed-pressure"  + "_" + str(Exoplanet.replace(" ", "_")) +  geometry + diagnostic_string +'.pdf' 
+plt.savefig(out_diagnos,bbox_inches='tight')
+
+df_B_tot= pd.DataFrame({
+     STUDY: x,
+    'Bsw': B_sw*np.ones(len(x))
+})  
+df_B_tot.to_csv(FOLDER + '/CSV/' +"diagnostic-speed-pressure-" + STUDY + "_" + str(Exoplanet.replace(" ", "_")) +  geometry + diagnostic_string +'_B_sw.csv')
+
+    
+df_M_A = pd.DataFrame({
+    STUDY: x,
+    'M_A': M_A*np.ones(len(x))
+})  
+df_M_A.to_csv(FOLDER + '/CSV/' +"diagnostic-speed-pressure-" + STUDY + "_" + str(Exoplanet.replace(" ", "_")) +  geometry + diagnostic_string +'_M_A.csv')
+
+print('test')
+
