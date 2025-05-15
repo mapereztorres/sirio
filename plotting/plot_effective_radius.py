@@ -10,7 +10,7 @@ ax = plt.subplot2grid((1,1),(0,0),rowspan=1,colspan=1)
 ax.plot(x, R_obs_normalized, color='k')
 ax.plot(x, Rmp/Rp, color='r')
 
-ax.plot(x, Reff_lanza*np.ones(len(x)), color='blue')
+#ax.plot(x, Reff_lanza*np.ones(len(x)), color='blue')
 
 
 ax.set_xlabel(xlabel,fontsize=20)
@@ -22,12 +22,13 @@ ax.set_ylim([0,2])
 ax.axvline(x = xnom, ls='--', color='k', lw=2)
 black_patch = mpatches.Patch(color='black', label='$R_{eff}$')
 red_patch = mpatches.Patch(color='red', label='$R_{mp}$')
-blue_patch = mpatches.Patch(color='blue', label='$R_{mp\_Lanza}$')
+#blue_patch = mpatches.Patch(color='blue', label='$R_{mp\_Lanza}$')
 
 if STUDY == 'M_DOT':
     ax.set_xscale('log')
 
-ax.legend(handles=[black_patch,red_patch,blue_patch],loc='upper left',fontsize=20,facecolor='white',edgecolor='white', framealpha=0)
+#ax.legend(handles=[black_patch,red_patch,blue_patch],loc='upper left',fontsize=20,facecolor='white',edgecolor='white', framealpha=0)
+ax.legend(handles=[black_patch,red_patch],loc='upper left',fontsize=20,facecolor='white',edgecolor='white', framealpha=0)
 ax.set_xlim(right=x[-1]) #the limit on the right is the last element of the x array
 secax = ax.secondary_yaxis('right', functions=(spi.identity,spi.identity))     
 plt.savefig(FOLDER + '/' 'R_EFF_PDF'+'/'+ str(Exoplanet.replace(" ", "_"))
