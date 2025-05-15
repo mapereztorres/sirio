@@ -30,23 +30,24 @@ elif STUDY == 'B_PL':
 
 if (STUDY == 'D_ORB') or (STUDY == 'M_DOT'):
     if PLOT_M_A == True:
-        plt.figure(figsize=(8,11))
+        figure=plt.figure(figsize=(8,11))
         ax0 = plt.subplot2grid((3,1),(0,0),rowspan=1,colspan=1)
         ax2 = plt.subplot2grid((3,1),(1,0),rowspan=2,colspan=1)
         ax0.plot(x, M_A, color='k', lw=lw)
         ax0.set_ylabel(r"$M_A$")
         ax0.set_facecolor("white")
     else:
-        plt.figure(figsize=(8,7.5))
+        figure=plt.figure(figsize=(8,7.5))
         ax2 = plt.subplot2grid((1,1),(0,0),rowspan=1,colspan=1)
         ax2.set_facecolor("white")             
         
     ax2.set_facecolor("white")	
     
 elif STUDY == 'B_PL':
-    plt.figure(figsize=(8,7.5))
+    figure=plt.figure(figsize=(8,7.5))
     ax2 = plt.subplot2grid((1,1),(0,0),rowspan=1,colspan=1)
     ax2.set_facecolor("white")	
+#plt.tight_layout()
 
 y_min = Flux_r_S_min # minimum flux (array), Saur/Turnpenney model
 y_max = Flux_r_S_max # maximum flux (array)
@@ -124,6 +125,7 @@ if STUDY == 'D_ORB':
     ax2.set_yscale('log') 
     # Draw vertical line at nominal orbital separation of planet
     xnom = r_orb/R_star
+    #print('Planet '+Exoplanet+' at an orbital separation of '+ str(xnom))
     #xlabel=r"Distance / Stellar radius"
     xlabel=r"Orbital separation / Stellar radius"
     if PLOT_M_A == True:
@@ -183,7 +185,7 @@ if (STUDY == 'D_ORB') or (STUDY == 'M_DOT'):
                 ax0.set_ylim((LIM_MA_LOW, LIM_MA_HIGH))
                 
 
-ax2.set_ylim([1e-3,1e2])
+ax2.set_ylim([1.001e-3,1e2])
 #ax2.set_ylim([1e-9,1e9])
    
 ax2.set_ylabel(r"Flux density [mJy]")
@@ -238,8 +240,8 @@ if STUDY == "D_ORB":
              
     #ax2.text(d_orb_max*0.7, 10**((np.log10(YLIMHIGH)-1)*0.8), r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK'+'\n'+'B$_{pl} = $'+"{:.2f}".format(B_planet_arr[0])+' G', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
     #print(B_planet_arr[loc_pl][0])
-    ax2.text(d_orb_max*0.7, 10**((np.log10(YLIMHIGH)-1)*1.0), r'B$_{pl} = $'+"{:.2f}".format(Bplanet_field)+' G', fontsize = 16,bbox=dict(facecolor='white', alpha=0,edgecolor='white'))
-    ax2.text(d_orb_max*0.7, 10**((np.log10(YLIMHIGH)-1)*0.8), r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK', fontsize = 16,bbox=dict(facecolor='white', alpha=0,edgecolor='white'))
+    ax2.text(d_orb_max*0.7, 10**((np.log10(YLIMHIGH)-1)*1.0), r'B$_{pl} = $'+"{:.2f}".format(Bplanet_field)+' G', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
+    ax2.text(d_orb_max*0.7, 10**((np.log10(YLIMHIGH)-1)*0.7), r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
     '''
     if magnetized_pl_arr[ind1]:
         ax2.text(d_orb_max*0.7, 10**((np.log10(YLIMHIGH)-1)*0.85), r'B$_{pl} = $'+"{:.2f}".format(B_planet_arr[0])+' G', fontsize = 16,bbox=dict(facecolor='white', alpha=0,edgecolor='white'))
@@ -252,20 +254,27 @@ if STUDY == "D_ORB":
 elif STUDY == "M_DOT":
 
         if magnetized_pl_arr[ind1]:
-            ax2.text(1e-1, 10**((np.log10(YLIMHIGH)-1)*1.1), r'B$_{pl} = $'+"{:.2f}".format(Bplanet_field)+' G', fontsize = 16,bbox=dict(facecolor='white', alpha=0,edgecolor='white'))
+            ax2.text(1.5e-1, 10**((np.log10(YLIMHIGH)-1)*1.1), r'B$_{pl} = $'+"{:.2f}".format(Bplanet_field)+' G', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
             #ax2.text(1e-1, 10**((np.log10(YLIMLOW)+1)*1.3), r'B$_{pl} = $'+"{:.2f}".format(B_planet_arr[0])+' G', fontsize = 16,bbox=dict(facecolor='white', alpha=0,edgecolor='white'))
         else:
             #ax2.text(1e-1, 10**((np.log10(YLIMHIGH)-1)*0.9), r'B$_{pl} = $'+'0 G', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
-            ax2.text(1e-1, 10**((np.log10(YLIMHIGH)-1)*1.1), r'B$_{pl} = $'+'0 G', fontsize = 16,bbox=dict(facecolor='white', alpha=0,edgecolor='white'))
+            ax2.text(1.5e-1, 10**((np.log10(YLIMHIGH)-1)*1.1), r'B$_{pl} = $'+'0 G', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
 
-        ax2.text(1e-1, 10**((np.log10(YLIMHIGH)-1)*0.9), r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK', fontsize = 16,bbox=dict(facecolor='white', alpha=0,edgecolor='white'))
+        ax2.text(1.5e-1, 10**((np.log10(YLIMHIGH)-1)*0.85), r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
         label_location='upper left'   
         
 elif STUDY == "B_PL":  
     #ax2.text(B_PL_MAX*0.7, 10**((np.log10(YLIMLOW)+1)*1.3), r'B$_{pl} = $'+'0 G', fontsize = 16,bbox=dict(facecolor='white', alpha=0,edgecolor='white'))
-    ax2.text(B_PL_MAX*0.7, 10**((np.log10(YLIMLOW)+1)*1.2), r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK', fontsize = 16,bbox=dict(facecolor='white', alpha=0,edgecolor='white'))
+    #ax2.text(B_PL_MAX*0.7, 10**((np.log10(YLIMLOW)+1)*1.2), r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK', fontsize = 16,bbox=dict(facecolor='white', alpha=0,edgecolor='white'))
+    #ax2.text(0.9, 2e-3, r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK', fontsize = 16,bbox=dict(facecolor='white', alpha=0,edgecolor='white'))
+    ax2.text(0.1, 1.05e1, r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK', fontsize = 16,bbox=dict(facecolor='white', alpha=0,edgecolor='white'))
     label_location='upper left'   
 ax2.legend(handles=[blue_patch,orange_patch],loc=label_location,fontsize=16,facecolor='white',edgecolor='white', framealpha=1)            
+
+if STUDY == "B_PL" and xnom<1: 
+    #ax2.set_xscale('log') 
+    ax2.set_xlim([0,1])
+
 #plt.rcParams['mathtext.fontset'] = 'custom'
 #plt.rcParams['mathtext.bf'] = 'cm:bold'
 
@@ -297,6 +306,8 @@ if (DRAW_EARTH == True) and (STUDY == 'D_ORB'):
     paths = ['./pics/earth.png']
     x_earth = [r_orb / R_star]
     y = [3*RMS]
+    if Exoplanet == 'GJ1151 hypothetical 1' or Exoplanet == 'GJ1151 hypothetical 2':
+        y=[0.890]
     for x0, y0, path in zip(x_earth, y, paths):
         ab_earth = AnnotationBbox(spi.getImage(path), (x0, y0), frameon=False)
         ax2.add_artist(ab_earth)            
@@ -335,16 +346,72 @@ if any(ind > 1 for ind in M_A):
 
 
 
-if (STUDY == 'M_DOT') :
-    if Exoplanet=='YZCet b Model A' or Exoplanet=='YZCet b Model B':
+
+if Exoplanet=='YZCet b Model A' or Exoplanet=='YZCet b Model B':
+    if (STUDY == 'M_DOT') :
         ax2.axvline(x = 0.25, ls='--', color='k', lw=2)
         ax2.axvline(x = 5, ls='--', color='k', lw=2)
-        ax2.text(0.25, 1e2, 'B')
-        ax2.text(5, 1e2, 'A')
+        #ax2.text(0.17, 1.5e-3, 'B')
+        #ax2.text(3.5, 1.5e-3, 'A')
         #ax2.set_ylim([1e-29,1e29])
-
+    if (STUDY == 'B_PL') :
+        ax2.text(1.2,3e-3,'Model '+Exoplanet[-1])
 
 secax = ax2.secondary_yaxis('right', functions=(spi.identity,spi.identity))
+
+
+if Exoplanet=='Proxima b kavanagh'and STUDY=='D_ORB':
+    ax2.set_xlim([1,140])
+
+'''
+if Exoplanet=='YZCet b Model A' or STUDY == 'M_DOT':
+    #figure.set_size_inches(7,8)
+    bbox = ax2.get_position()  # Bounding box of the axes
+    figure.set_size_inches(bbox.width * figure.dpi, bbox.height * figure.dpi)
+    
+    secax.set_yticklabels([])
+    ax2.set_yticklabels([])
+    ax2.set_ylabel("")  # Removes the label
+    #ax2.yaxis.set_visible(False)          # Hides the whole y-axis (ticks + labels)
+    #ax2.spines['left'].set_visible(False) # Hides the left spine
+    #ax2.spines['right'].set_visible(False)  # Optional: if you're using twinx or want symmetry
+
+if Exoplanet=='YZCet b Model B' and STUDY == 'B_PL':
+    bbox = ax2.get_position()  # Bounding box of the axes
+    figure.set_size_inches(bbox.width * figure.dpi, bbox.height * figure.dpi)
+    secax.set_yticklabels([])
+    
+'''    
+    
+
+'''
+# Get current ticks (positions)
+ticks = ax2.get_yticks()
+
+# Create blank label for the first, keep others
+labels = ["" if i == 0 else ax2.yaxis.get_major_formatter().format_data(t) for i, t in enumerate(ticks)]
+
+# Get tick positions
+ticks = ax2.get_yticks()
+
+# Set tick labels: hide the first one
+labels = ["" if i == 0 else f"{t:.1f}" for i, t in enumerate(ticks)]
+'''
+
+#ticks = ax2.get_yticks()
+#labels = ["" if i == 0 else f"{t:.1f}" for i, t in enumerate(ticks)]
+#ax2.set_yticklabels(labels)
+
+#ticks = ax2.get_yticks()
+#labels = [label.get_text() for label in ax2.get_yticklabels()]
+
+# Remove first and last tick labels
+#ticks_to_use = ticks[1:]
+#ax2.set_yticks(ticks_to_use)
+
+
+
+
 '''
 if Exoplanet=='Trappist-1 b' or Exoplanet=='Proxima b Turnpenney':
     ax2.set_ylim([1e-5, 1e4])  
