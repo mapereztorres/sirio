@@ -194,45 +194,48 @@ if Exoplanet=='Proxima b Turnpenney':
     secax3.set_yticks(yticks3[2:-1])                 
 
 
-
-if Exoplanet=='Trappist-1 b' and STUDY == 'D_ORB':    
-    #c      
-    ax1.axvline(x = 0.01521*au/R_star, ls='-.', color='k', lw=1.5)
-    ax2.axvline(x = 0.01521*au/R_star, ls='-.', color='k', lw=1.5)
-    ax3.axvline(x = 0.01521*au/R_star, ls='-.', color='k', lw=1.5)
-    ax4.axvline(x = 0.01521*au/R_star, ls='-.', color='k', lw=1.5)     
-    #d
-    ax1.axvline(x = 0.02144*au/R_star, ls='-.', color='k', lw=1.5)
-    ax2.axvline(x = 0.02144*au/R_star, ls='-.', color='k', lw=1.5)
-    ax3.axvline(x = 0.02144*au/R_star, ls='-.', color='k', lw=1.5)
-    ax4.axvline(x = 0.02144*au/R_star, ls='-.', color='k', lw=1.5)      
-    #e       
-    ax1.axvline(x = 0.02817*au/R_star, ls='-.', color='k', lw=1.5)
-    ax2.axvline(x = 0.02817*au/R_star, ls='-.', color='k', lw=1.5)
-    ax3.axvline(x = 0.02817*au/R_star, ls='-.', color='k', lw=1.5)
-    ax4.axvline(x = 0.02817*au/R_star, ls='-.', color='k', lw=1.5)       
-    #f       
-    ax1.axvline(x = 0.0371*au/R_star, ls='-.', color='k', lw=1.5)
-    ax2.axvline(x = 0.0371*au/R_star, ls='-.', color='k', lw=1.5)
-    ax3.axvline(x = 0.0371*au/R_star, ls='-.', color='k', lw=1.5)
-    ax4.axvline(x = 0.0371*au/R_star, ls='-.', color='k', lw=1.5)       
-    #g
-    ax1.axvline(x = 0.0451*au/R_star, ls='-.', color='k', lw=1.5)
-    ax2.axvline(x = 0.0451*au/R_star, ls='-.', color='k', lw=1.5)
-    ax3.axvline(x = 0.0451*au/R_star, ls='-.', color='k', lw=1.5)
-    ax4.axvline(x = 0.0451*au/R_star, ls='-.', color='k', lw=1.5)       
-    #h
-    ax1.axvline(x = 0.063*au/R_star, ls='-.', color='k', lw=1.5)
-    ax2.axvline(x = 0.063*au/R_star, ls='-.', color='k', lw=1.5)
-    ax3.axvline(x = 0.063*au/R_star, ls='-.', color='k', lw=1.5)
-    ax4.axvline(x = 0.063*au/R_star, ls='-.', color='k', lw=1.5)       
-    ax1.text(0.01111*au/R_star,1.1e5,'b',ha='center',fontsize=11)
-    ax1.text(0.01521*au/R_star,1.1e5,'c',ha='center',fontsize=11)
-    ax1.text(0.02144*au/R_star,1.1e5,'d',ha='center',fontsize=11)
-    ax1.text(0.02817*au/R_star,1.1e5,'e',ha='center',fontsize=11)
-    ax1.text(0.0371*au/R_star,1.1e5,'f',ha='center',fontsize=11)
-    ax1.text(0.0451*au/R_star,1.1e5,'g',ha='center',fontsize=11)
-    ax1.text(0.063*au/R_star,1.1e5,'h',ha='center',fontsize=11) 
+planet_height_label=5e4
+bbox=dict(facecolor='white', edgecolor='none', boxstyle='square,pad=0.1')
+if Exoplanet=='Trappist-1 b' or Exoplanet=='Trappist-1 b Reville':
+    if STUDY == 'D_ORB': 
+        ax2.set_xlim([1,3e3])
+        #c      
+        ax1.axvline(x = 0.01521*au/R_star, ls='-.', color='k', lw=1.5)
+        ax2.axvline(x = 0.01521*au/R_star, ls='-.', color='k', lw=1.5)
+        ax3.axvline(x = 0.01521*au/R_star, ls='-.', color='k', lw=1.5)
+        ax4.axvline(x = 0.01521*au/R_star, ls='-.', color='k', lw=1.5)     
+        #d
+        ax1.axvline(x = 0.02144*au/R_star, ls='-.', color='k', lw=1.5)
+        ax2.axvline(x = 0.02144*au/R_star, ls='-.', color='k', lw=1.5)
+        ax3.axvline(x = 0.02144*au/R_star, ls='-.', color='k', lw=1.5)
+        ax4.axvline(x = 0.02144*au/R_star, ls='-.', color='k', lw=1.5)      
+        #e       
+        ax1.axvline(x = 0.02817*au/R_star, ls='-.', color='k', lw=1.5)
+        ax2.axvline(x = 0.02817*au/R_star, ls='-.', color='k', lw=1.5)
+        ax3.axvline(x = 0.02817*au/R_star, ls='-.', color='k', lw=1.5)
+        ax4.axvline(x = 0.02817*au/R_star, ls='-.', color='k', lw=1.5)           
+        #f       
+        ax1.axvline(x = 0.0371*au/R_star, ls='-.', color='k', lw=1.5)
+        ax2.axvline(x = 0.0371*au/R_star, ls='-.', color='k', lw=1.5)
+        ax3.axvline(x = 0.0371*au/R_star, ls='-.', color='k', lw=1.5)
+        ax4.axvline(x = 0.0371*au/R_star, ls='-.', color='k', lw=1.5)       
+        #g
+        ax1.axvline(x = 0.0451*au/R_star, ls='-.', color='k', lw=1.5)
+        ax2.axvline(x = 0.0451*au/R_star, ls='-.', color='k', lw=1.5)
+        ax3.axvline(x = 0.0451*au/R_star, ls='-.', color='k', lw=1.5)
+        ax4.axvline(x = 0.0451*au/R_star, ls='-.', color='k', lw=1.5)       
+        #h
+        ax1.axvline(x = 0.063*au/R_star, ls='-.', color='k', lw=1.5)
+        ax2.axvline(x = 0.063*au/R_star, ls='-.', color='k', lw=1.5)
+        ax3.axvline(x = 0.063*au/R_star, ls='-.', color='k', lw=1.5)
+        ax4.axvline(x = 0.063*au/R_star, ls='-.', color='k', lw=1.5)       
+        ax1.text(0.01111*au/R_star,planet_height_label,'b',ha='center',fontsize=11,bbox=bbox)
+        ax1.text(0.01521*au/R_star,planet_height_label,'c',ha='center',fontsize=11,bbox=bbox)    
+        ax1.text(0.02144*au/R_star,planet_height_label,'d',ha='center',fontsize=11,bbox=bbox)
+        ax1.text(0.02817*au/R_star,planet_height_label,'e',ha='center',fontsize=11,bbox=bbox)
+        ax1.text(0.0371*au/R_star,planet_height_label,'f',ha='center',fontsize=11,bbox=bbox)
+        ax1.text(0.0451*au/R_star,planet_height_label,'g',ha='center',fontsize=11,bbox=bbox)
+        ax1.text(0.063*au/R_star,planet_height_label,'h',ha='center',fontsize=11,bbox=bbox) 
     
 if Exoplanet=='Proxima b Turnpenney' and STUDY == 'D_ORB':     
     #d      
@@ -240,8 +243,8 @@ if Exoplanet=='Proxima b Turnpenney' and STUDY == 'D_ORB':
     ax2.axvline(x = 0.02885*au/R_star, ls='-.', color='k', lw=1.5)
     ax3.axvline(x = 0.02885*au/R_star, ls='-.', color='k', lw=1.5)
     ax4.axvline(x = 0.02885*au/R_star, ls='-.', color='k', lw=1.5)   
-    ax1.text(0.04856*au/R_star,1.1e5,'b',ha='center',fontsize=11) 
-    ax1.text(0.02885*au/R_star,1.1e5,'d',ha='center',fontsize=11)
+    ax1.text(0.04856*au/R_star,planet_height_label,'b',ha='center',fontsize=11,bbox=bbox) 
+    ax1.text(0.02885*au/R_star,planet_height_label,'d',ha='center',fontsize=11,bbox=bbox)
 #secax.set_xticks([0.01521*au/R_star])
 #secax.set_xticklabels(['c'])
 #secax = ax.secondary_xaxis('top', functions=(spi.identity, spi.identity))
@@ -279,4 +282,92 @@ df_M_A.to_csv(FOLDER + '/CSV/' +"diagnostic-" + STUDY + "_" + str(Exoplanet.repl
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+fig, ax3 = plt.subplots(1, 1, sharex=True, figsize=(9, 8))
+
+ax3.plot(x, M_A*np.ones(len(x)), color='k', lw=lw)
+ax3.set_yscale('log')  
+ax3.set_xscale('log')  
+ax3.set_ylabel(r"$M_A$")
+ax3.set_xlabel(xlabel,fontsize=20)
+ax3.set_facecolor("white")
+ax3.set_ylim(1e-3,1e1)
+yticks3 = ax3.get_yticks()
+ax3.set_yticks(yticks3[2:-2]) 
+secax3 = ax3.secondary_yaxis('right', functions=(spi.identity,spi.identity))
+secax3.set_yticks(yticks3[2:-2]) 
+ax3.axvline(x = xnom, ls='--', color='k', lw=2)
+ax3.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
+if (M_A > 1).any():
+    ax3.axhline(y = 1, ls='-.', color='grey', lw=2)   
+planet_height_label=1.3e1
+bbox=dict(facecolor='white', edgecolor='none', boxstyle='square,pad=0.1')
+#ax3.set_xlim([1,3e3])
+if Exoplanet=='Trappist-1 b' or Exoplanet=='Trappist-1 b Reville':
+    if STUDY == 'D_ORB': 
+        ax3.set_xlim([1,3e3])
+        #c      
+        ax3.axvline(x = 0.01521*au/R_star, ls='-.', color='k', lw=1.5)     
+        #d
+        ax3.axvline(x = 0.02144*au/R_star, ls='-.', color='k', lw=1.5)   
+        #e       
+        ax3.axvline(x = 0.02817*au/R_star, ls='-.', color='k', lw=1.5)        
+        #f       
+        ax3.axvline(x = 0.0371*au/R_star, ls='-.', color='k', lw=1.5)   
+        #g
+        ax3.axvline(x = 0.0451*au/R_star, ls='-.', color='k', lw=1.5)      
+        #h
+        ax3.axvline(x = 0.063*au/R_star, ls='-.', color='k', lw=1.5)
+        ax3.text(0.01111*au/R_star,planet_height_label,'b',ha='center',fontsize=13,bbox=bbox)
+        ax3.text(0.01521*au/R_star,planet_height_label,'c',ha='center',fontsize=13,bbox=bbox)    
+        ax3.text(0.02144*au/R_star,planet_height_label,'d',ha='center',fontsize=13,bbox=bbox)
+        ax3.text(0.02817*au/R_star,planet_height_label,'e',ha='center',fontsize=13,bbox=bbox)
+        ax3.text(0.0371*au/R_star,planet_height_label,'f',ha='center',fontsize=13,bbox=bbox)
+        ax3.text(0.0451*au/R_star,planet_height_label,'g',ha='center',fontsize=13,bbox=bbox)
+        ax3.text(0.063*au/R_star,planet_height_label,'h',ha='center',fontsize=13,bbox=bbox) 
+
+out_diagnos =  FOLDER + '/'+'/DIAG_PDF'+ '/'+ STUDY +"-diagnostic-"  + "_" + str(Exoplanet.replace(" ", "_")) +  geometry + diagnostic_string +'_only_MA.pdf' 
+plt.savefig(out_diagnos,bbox_inches='tight')
+plt.close(fig)
+
+
+
+
+
+'''
+# Create new figure
+fig2, ax3_new = plt.subplots()
+
+# Copy all elements from ax3 to ax3_new
+for line in ax3.get_lines():
+    ax3_new.plot(line.get_xdata(), line.get_ydata(), label=line.get_label(), 
+                 color=line.get_color(), linestyle=line.get_linestyle(), linewidth=line.get_linewidth())
+
+# Copy axis labels and limits
+ax3_new.set_xlim(ax3.get_xlim())
+ax3_new.set_ylim(ax3.get_ylim())
+ax3_new.set_xlabel(ax3.get_xlabel())
+ax3_new.set_ylabel(ax3.get_ylabel())
+ax3_new.set_yscale(ax3.get_yscale())
+
+ax3_new.set_yscale('log')  
+ax3_new.set_xscale('log')  
+# Optional: copy legend, title, etc. if needed
+# ax2_new.legend()
+
+# Save
+#fig2.savefig("ax2_only.pdf", bbox_inches='tight', pad_inches=0.0)
+
+'''
 
