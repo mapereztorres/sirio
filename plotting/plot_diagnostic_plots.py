@@ -31,7 +31,7 @@ Line2D([0], [0], color='blue', linestyle='dashed',  label=r'v$_{\rm sw}$'),
 Line2D([0], [0], color='black', linestyle='solid', label=r'v$_{\rm rel}$'),
 Line2D([0], [0], color='orange', linestyle=(0,(1,3.5)), label=r'v$_{\rm sound}$'),
 ]
-ax1.legend(handles=legend_elements, loc='upper left', fontsize=12, facecolor='white', edgecolor='white', framealpha=0)
+ax1.legend(handles=legend_elements, loc='upper right', fontsize=15, facecolor='white', edgecolor='white', framealpha=0)
 
 
 
@@ -53,7 +53,7 @@ Line2D([0], [0], color='green', linestyle='dashdot', label=r'B$_{\rm phi}$'),
 Line2D([0], [0], color='blue', linestyle='solid',  label=r'B$_{\rm tot}$'),
 Line2D([0], [0], color='black', linestyle='dashed', label=r'B$_{\rm perp}$'),
 ]
-ax2.legend(handles=legend_elements, loc='upper right', fontsize=12, facecolor='white', edgecolor='white', framealpha=0)
+ax2.legend(handles=legend_elements, loc='upper right', fontsize=15, facecolor='white', edgecolor='white', framealpha=0)
 
 
 
@@ -84,7 +84,7 @@ Line2D([0], [0],  color='r', linestyle='solid', label=r'P$_{\rm dyn_{\rm sw}}$')
 Line2D([0], [0],color='g', linestyle=(0,(1,3.5)), label=r'P$_{\rm th_{\rm sw}}$'),
 Line2D([0], [0], color='blue', linestyle='dashdot', label=r'P$_{\rm B_{\rm sw}}$'),
 ]
-ax4.legend(handles=legend_elements, loc='upper right', fontsize=12, facecolor='white', edgecolor='white', framealpha=0)
+ax4.legend(handles=legend_elements, loc='upper right', fontsize=15, facecolor='white', edgecolor='white', framealpha=0)
 
 
 
@@ -128,8 +128,18 @@ fig.set_figwidth(8)
 fig.set_figheight(20)
 #ax1.set_xscale('log')
 
+if Exoplanet == 'GJ1151 hypothetical 2' and STUDY == 'D_ORB':
+    #x_pl1=spi.Kepler_r(M_star*M_sun, P_orb=5) * au/R_star
+    x_pl1=12.927
+    ax1.axvline(x = x_pl1, ls='--', color='k', lw=2)
+    ax2.axvline(x = x_pl1, ls='--', color='k', lw=2)
+    ax3.axvline(x = x_pl1, ls='--', color='k', lw=2)
+    ax4.axvline(x = x_pl1, ls='--', color='k', lw=2)
+    ax1.set_ylim([10,7e4])
+    
 
-ax3.set_ylim([1e-3,1e1])
+
+ax3.set_ylim([1.01e-3,9.9e0])
 
 
 ax1.set_yscale('log')  
@@ -137,7 +147,7 @@ ax2.set_yscale('log')
 ax3.set_yscale('log')  
 ax4.set_yscale('log')  
 
-ax2.set_ylim([1e-5,1e5])
+ax2.set_ylim([1.1e-5,9.9e4])
 
 ax1.margins(x=0)  
 ax2.margins(x=0)      
@@ -155,6 +165,7 @@ diagnostic_string = "{:.1f}".format(B_star) + "G" + "-Bplanet" + '['+"{:.3f}".fo
 #else:
 #    geometry = "-Closed-PFSS-Bstar"
 out_diagnos =  FOLDER + '/'+'/DIAG_PDF'+ '/'+ STUDY +"-diagnostic-"  + "_" + str(Exoplanet.replace(" ", "_")) +  geometry + diagnostic_string +'.pdf' 
+out_diagnos=str(out_diagnos)
 plt.savefig(out_diagnos,bbox_inches='tight')
 
 df_B_tot= pd.DataFrame({
@@ -236,5 +247,50 @@ if Exoplanet == 'Trappist-1_b':
 
 	out_M_A =  FOLDER + '/'+'/DIAG_PDF'+ '/'+ "-MA-variation"  + "_" + str(Exoplanet.replace(" ", "_")) +  geometry + diagnostic_string +'.pdf' 
 	print('saving: ',out_M_A)
-	plt.show()
+	#plt.show()
+	
+	
+	
+	
+	
+	
+	
+#Individual MA plot
+if Exoplanet == 'GJ1151 hypothetical 2' and STUDY == 'D_ORB':
+
+	fig, ax3 = plt.subplots(1, 1, sharex=True)
+	ax3.plot(x, M_A*np.ones(len(x)), color='k', lw=lw)
+
+
+	ax3.set_ylabel(r"$M_A$")
+	ax3.set_facecolor("white")
+	ax3.axvline(x = xnom, ls='--', color='k', lw=2)
+
+	#print('geometry', geometry)
+	if STUDY == "D_ORB" and Bfield_geom_arr[ind] == 'pfss':
+	    ax3.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
+		
+	if (M_A > 1).any():
+	    ax3.axhline(y = 1, ls='-.', color='grey', lw=2)   
+	    
+	x_pl1=12.927
+
+	ax3.axvline(x = x_pl1, ls='--', color='k', lw=2)
+	ax3.axvline(x = xnom, ls='--', color='k', lw=2)
+	ax3.set_yscale('log')   
+	ax3.set_ylim(1e-3,1e1)
+	ax3.set_xlim([2,x[-1]])
+	ax3.set_xlabel(xlabel,fontsize=20)
+	yticks3 = ax3.get_yticks()
+	ax3.set_yticks(yticks3[2:-2]) 
+
+	secax3 = ax3.secondary_yaxis('right', functions=(spi.identity,spi.identity))
+
+	secax3.set_yticks(yticks3[2:-2]) 
+
+	out_M_A =  FOLDER + '/'+'/DIAG_PDF'+ '/'+ "-MA-variation"  + "_" + str(Exoplanet.replace(" ", "_")) +  geometry + diagnostic_string +'.pdf' 
+	print('saving: ',out_M_A)
+	#plt.show()	
 	plt.savefig(out_M_A,bbox_inches='tight')
+	
+	
