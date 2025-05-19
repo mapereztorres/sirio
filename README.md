@@ -9,7 +9,7 @@ Sub-Alfvénic star-planet interaction (SPI), via the electron-cyclotron maser
 instability mechanism. `Sirio` is the Spanish name of the brightest star in the night sky, `Sirius`.  
 
 
-SIRIO omputes the expected flux density from SPI (1) as a function of the orbital
+SIRIO computes the expected flux density from SPI (1) as a function of the orbital
 distance (i.e., the semi-major axis) to the planet, or (2) as a function of the
 exoplanetary magnetic field, or (3) as a function of the stellar wind mass loss rate.
 For cases (2) and (3), the orbital distance of the planet to its host star is kept
