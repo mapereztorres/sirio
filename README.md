@@ -15,9 +15,7 @@ exoplanetary magnetic field, or (3) as a function of the stellar wind mass loss 
 For cases (2) and (3), the orbital distance of the planet to its host star is kept
 fixed. 
 
-The current version of the code assumes an isothermal Parker wind, and considers up to three
-different geometries of the stellar wind magnetic field: a closed dipolar field, an open Parker 
-spiral, and a Potential Field Source Surface (PFSS), which is a hybrid model, having a dipolar topology up to a certain radial separation from the host star, and adopting an open Parker spiral beyond that radius. The effective radius of the planet, i.e., the magnetosphere radius, is obtained as an equilibrium of pressures between the wind and the planet.  The code can also take into account the free-free extinction of the radio emission within the stellar wind, which is particularly relevant for relatively low
+The current version of the code assumes an isothermal Parker wind, so the user needs to set up a temperatures for the corona/stellar wind. The code considers up to three different geometries of the stellar wind magnetic field: a closed dipolar field, an open Parker spiral, and a Potential Field Source Surface (PFSS), which is a hybrid model, having a dipolar topology up to a certain radial separation from the host star, and adopting an open Parker spiral beyond that radius. The effective radius of the planet, i.e., the magnetosphere radius, is obtained as an equilibrium of pressures between the wind and the planet.  The code can also take into account the free-free extinction of the radio emission within the stellar wind, which is particularly relevant for relatively low
 stellar wind temperatures, and/or high-values of the stellar wind mass-loss rate, and/or low observing frequencies. 
 
 The code can be run for a single target, or for a whole table of targets, provided by
