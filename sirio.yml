@@ -1,4 +1,4 @@
-name: spirou
+name: sirio
 channels:
   - conda-forge
   - defaults
