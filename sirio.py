@@ -156,18 +156,9 @@ for indi in planet_array:
     # Electron gyrofrequency and ECM bandwidth 
     #gyrofreq = e*B_spi/(2*np.pi * m_e * c) # in cgs units
     #Delta_nu_cycl = gyrofreq # Hz - width of ECMI emission  assumed to be  (0.5 * gyrofreq), 
-    if Exoplanet=='Trappist-1 b' or Exoplanet=='Proxima b Turnpenney' or Exoplanet=='Proxima b Reville'or Exoplanet=='Proxima b kavanagh' or Exoplanet=='Trappist-1 b Reville': 
-        print('d_orb limit like in Turnpenny')
-        d_orb_max = 3e3
-    elif Exoplanet=='YZCet b Model A' or Exoplanet=='YZCet b Model B':
-        print('d_orb limit like in Pineda')
-        d_orb_max = 60
-    elif Exoplanet == 'GJ1151 hypothetical 2' or Exoplanet == 'GJ1151 hypothetical 1':
-        #print('d_orb limit like in Pineda')
-        d_orb_max = 50            
+    
     # Max. orbital distance, in units of R_star
-    else:
-        d_orb_max = max(2*r_orb/R_star, D_ORB_LIM) 
+    d_orb_max = max(2*r_orb/R_star, D_ORB_LIM) 
 
     # The type of STUDY (D_ORB, M_DOT or B_PL) is set up in setup.py 
     # and tells us whether the computaion is done 
@@ -251,11 +242,7 @@ for indi in planet_array:
     if ISOTHERMAL:
         #n_sw_planet = n_sw_base / (d_orb/R_star)**2 / (v_sw/v_sw_base) # Plasma density at distance (R/R_star)
         n_sw_planet = spi.n_wind(M_star_dot_arr, d_orb, v_sw, m_av) # Plasma number density at distance (R/R_star)
-        if Exoplanet=='YZCet b Model A' or Exoplanet=='YZCet b Model B':
-            #print(M_star_dot_arr, d_orb, v_sw, m_av)
-            print(M_star_dot_arr)
-            
-            print(f'n_sw_planet for planet {Exoplanet}: {n_sw_planet}')
+        
     else:
         # WARNING: This (arbitrary) value of 1e4 for n_sw_planet to be set up in setup.py
         #n_sw_planet = np.ones(len(d_orb)) * 1e4  
@@ -282,8 +269,6 @@ for indi in planet_array:
             
             # Compute Alfvén parameters in the stellar wind at a distance d_orb 
             v_alf, M_A, v_alf_r, M_A_radial = spi.get_alfven(rho_sw_planet, B_sw, B_r, v_rel, v_sw)
-            if Exoplanet=='YZCet b Model A' or Exoplanet=='YZCet b Model B':
-                print('v_alf [-1]: ',v_alf[-1])
             # defines whether planet is unmagnetized (magnetized_pl_arr[ind1] = 0), or magnetized (magnetized_pl_arr[ind1] = 1)
             if magnetized_pl_arr[ind1]: # magnetized planet
                 planet_magnetized='MAGNETIZED PLANET'
@@ -476,12 +461,7 @@ for indi in planet_array:
 
             ### Plot received flux density as a function of distance from the star
             
-            if Exoplanet=='Trappist-1 b' or Exoplanet=='Proxima b Turnpenney' or Exoplanet=='Proxima b kavanagh' or Exoplanet=='Trappist-1 b Reville' or Exoplanet=='Proxima b Reville': 
-             #Specific for comparison with Turnpenney
-                #filename = 'plotting/plot_flux_density_turnpenney.py'
-                filename = 'plotting/plot_flux_density_turnpenney.py'
-            else:
-                filename = 'plotting/plot_flux_density.py'
+            filename = 'plotting/plot_flux_density.py'
                 #filename = 'plotting/plot_flux_and_radius.py'            
             with open(filename) as file:
                 exec(file.read())            
@@ -502,13 +482,6 @@ for indi in planet_array:
                 ax.set_facecolor("white")	
                 secax = ax.secondary_yaxis('right', functions=(spi.identity,spi.identity))
                 #Specific for YZ Cet from Pineda2023
-                if Exoplanet=='YZCet b Model A' or Exoplanet=='YZCet b Model B':
-                    ax.axvline(x = 0.25, ls='--', color='k', lw=2)
-                    ax.axvline(x = 5, ls='--', color='k', lw=2)
-                    #ax.text(0.25,1.07,'B')
-                    #ax.text(5,1.07,'A')
-                    ax.text(0.17,0.07,'B')
-                    ax.text(3.3,0.07,'A')
                     
                 plt.savefig(FOLDER + '/' + str(Exoplanet.replace(" ", "_"))
                         +'-'+'absorption_vs_mdot'+'-'+'T_corona'+str(T_corona/1e6)+'MK'+'-'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'+'.pdf', bbox_inches='tight')
@@ -523,7 +496,7 @@ for indi in planet_array:
                 exec(file.read())
     
             
-            # LPM  - REVISE
+           
             li = [x,y_min.tolist(), y_max.tolist()]   
             
               
@@ -553,11 +526,6 @@ for indi in planet_array:
             
             filename = 'plotting/plot_diagnostic_plots.py'
             #Specific plots to benchmark against Turnpenney 2
-            if STUDY == 'D_ORB':	
-                if Exoplanet=='Trappist-1 b' or Exoplanet=='Proxima b Turnpenney':
-                    filename = 'plotting/plot_diagnostic_plots_turnpenney.py'           
-                elif Exoplanet=='YZCet b Model A' or Exoplanet=='YZCet b Model B':
-                    filename = 'plotting/plot_diagnostic_plots_pineda.py'
                     
             with open(filename) as file:
                 exec(file.read())
@@ -580,33 +548,10 @@ for indi in planet_array:
 
             print(f'\nSAVING USEFUL VALUES TO {outfileTXT}')
             
-    ################################        
-    if Bfield_geom_arr == ['open_parker_spiral','closed_dipole','pfss']:
-        '''
-        if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet'+ '['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv'):
-            print('Model A done')
-        if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet'+ '['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv'):
-            print('Model B done')
-    
-        if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet'+ '['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv') and os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet'+ '['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv') and STUDY == 'D_ORB' and Exoplanet=='YZCet b Model B':
-        '''
-        ## Specific for the Pineda plots
-        if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet[0.194]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv'):
-            print('Model A done')
-        if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet[0.194]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv'):
-            print('Model B done')
-    
-        #if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet[0.194]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv') and os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet[0.194]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv') and STUDY == 'D_ORB' and Exoplanet=='YZCet b Model B':   
-        if STUDY == 'D_ORB' and Exoplanet=='YZCet b Model B':  
-            filename = 'plotting/plot_model_comparison_pineda.py'
-            with open(filename) as file:
-                exec(file.read())
-            #break      
 
-
-        filename = 'plotting/plot_model_comparison.py'
-        with open(filename) as file:
-            exec(file.read())          
+    filename = 'plotting/plot_model_comparison.py'
+    with open(filename) as file:
+        exec(file.read())          
 
     print(f'\nDONE WITH PLANET {Exoplanet}!!\n')
     print('###########################################################\n')
