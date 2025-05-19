@@ -6,7 +6,7 @@
 
 `SIRIO` (pronounced `See-ree-oh`) is a public Python code to predict the radio emission from
 Sub-Alfvénic star-planet interaction (SPI), via the electron-cyclotron maser
-instability mechanism. `SIRIO` is the Spanish name of the famous star `Sirius`.  
+instability mechanism. `Sirio` is the Spanish name of the brightest star in the night sky, `Sirius`.  
 
 
 SIRIO omputes the expected flux density from SPI (1) as a function of the orbital
