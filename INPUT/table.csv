@@ -1,3 +1,11 @@
 ,star_name,star_sp_type,d_star(pc),radius_star(r_sun),mass_star(m_sun),p_rot(days),bfield_star(gauss),planet_name,mass_planet(m_earth),radius_planet(r_earth),p_orb(days),a(au),T_corona(MK),mdot(mdot_sun),eccentricity
-1,YZCet,M4.5,3.7,0.163,0.137,68.5,220.0,YZCet b Model B,0.7,0.89,2.02,0.01638019027,1.5,0.25,0.0
+0,Trappist-1,M8,12.1,0.117,0.08,3.3,600.0,Trappist-1 b,0.79,1.086,1.511,0.011,2.0,8,0.0
+1,Trappist-1,M8,12.1,0.117,0.08,3.3,600.0,Trappist-1 b Reville,0.79,1.086,1.511,0.011,2.0,0.18,0.0
 2,YZCet,M4.5,3.7,0.163,0.137,68.5,220.0,YZCet b Model A,0.7,0.89,2.02,0.01638019027,1.5,5.0,0.0
+3,YZCet,M4.5,3.7,0.163,0.137,68.5,220.0,YZCet b Model B,0.7,0.89,2.02,0.01638019027,1.5,0.25,0.0
+4,Proxima,M5.5,1.3,0.154,0.122,82.6,600.0,Proxima b Turnpenney,1.3,1.1,11.186,0.05,2.0,1.5,0.0
+5,Proxima,M5.5,1.3,0.14,0.12,83.0,200.0,Proxima b kavanagh,1.27,1.06,11.2,0.0481989239,2.0,0.25,0.0
+6,Proxima,M5.5,1.3,0.154,0.122,82.6,600.0,Proxima b Reville,1.3,1.1,11.186,0.05,2.0,0.20,0.0
+7, GJ1151, M4.5,8.04,0.2,0.17,125, 50,GJ1151 hypothetical 1, 0.73,, 1,,2,1,0
+8, GJ1151, M4.5,8.04,0.2,0.17,125, 50,GJ1151 hypothetical 2, 1.25,,5,,2,1,0
+

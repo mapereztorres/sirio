@@ -38,7 +38,7 @@ D_ORB_LIM = np.nan
 # M_DOT_STRETCH: Number of points per dex in the STUDY of M_DOT
 M_DOT_STRETCH = 50
 M_DOT_MIN = 1e-1
-M_DOT_MAX = 1e+0
+M_DOT_MAX = 1e+2
 
 #  STUDY = 'B_PL' SETUP
 #
@@ -80,9 +80,8 @@ NSTEPS_FF = 10000
 # intensity of the planetary magnetic field
 # 
 # Stellar magnetic field geometry
-#Bfield_geom_arr=['open_parker_spiral','closed_dipole','pfss_parker','closed_pfss','hybrid']
-Bfield_geom_arr=['open_parker_spiral','closed_dipole','pfss_parker']
-#Bfield_geom_arr=['pfss_parker']
+Bfield_geom_arr=['open_parker_spiral','closed_dipole','pfss']
+#Bfield_geom_arr=['pfss']
 
 # INDEX of the DIPOLE
 # Q_DIPOLE = 3.0 => DIPOLE
@@ -113,8 +112,9 @@ DELTA_R = 0.05 * R_sun
 # R__SS is defined as below, due to the boundary conditions imposed on the components of
 # the closed magnetic field geometry (see, e.g., Eqns. 5 and 6 in Jardine+2002, MNRAS)
 R_SS = 4.5
-
-
+#R_SS = 5.5
+#R_SS = 8
+#R_SS = 22
 # R_ALFVEN_GUESS - Initial guess for the Alfvén radius (see get_R_alfven in SPIutils.py)
 #                  in units of R_star (stellar radii)
 R_ALFVEN_GUESS = 20.0
@@ -138,8 +138,8 @@ B_PLANET_DEFAULT = bfield_earth
 # Computation of planetary magnetic field 
 # B_pl_law = 'Sano' => Uses Sano's scaling law (Sano 1993)
 # B_pl_law = 'None' => Doesn't use any scaling law. Uses B_PLANET_DEFAULT instead.
-#B_planet_law = 'Sano'
-B_planet_law = 'None'
+B_planet_law = 'Sano'
+#B_planet_law = 'None'
 
 # K_MAGNETOPAUSE - factor by which the magnetopause currents enhance
 # the magnetospheric magnetic field at the magnetopause, which is a value
@@ -171,8 +171,8 @@ RMS = 0.015
 # "isothermality" of stellar plasma 
 
 # Default value: 2.0e6 K. Solar value
-T_CORONA_DEF = 2.0e6 
-
+#T_CORONA_DEF = 2.0e6 
+T_CORONA_DEF=10**6.67
 
 
 
@@ -202,8 +202,8 @@ ALPHA_SPI = 1
 # Zarka (2024) shows that beta_eff is in the range from 1e-4 (BETA_EFF_MIN) to 1e-2
 # (BETA_EFF_MAX)
 # 
-BETA_EFF_MIN = 1e-4; BETA_EFF_MAX = 1e-2 
-#BETA_EFF_MIN = 1e-2; BETA_EFF_MAX = 1.1e-2 
+#BETA_EFF_MIN = 1e-4; BETA_EFF_MAX = 1e-2 
+BETA_EFF_MIN = 1e-3; BETA_EFF_MAX = 1e-3 
 
 # Fraction of Poynting flux going to dissipated power (Eq. 2 in Zarka 2024)
 # Zarka (2024) quotes a value of 0.2 +/- 0.1
@@ -245,7 +245,7 @@ LW = 3
 # PLOTOUT = False => plot in terminal
 PLOTOUT = True 
 # DRAW_RMS?
-DRAW_RMS = True
+DRAW_RMS = False
 # DRAW Little Earth?
 DRAW_EARTH = True
 LIMS_MA = True
@@ -256,7 +256,7 @@ FLUX_LOW  = 3*RMS * 1e-1
 FLUX_HIGH = 3*RMS * 1e2
 YLIMLOW   = 1e-3
 YLIMHIGH  = 1e2
-
+#PLOT_R_eff = False
 
 ### WELCOME TO SPIROU
 print('###########################################################')

@@ -61,7 +61,7 @@ def ff_absorption(M_star, nu_ecm, T_wind, m_av, X_p, M_dot, R_ff_in, R_ff_out, N
     g = get_gaunt(T_wind, nu_ecm)
 
     alpha_nu = 3.692 * 10**8 * (1 - np.exp((-h * nu_ecm)/(k_B * T_wind))) * Z**2 * g * T_wind**(-1/2) * nu_ecm**(-3)
-
+    
     # Effective linear absorption coefficient
     kappa_nu = alpha_nu * n_e * n_p
 
