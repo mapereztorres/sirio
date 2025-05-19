@@ -15,8 +15,18 @@ exoplanetary magnetic field, or (3) as a function of the stellar wind mass loss 
 For cases (2) and (3), the orbital distance of the planet to its host star is kept
 fixed. 
 
-The current version of the code assumes an isothermal Parker wind, so the user needs to set up a temperatures for the corona/stellar wind. The code considers up to three different geometries of the stellar wind magnetic field: a closed dipolar field, an open Parker spiral, and a Potential Field Source Surface (PFSS), which is a hybrid model, having a dipolar topology up to a certain radial separation from the host star, and adopting an open Parker spiral beyond that radius. The effective radius of the planet, i.e., the magnetosphere radius, is obtained as an equilibrium of pressures between the wind and the planet.  The code can also take into account the free-free extinction of the radio emission within the stellar wind, which is particularly relevant for relatively low
-stellar wind temperatures, and/or high-values of the stellar wind mass-loss rate, and/or low observing frequencies. 
+
+The current version of the code assumes an isothermal Parker wind, so the user needs to
+set up a temperatures for the corona/stellar wind. The code considers up to three
+different geometries of the stellar wind magnetic field: a closed dipolar field, an open
+Parker spiral, and a Potential Field Source Surface (PFSS), which is a hybrid model,
+having a dipolar topology up to a certain radial separation from the host star, and
+adopting an open Parker spiral beyond that radius. The effective radius of the planet,
+i.e., the magnetosphere radius, is obtained as an equilibrium of pressures between the
+wind and the planet.  The code can also take into account the free-free extinction of
+the radio emission within the stellar wind, which is particularly relevant for
+relatively low stellar wind temperatures, and/or high-values of the stellar wind
+mass-loss rate, and/or low observing frequencies. 
 
 The code can be run for a single target, or for a whole table of targets, provided by
 the user.  
@@ -59,10 +69,9 @@ The following file structure of spirou should be self-explanatory.
 ├── LICENSE
 ├── OUTPUT         - folder containing the output. Creates a sub-folder per target
 ├── output.py      - module handling the output
-├── pics           - folder containing figures and the logo of the SPIROU code
+├── pics           - folder containing figures 
 │   ├── earth.jpg
 │   ├── earth.png
-│   └── spirou-logo.png
 ├── plotting       - folder containing modules to handle the plots
 │   ├── plot_diagnostic_plots.py
 │   ├── plot_effective_radius.py
