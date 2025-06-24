@@ -198,7 +198,7 @@ planet_height_label=5e4
 bbox=dict(facecolor='white', edgecolor='none', boxstyle='square,pad=0.1')
 if Exoplanet=='Trappist-1 b' or Exoplanet=='Trappist-1 b Reville':
     if STUDY == 'D_ORB': 
-        ax2.set_xlim([1,3e3])
+        #ax2.set_xlim([1,3e3])
         #c      
         ax1.axvline(x = 0.01521*au/R_star, ls='-.', color='k', lw=1.5)
         ax2.axvline(x = 0.01521*au/R_star, ls='-.', color='k', lw=1.5)
@@ -316,7 +316,7 @@ bbox=dict(facecolor='white', edgecolor='none', boxstyle='square,pad=0.1')
 #ax3.set_xlim([1,3e3])
 if Exoplanet=='Trappist-1 b' or Exoplanet=='Trappist-1 b Reville':
     if STUDY == 'D_ORB': 
-        ax3.set_xlim([1,3e3])
+        #ax3.set_xlim([1,3e3])
         #c      
         ax3.axvline(x = 0.01521*au/R_star, ls='-.', color='k', lw=1.5)     
         #d
