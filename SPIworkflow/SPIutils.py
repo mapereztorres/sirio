@@ -156,15 +156,24 @@ def get_bfield_comps(Bfield_geom, B_star, d_orb, R_star, v_corot, v_sw, angle_v_
     angle_B = np.arctan2(B_phi, B_r) # Angle the B-field makes with the radial direction
     # Angle between the stellar wind magnetic field and the impinging plasma velocity
     # Eqn 23 in Turnpenney 2018. It's also Eq. 13 in Zarka 2007
-    theta = np.absolute(angle_B - angle_v_rel) 
-    #theta = angle_B - angle_v_rel
-    geom_f = 1.0 # Geometric factor. 1 for closed dipole configuration, different for the open field configuration
-    if Bfield_geom == 'open_parker_spiral': 
+    theta = np.absolute(angle_B - angle_v_rel) # theta is the angle between the B_sw (the insterstellar magnetic field), and the
+    # incident stellar wind velocity.  See Fig. 1 in Turnpenney+2018
+    #
+    
+    if Bfield_geom == 'closed_dipole':
+        theta = np.pi/2 # np.pi/2 for closed dipole configuration, different for the open field configuration
+        #geom_f = (np.sin(theta))**2 # Geometric factor is 1 for the dipolar configuration
+        #print('geom_f for dipolar configuration: ',geom_f)
+ 
+    #if Bfield_geom == 'open_parker_spiral': 
         # theta is the angle between the B_sw (the insterstellar magnetic field), and the
         # incident stellar wind velocity.  See Fig. 1 in Turnpenney+2018
         #
-        geom_f = (np.sin(theta))**2 # Geometric factor in efficiency 
-        
+        #geom_f = (np.sin(theta))**2 # Geometric factor in efficiency 
+       
+    geom_f = (np.sin(theta))**2
+    
+         
     if Bfield_geom == 'pfss': 
         geom_f = (1 - heaviside)+(np.sin(theta))**2 * heaviside # Geometric factor in efficiency 
     #geom_f = 1.0
@@ -801,6 +810,8 @@ def get_S_reconnect(R_obs, B_sw, v_rel, gamma = 0.5):
         #print(R_obs)
 
         return S_reconnect, P_d, P_d_mks
+        
+                
 
 def get_Flux(Omega_min, Omega_max, Delta_nu_cycl, d, S_poynt):
     """ Computes the minimum and maximum expected flux densities to be received at
