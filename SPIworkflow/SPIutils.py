@@ -792,7 +792,7 @@ def get_S_poynt(R_obs, B_sw, v_alf, v_rel, M_A, ALPHA_SPI, geom_f):
     
     return S_poynt, S_poynt_Z
 
-def get_S_reconnect(R_obs, B_sw, v_rel, gamma = 0.5):
+def get_S_reconnect(R_obs, B_sw, v_rel, gamma = 1.0):
         """
         OUTPUT: 
             S_reconnect - Poynting flux (array), in cgs
