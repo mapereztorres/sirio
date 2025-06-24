@@ -792,7 +792,7 @@ def get_S_poynt(R_obs, B_sw, v_alf, v_rel, M_A, ALPHA_SPI, geom_f):
     
     return S_poynt, S_poynt_Z
 
-def get_S_reconnect(R_obs, B_sw, v_rel, gamma = 1.0):
+def get_S_reconnect(geom_f, R_obs, B_sw, v_rel, gamma = 1.0):
         """
         OUTPUT: 
             S_reconnect - Poynting flux (array), in cgs
@@ -802,7 +802,7 @@ def get_S_reconnect(R_obs, B_sw, v_rel, gamma = 1.0):
             P_d is computed using Eq. (8) in Lanza (2009; A&A 505, 339–350).
             
         """
-        P_d_mks = gamma * np.pi / mu_0_mks * (B_sw/1e4)**2 * (R_obs/1e2)**2 * (v_rel/1e2)
+        P_d_mks = gamma * np.pi / mu_0_mks * (B_sw/1e4)**2 * (R_obs/1e2)**2 * (v_rel/1e2)*geom_f
         P_d     = P_d_mks * 1e7 # in cgs units 
         S_reconnect = P_d / EPSILON
         #print(type(S_reconnect))
@@ -811,6 +811,20 @@ def get_S_reconnect(R_obs, B_sw, v_rel, gamma = 1.0):
 
         return S_reconnect, P_d, P_d_mks
         
+        
+def get_S_stretch_and_break(R_obs, B_sw, v_rel, B_planet_arr, geom_f): 
+    """
+        OUTPUT: 
+            S_sb - Poynting flux (array), in cgs
+                          
+            S_sb is computed using Eq. (5) in Strugarek 2022: MNRAS 512, 4556–4572 (2022)
+            
+    """  
+    xi = B_sw / B_planet_arr
+    f_ap = 1 - (1-(3 * xi**(1/3)/(2+xi)))**(1/2)
+    S_sb = 2 * np.pi * (R_obs/1e2)**2 * (xi**(-2) * f_ap) * geom_f * (B_sw/1e4)**2 * (v_rel/1e2)/mu_0_mks
+    S_sb = S_sb * 1e7 # in cgs units 
+    return S_sb     
                 
 
 def get_Flux(Omega_min, Omega_max, Delta_nu_cycl, d, S_poynt):

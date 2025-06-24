@@ -379,13 +379,26 @@ for indi in planet_array:
             R_obs_reconnect=np.copy(R_obs)
             R_obs_reconnect[np.isclose(R_obs_reconnect, Rp, atol=1e-2)] = np.nan
             
-            S_reconnect, P_d, P_d_mks = spi.get_S_reconnect(R_obs_reconnect, B_sw, v_rel, gamma = 0.5)
+            S_reconnect, P_d, P_d_mks = spi.get_S_reconnect(geom_f,R_obs_reconnect, B_sw, v_rel, gamma = 0.5)
+            
+            
+            
             
             #20250124-TBC: if R_obs < Rp:
             Flux_reconnect_min, Flux_reconnect_max = spi.get_Flux(Omega_min, Omega_max, Delta_nu_cycl, d, S_reconnect)
             Flux_reconnect_inter = 10**((np.log10(Flux_reconnect_max) + np.log10(Flux_reconnect_min))/2)
 
 
+
+
+            # Get flux for the stretch and break model (Lanza 2013 and Strugarek et al.2022)            
+            S_sb = spi.get_S_stretch_and_break(R_obs=R_obs_reconnect, B_sw=B_sw, v_rel=v_rel, B_planet_arr=B_planet_arr,geom_f=geom_f)
+            
+            
+            Flux_sb_min, Flux_sb_max = spi.get_Flux(Omega_min, Omega_max, Delta_nu_cycl, d, S_sb)
+            Flux_sb_inter = 10**((np.log10(Flux_sb_max) + np.log10(Flux_sb_min))/2)           
+            
+            
             ###
             ### COMPUTATION OF FREE-FREE Absorption by the stellar wind 
             ###
@@ -406,6 +419,11 @@ for indi in planet_array:
             Flux_reconnect_min_no_abs = np.copy(Flux_reconnect_min)
             Flux_reconnect_max_no_abs = np.copy(Flux_reconnect_max)
             Flux_reconnect_inter_no_abs = np.copy(Flux_reconnect_inter)
+            
+            
+            Flux_sb_min_no_abs = np.copy(Flux_sb_min)
+            Flux_sb_max_no_abs = np.copy(Flux_sb_max)
+            Flux_sb_inter_no_abs = np.copy(Flux_sb_inter)           
             # Compute flux density, taking into account free-free absorption
             if freefree == True:
                 print('Applying ff-absorption')
@@ -430,8 +448,14 @@ for indi in planet_array:
                 Flux_reconnect_min *= absorption_factor
                 Flux_reconnect_max *= absorption_factor
                 Flux_reconnect_inter *= absorption_factor
-
-            
+                Flux_sb_min *= absorption_factor
+                Flux_sb_max *= absorption_factor   
+                Flux_sb_inter *= absorption_factor         
+                
+                
+            print('Flux_sb_min :',Flux_sb_min)
+            print('Flux_reconnect_min :',Flux_reconnect_min)
+                
             """
             Moving parts of plotting outside the loop
             """
@@ -445,7 +469,9 @@ for indi in planet_array:
             M_star_dot_loc  = np.where(M_star_dot_diff == M_star_dot_diff.min())
             
             
-
+            #sigma_A=1/v_alf
+            
+            #sigma_P=15.475*()
 
 
             ###########################################################################
