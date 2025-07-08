@@ -36,6 +36,13 @@ the user.
 
 * Miguel Pérez-Torres
 * Luis Peña-Moñino
+  
+## Acknowledgments
+
+If you use our code for your research, please recognize our work by citing the following paper: 
+**The paper is currently under revision**, but we'll soon update the information, including the full reference.
+If you copy parts of this code, or fully, please acknowledge this in your research and repositories. We do not get any money for this, but our funding agencies recognize our work, if it is of use to the community, so we rely on you.
+
 
 ## Running SIRIO
 
