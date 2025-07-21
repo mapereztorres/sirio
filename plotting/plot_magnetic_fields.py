@@ -8,7 +8,7 @@ x = d_orb * np.cos(theta)/R_star
 y = d_orb * np.sin(theta)/R_star
 plt.figure(figsize=(8, 8))
 ax = plt.subplot2grid((1,1),(0,0),rowspan=1,colspan=1)
-ax.plot(x, y, color='black', lw=2, label="Parker spiral field line")
+ax.plot(x, y, color='black', lw=2, label="Parker spiral magnetic field line")
 #ax.scatter(0, 0, color='yellow', s=(10)**2,label=starname) 
 #ax.scatter(r_orb/R_star, 0 , color='black', s=10, label=Exoplanet)  
 circle= plt.Circle((r_orb/R_star, 0), 0.1, color='black', fill=False, linewidth=0.2)
@@ -18,8 +18,8 @@ ax.add_patch(star)
 ax.set_xlabel("X ($R_{star}$)")
 ax.set_ylabel("Y ($R_{star}$)")
 ax.set_facecolor("white")
-ax.text(0, -2,starname,ha='center',fontsize=13)
-ax.text(r_orb/R_star, -1,Exoplanet,ha='center',fontsize=13)
+#ax.text(0, -2,starname,ha='center',fontsize=13)
+#ax.text(r_orb/R_star, -1,Exoplanet,ha='center',fontsize=13)
 #plt.title("Espiral de Parker (Vista desde el eje Z)")
 #plt.title("Parker spiral")
 #plt.legend()
@@ -34,6 +34,11 @@ ax.axis('equal')
 
 #circulo_legenda = mpatches.Circle((0, 0), radius=0.2, color='blue', fill=False, linewidth=2)
 #plt.legend(handles=[circulo_legenda], labels=["Círculo de referencia"], loc="upper right")
+print(ax.get_ylim())
+limy=ax.get_ylim()
+limy=limy[0]
+
+ax.text(5, 5*limy,starname,ha='center',fontsize=13)
 
 plt.legend()
 
