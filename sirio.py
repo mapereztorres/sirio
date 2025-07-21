@@ -379,8 +379,8 @@ for indi in planet_array:
             R_obs_reconnect=np.copy(R_obs)
             R_obs_reconnect[np.isclose(R_obs_reconnect, Rp, atol=1e-2)] = np.nan
             
-            S_reconnect, P_d, P_d_mks = spi.get_S_reconnect(geom_f,R_obs_reconnect, B_sw, v_rel, gamma = 0.5)
-            
+            #S_reconnect, P_d, P_d_mks = spi.get_S_reconnect(geom_f,R_obs_reconnect, B_sw, v_rel, gamma = 0.5)
+            S_reconnect, P_d, P_d_mks = spi.get_S_reconnect(geom_f,R_obs_reconnect, B_sw, v_rel, gamma = 1)
             
             
             
@@ -453,8 +453,8 @@ for indi in planet_array:
                 Flux_sb_inter *= absorption_factor         
                 
                 
-            print('Flux_sb_min :',Flux_sb_min)
-            print('Flux_reconnect_min :',Flux_reconnect_min)
+            #print('Flux_sb_min :',Flux_sb_min)
+            #print('Flux_reconnect_min :',Flux_reconnect_min)
                 
             """
             Moving parts of plotting outside the loop
@@ -472,7 +472,23 @@ for indi in planet_array:
             #sigma_A=1/v_alf
             
             #sigma_P=15.475*()
+            
+            
+            v_A_v_esc,f=spi.get_rss(B_star,M_star,R_star,Omega_star)
+            #print('v_A_v_esc: ',v_A_v_esc)
+            #print('f: ',f)
+            print('v_A_v_esc: {:.3e}'.format(v_A_v_esc))
+            print('f: {:.3e}'.format(f))
+            
+            
+            Sigma_P, Sigma_A, alpha_interaction_strength=spi.get_interaction_strength(r_orb,B_star,Bplanet_field,v_alf)
+            #print('Sigma_P: {:.3e}'.format(Sigma_P))
+            #with np.printoptions(precision=3, suppress=False, formatter={'float': '{:0.3e}'.format}):
+            #    print('Sigma_A:', Sigma_A)
+            #    print('alpha_interaction_strength:', alpha_interaction_strength)
 
+            #print('Sigma_A: {:.3e}'.format(Sigma_A))
+            #print('alpha_interaction_strength: {:.3e}'.format(alpha_interaction_strength))
 
             ###########################################################################
             ####                  PLOTTING                                         ####
