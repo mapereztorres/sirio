@@ -851,55 +851,86 @@ def get_confinement(P_dyn_sw, P_B_sw):
     return eta
 
 def identity(x):
-    return x   
-    
-    
-    
-    
-#def break_up_ratio(B_star,M_star,r_star)   
-def get_rss(B_star,M_star,R_star,Omega_star):
-    #https://iopscience.iop.org/article/10.1088/0004-637X/814/2/99/pdf
-    #convert to cgs:
-    B_star = B_star * 1e-4    
-    M_star = M_star * 1e-3    
-    R_star = R_star * 1e-2    
-     
-    Rho_star=M_star/(4/3*np.pi*R_star**3)
-    v_A_v_esc=B_star/np.sqrt(4*np.pi*Rho_star)/(np.sqrt(2*G*M_star/R_star))
+    return x
 
-    f=Omega_star*R_star**(3/2)*(np.sqrt(G*M_star))**(-1)
-    
-    return v_A_v_esc,f 
-    
-    
+
+'''
+#def break_up_ratio(B_star,M_star,r_star)   
+
+  
 
 def get_interaction_strength(r_orb,B_star,Bplanet_field,v_alf):    
-    
-    kappa=15.475
-    lamba=-2.082
-    mu_parameter=0.5
-    B_jupiter=4.170
-    L_XUV=100 #times the solar value
-    
-    mu_0=4*np.pi*10**(-7)
-    v_alf_SI=v_alf*1e-2
-    
-    Sigma_A=1/v_alf
-    Sigma_A_SI=1/(mu_0*v_alf_SI)
-    #print('Sigma_A/Sigma_A_SI :',Sigma_A/Sigma_A_SI)
-    #Sigma_A=1/(mu_0*v_alf_SI)
-    #Sigma_A=1/(mu_0*v_alf)
-    
-    Sigma_P=kappa*(r_orb/au)**lamba*(B_jupiter/Bplanet_field)*(L_XUV)**mu_parameter
+  
+  kappa=15.475
+  lamba=-2.082
+  mu_parameter=0.5
+  B_jupiter=4.170
+  L_XUV=100 #times the solar value
+  
+  mu_0=4*np.pi*10**(-7)
+  v_alf_SI=v_alf*1e-2
+  
+  Sigma_A=1/v_alf
+  Sigma_A_SI=1/(mu_0*v_alf_SI)
+  #print('Sigma_A/Sigma_A_SI :',Sigma_A/Sigma_A_SI)
+  #Sigma_A=1/(mu_0*v_alf_SI)
+  #Sigma_A=1/(mu_0*v_alf)
+  
+  Sigma_P=kappa*(r_orb/au)**lamba*(B_jupiter/Bplanet_field)*(L_XUV)**mu_parameter
 
-    alpha_interaction_strength=Sigma_P/(Sigma_P+2*Sigma_A)
-    alpha_interaction_strength_SI=Sigma_P/(Sigma_P+2*Sigma_A_SI)
-    #print('alpha_interaction_strength :',alpha_interaction_strength)
-    #print('alpha_interaction_strength_SI :',alpha_interaction_strength_SI)
+  alpha_interaction_strength=Sigma_P/(Sigma_P+2*Sigma_A)
+  alpha_interaction_strength_SI=Sigma_P/(Sigma_P+2*Sigma_A_SI)
+  #print('alpha_interaction_strength :',alpha_interaction_strength)
+  #print('alpha_interaction_strength_SI :',alpha_interaction_strength_SI)
+
+  return Sigma_P, Sigma_A, alpha_interaction_strength
+'''
+
+
+def get_rss(Omega_star,M_star, R_star,v_alf_equator):
+    # https://iopscience.iop.org/article/10.1088/0004-637X/814/2/99/pdf
+    # convert to cgs:
+    #B_star = B_star * 1e-4
+    M_star = M_star * 1e-3
+    R_star = R_star * 1e-2
+
+    #Rho_star = M_star / (4 / 3 * np.pi * R_star ** 3)
+    #v_A_v_esc = B_star / np.sqrt(4 * np.pi * Rho_star) / (np.sqrt(2 * G * M_star / R_star))
+    G_SI=6.67*10**(-11)
+    v_esc=np.sqrt(2*G_SI*M_star/R_star)
+    v_esc = v_esc * 1e+2
+    print('v_alf_equator: ',v_alf_equator)
+    print('v_esc: ', v_esc)
+    v_A_v_esc=v_alf_equator/v_esc
+
+
+
+    
+    f = Omega_star * R_star ** (3 / 2) * (np.sqrt(G * M_star)) ** (-1)
+
+    return v_A_v_esc, f
+
+
+def get_interaction_strength(r_orb, B_star, Bplanet_field, v_alf):
+    kappa = 15.475
+    lamba = -2.082
+    mu_parameter = 0.5
+    B_jupiter = 4.170
+    L_XUV = 1  # times the solar value
+
+    mu_0 = 4 * np.pi * 10 ** (-7)
+    v_alf_SI = v_alf * 1e-2
+
+
+    Sigma_A_SI = 1 / (mu_0 * v_alf_SI)
+    Sigma_A=1/(mu_0*v_alf_SI)
+
+
+    Sigma_P = kappa * (r_orb / au) ** lamba * (B_jupiter / Bplanet_field) * (L_XUV) ** mu_parameter
+
+    alpha_interaction_strength = Sigma_P / (Sigma_P + 2 * Sigma_A)
+    alpha_interaction_strength_SI = Sigma_P / (Sigma_P + 2 * Sigma_A_SI)
+    # print('alpha_interaction_strength :',alpha_interaction_strength)
+    # print('alpha_interaction_strength_SI :',alpha_interaction_strength_SI)
 
     return Sigma_P, Sigma_A, alpha_interaction_strength
-    
-    
-    
-    
-    
