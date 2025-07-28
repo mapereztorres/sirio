@@ -179,7 +179,8 @@ for indi in planet_array:
     #
     if STUDY == "D_ORB":
         Nsteps = int(2*d_orb_max)
-        d_orb  = np.linspace(1.02, d_orb_max, Nsteps) * R_star # Array of (orbital) distances to the star, in cm 
+        #d_orb  = np.linspace(1.02, d_orb_max, Nsteps) * R_star # Array of (orbital) distances to the star, in cm
+        d_orb = np.linspace(1.00, d_orb_max, Nsteps) * R_star  # Array of (orbital) distances to the star, in cm
         M_star_dot_arr = np.array([M_star_dot]) # Convert to a numpy array of 1 element for safety reasons
     elif STUDY == "M_DOT":
         d_orb  = np.array([r_orb])
@@ -472,20 +473,46 @@ for indi in planet_array:
             #sigma_A=1/v_alf
             
             #sigma_P=15.475*()
+
+            v_sound_equator, r_sonic_equator, v_sw_equator = spi.v_stellar_wind(np.ones(1)*R_star, M_star, T_corona, m_av)
+            v_orb_equator, v_corot_equator, Omega_star_equator = spi.get_velocity_comps(M_star, np.ones(1)*R_star, P_rot_star)
+
+            v_rel_equator = np.sqrt(v_orb_equator ** 2 + v_sw_equator ** 2)  # in cm/s
+            angle_v_rel_equator = np.arctan2(v_orb_equator, v_sw_equator)  # in radians
+
+            B_r_equator, B_phi_equator, B_sw_equator, angle_B_equator, theta_equator, geom_f_equator = spi.get_bfield_comps(
+                Bfield_geom_arr[ind], B_spi, np.ones(1)*R_star, R_star, v_corot_equator, v_sw_equator, angle_v_rel_equator)
+
+            n_sw_planet_equator = spi.n_wind(M_star_dot_arr, R_star, v_sw_equator, m_av)
+            rho_sw_planet_equator = m_av * n_sw_planet_equator  # wind density at the distance to the planet, in g * cm^(-3)
+
+            v_alf_equator, M_A_equator, v_alf_r_equator, M_A_radial_equator = spi.get_alfven(rho_sw_planet_equator, B_sw_equator, B_r_equator, v_rel_equator, v_sw_equator)
+
+            #v_alf_equator_equator = m_av * n_sw_planet_equator  # wind density at the distance to the planet, in g * cm^(-3)
+            #v_alf_equator = B_sw_equator / np.sqrt(4.0 * np.pi * rho_sw_planet_equator) * 1. / np.sqrt(
+            #    1 + (B_sw_equator ** 2 / (4. * np.pi * rho_sw_planet_equator * c ** 2)))
+
+            #v_A_v_esc,f=spi.get_rss(B_star,M_star,R_star,Omega_star)
+            v_A_v_esc,f = spi.get_rss(Omega_star,M_star, R_star, v_alf[0])
+            print('v_A_v_esc: ',v_A_v_esc)
+            print('f: ',f)
+
+            #print('v_A_v_esc: {:.3e}'.format(v_A_v_esc))
+            #print('f: {:.3e}'.format(f))
             
             
-            v_A_v_esc,f=spi.get_rss(B_star,M_star,R_star,Omega_star)
-            #print('v_A_v_esc: ',v_A_v_esc)
-            #print('f: ',f)
-            print('v_A_v_esc: {:.3e}'.format(v_A_v_esc))
-            print('f: {:.3e}'.format(f))
             
-            
-            Sigma_P, Sigma_A, alpha_interaction_strength=spi.get_interaction_strength(r_orb,B_star,Bplanet_field,v_alf)
-            #print('Sigma_P: {:.3e}'.format(Sigma_P))
-            #with np.printoptions(precision=3, suppress=False, formatter={'float': '{:0.3e}'.format}):
-            #    print('Sigma_A:', Sigma_A)
-            #    print('alpha_interaction_strength:', alpha_interaction_strength)
+
+            closest_index = np.argmin(np.abs(d_orb - r_orb))
+            #print(r_orb)
+            #print(d_orb[closest_index])
+            v_alf_planet=v_alf[closest_index]
+
+            Sigma_P, Sigma_A, alpha_interaction_strength=spi.get_interaction_strength(r_orb,B_star,Bplanet_field,v_alf_planet)
+            print('Sigma_P: {:.3e}'.format(Sigma_P))
+            with np.printoptions(precision=3, suppress=False, formatter={'float': '{:0.3e}'.format}):
+                print('Sigma_A:', Sigma_A)
+                print('alpha_interaction_strength:', alpha_interaction_strength)
 
             #print('Sigma_A: {:.3e}'.format(Sigma_A))
             #print('alpha_interaction_strength: {:.3e}'.format(alpha_interaction_strength))
