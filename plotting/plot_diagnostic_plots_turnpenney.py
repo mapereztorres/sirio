@@ -39,7 +39,7 @@ Line2D([0], [0], color='blue', linestyle='dashed',  label=r'v$_{\rm sw}$'),
 Line2D([0], [0], color='black', linestyle='solid', label=r'v$_{\rm rel}$'),
 Line2D([0], [0], color='orange', linestyle=(0,(1,3.5)), label=r'v$_{\rm sound}$'),
 ]
-ax1.legend(handles=legend_elements, loc='upper left', fontsize=12, facecolor='white', edgecolor='white', framealpha=0)
+ax1.legend(handles=legend_elements, loc='upper right', fontsize=12, facecolor='white', edgecolor='white', framealpha=0)
 
 
 
@@ -117,12 +117,18 @@ ax4.axvline(x = xnom, ls='--', color='k', lw=2)
 
 
 #print('geometry', geometry)
+#if STUDY == "D_ORB" and Bfield_geom_arr[ind] == 'pfss':
+#    ax1.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
+#    ax2.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
+#    ax3.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
+#    ax4.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
+    
 if STUDY == "D_ORB" and Bfield_geom_arr[ind] == 'pfss':
-    ax1.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
-    ax2.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
-    ax3.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
-    ax4.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
-        
+    for ax in [ax1, ax2, ax3, ax4]:
+        ax.axvline(R_SS, color='grey', alpha=0.9, linestyle='-', lw=3)
+    ax4.text(3.5, 1, rf'$R_{{SS}}$ = {R_SS}', fontsize=11, alpha=1,
+         bbox=dict(facecolor='white', edgecolor='none', boxstyle='round,pad=0.2'))
+
 if (M_A > 1).any():
     ax3.axhline(y = 1, ls='-.', color='grey', lw=2)   
 ax4.set_xlabel(xlabel,fontsize=20)
