@@ -55,10 +55,17 @@ ax2.legend(handles=legend_elements, loc='lower left', fontsize=12, facecolor='wh
 if STUDY == "D_ORB":
     ax2.set_xlim(left=2)
     ax2.set_xlim(right=d_orb_max) 
-    ax2.set_xscale('log')     
+    ax2.set_xscale('log')
+    #ax2.axvspan(x[0], R_SS, facecolor='gray', alpha=0.7)
+    ax2.axvline(R_SS, color='grey', alpha=0.9, linestyle='-', lw=3)
+    ax2.text(3.5, 1, rf'$R_{{SS}}$ = {R_SS}', fontsize=11, alpha=1,
+             bbox=dict(facecolor='white', edgecolor='none', boxstyle='round,pad=0.2'))
+
 ax2.margins(x=0)    
 secax = ax2.secondary_yaxis('right', functions=(spi.identity,spi.identity))
-ax2.axvspan(x[0], R_SS, facecolor='gray', alpha=0.7)   
+
+
+
 #plt.savefig(FOLDER+'/'+'COMPARISON_PDF'+'/'+'Flux'+'_model_comparison-'+ STUDY + "_" + str(Exoplanet.replace(" ", "_")) + '-Bstar'+"{:.1f}".format(B_star)+'G-Bplanet' + str(B_planet_arr[loc_pl]) + 'G' + '-'+"{:.1e}".format(BETA_EFF_MIN)+'-'+"{:.1e}".format(BETA_EFF_MAX)+'-'+'T_corona'+str(T_corona/1e6)+'MK'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'+'.pdf', bbox_inches='tight')
 plt.savefig(FOLDER+'/'+'COMPARISON_PDF'+'/'+'Flux'+'_model_comparison-'+ STUDY + "_" + str(Exoplanet.replace(" ", "_")) + '-Bstar'+"{:.1f}".format(B_star)+'G-Bplanet' +'['+"{:.3f}".format(Bplanet_field)+']' + 'G' + '-'+"{:.1e}".format(BETA_EFF_MIN)+'-'+"{:.1e}".format(BETA_EFF_MAX)+'-'+'T_corona'+str(T_corona/1e6)+'MK'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'+'.pdf', bbox_inches='tight')
 
@@ -84,7 +91,10 @@ if STUDY == "D_ORB":
     ax2.set_xlim(left=2)
     ax2.set_xlim(right=d_orb_max) 
     ax2.set_xscale('log') 
-    ax2.axvspan(x[0], R_SS, facecolor='gray', alpha=0.7)
+    #ax2.axvspan(x[0], R_SS, facecolor='gray', alpha=0.7)
+    ax2.axvline(R_SS, color='grey', alpha=0.9, linestyle='-', lw=3)
+    ax2.text(3.5, 1, rf'$R_{{SS}}$ = {R_SS}', fontsize=11, alpha=1,
+             bbox=dict(facecolor='white', edgecolor='none', boxstyle='round,pad=0.2'))
 ax2.margins(x=0)    
 secax = ax2.secondary_yaxis('right', functions=(spi.identity,spi.identity))
 plt.savefig(FOLDER+'/'+'COMPARISON_PDF'+'/'+'Flux'+'_ratio_reconnect_Alfven-'+ STUDY + "_" + str(Exoplanet.replace(" ", "_")) + '-Bstar'+"{:.1f}".format(B_star)+'G-Bplanet' +'['+"{:.3f}".format(Bplanet_field)+']' + 'G' + '-'+"{:.1e}".format(BETA_EFF_MIN)+'-'+"{:.1e}".format(BETA_EFF_MAX)+'-'+'T_corona'+str(T_corona/1e6)+'MK'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'+'.pdf', bbox_inches='tight')
@@ -133,7 +143,12 @@ ax2.legend(handles=legend_elements, loc='lower left', fontsize=12, facecolor='wh
 if STUDY == "D_ORB":
     ax2.set_xlim(left=2)   
     ax2.set_xlim(right=d_orb_max)
-    ax2.set_xscale('log')      
+    ax2.set_xscale('log')
+    #ax2.axvspan(x[0], R_SS, facecolor='gray', alpha=0.7)
+    ax2.axvline(R_SS, color='grey', alpha=0.9, linestyle='-', lw=3)
+    ax2.text(3.5, 1, rf'$R_{{SS}}$ = {R_SS}', fontsize=11, alpha=1,
+             bbox=dict(facecolor='white', edgecolor='none', boxstyle='round,pad=0.2'))
+
 ax2.set_xlabel(xlabel,fontsize=20)
 ax2.set_ylabel(r"$B_{\rm sw}$ $[G]$")
 secax = ax2.secondary_yaxis('right', functions=(spi.identity,spi.identity))
@@ -141,7 +156,7 @@ ax2.margins(x=0)
 if STUDY == 'MDOT':
     ax2.set_xscale('log')
 
-ax2.axvspan(x[0], R_SS, facecolor='gray', alpha=0.7)       
+#ax2.axvspan(x[0], R_SS, facecolor='gray', alpha=0.7)
 #plt.savefig(FOLDER + '/' +'COMPARISON_PDF'+'/'+'B_sw_'+'model_comparison-'+ STUDY + "_" + str(Exoplanet.replace(" ", "_")) + '-hybrid-Bstar'+"{:.1f}".format(B_star) + "G" + "-Bplanet" + str(B_planet_arr[loc_pl]) + "G" + '-'+"{:.1e}".format(BETA_EFF_MIN)+'-'+"{:.1e}".format(BETA_EFF_MAX)+'-'+'T_corona'+str(T_corona/1e6)+'MK'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'+'.pdf', bbox_inches='tight')
 plt.savefig(FOLDER + '/' +'COMPARISON_PDF'+'/'+'B_sw_'+'model_comparison-'+ STUDY + "_" + str(Exoplanet.replace(" ", "_")) + '-hybrid-Bstar'+"{:.1f}".format(B_star) + "G" + "-Bplanet" + '['+"{:.3f}".format(Bplanet_field)+']'+ "G" + '-'+"{:.1e}".format(BETA_EFF_MIN)+'-'+"{:.1e}".format(BETA_EFF_MAX)+'-'+'T_corona'+str(T_corona/1e6)+'MK'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'+'.pdf', bbox_inches='tight')
 
@@ -304,8 +319,10 @@ ax2.axvline(x = xnom, ls='--', color='k', lw=2)
 ax2.axhline(y = 1, ls='-.', color='grey', lw=2)   
 ax2.set_ylim([1e-3,1e2])    
 if STUDY == "D_ORB":    
-    ax2.axvspan(x[0], R_SS, facecolor='gray', alpha=0.7)   
-
+    #ax2.axvspan(x[0], R_SS, facecolor='gray', alpha=0.7)
+    ax2.axvline(R_SS, color='grey', alpha=0.9, linestyle='-', lw=3)
+    ax2.text(3.5, 2e-3, rf'$R_{{SS}}$ = {R_SS}', fontsize=11, alpha=1,
+             bbox=dict(facecolor='white', edgecolor='none', boxstyle='round,pad=0.2'))
 if STUDY == 'M_DOT':   
     ax2.set_xscale('log')    
     ax2.set_xlim([1.01e-1,9.9e1])
