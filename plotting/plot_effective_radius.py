@@ -19,7 +19,14 @@ ax.set_facecolor("white")
 
 ax.set_ylim([0,2])
 
+ax.set_xlim(left=0)
+
 ax.axvline(x = xnom, ls='--', color='k', lw=2)
+
+if Bfield_geom_arr[ind] == 'pfss':
+    ax.axvline(R_SS, color='grey', alpha=0.9, linestyle='-', lw=3)
+    #ax.text(7.5, 0.1, rf'$R_{{SS}}$ = {R_SS} $R_{{*}}$', fontsize=14, alpha=1,bbox=dict(facecolor='white', edgecolor='none', boxstyle='round,pad=0.2'),rotation=90)
+    ax.text(R_SS*0.8, 0.1, rf'$R_{{SS}}$', fontsize=18, alpha=1,bbox=dict(facecolor='white', edgecolor='none', boxstyle='round,pad=0.2'))
 black_patch = mpatches.Patch(color='black', label='$R_{eff}$')
 red_patch = mpatches.Patch(color='red', label='$R_{mp}$')
 #blue_patch = mpatches.Patch(color='blue', label='$R_{mp\_Lanza}$')

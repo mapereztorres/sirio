@@ -58,7 +58,7 @@ if STUDY == "D_ORB":
     ax2.set_xscale('log')
     #ax2.axvspan(x[0], R_SS, facecolor='gray', alpha=0.7)
     ax2.axvline(R_SS, color='grey', alpha=0.9, linestyle='-', lw=3)
-    ax2.text(3.5, 1, rf'$R_{{SS}}$ = {R_SS}', fontsize=11, alpha=1,
+    ax2.text(R_SS*0.8, 1, rf'$R_{{SS}}$ = {R_SS}', fontsize=11, alpha=1,
              bbox=dict(facecolor='white', edgecolor='none', boxstyle='round,pad=0.2'))
 
 ax2.margins(x=0)    
@@ -93,7 +93,7 @@ if STUDY == "D_ORB":
     ax2.set_xscale('log') 
     #ax2.axvspan(x[0], R_SS, facecolor='gray', alpha=0.7)
     ax2.axvline(R_SS, color='grey', alpha=0.9, linestyle='-', lw=3)
-    ax2.text(3.5, 1, rf'$R_{{SS}}$ = {R_SS}', fontsize=11, alpha=1,
+    ax2.text(R_SS*0.8, 1, rf'$R_{{SS}}$ = {R_SS}', fontsize=11, alpha=1,
              bbox=dict(facecolor='white', edgecolor='none', boxstyle='round,pad=0.2'))
 ax2.margins(x=0)    
 secax = ax2.secondary_yaxis('right', functions=(spi.identity,spi.identity))
@@ -146,7 +146,7 @@ if STUDY == "D_ORB":
     ax2.set_xscale('log')
     #ax2.axvspan(x[0], R_SS, facecolor='gray', alpha=0.7)
     ax2.axvline(R_SS, color='grey', alpha=0.9, linestyle='-', lw=3)
-    ax2.text(3.5, 1, rf'$R_{{SS}}$ = {R_SS}', fontsize=11, alpha=1,
+    ax2.text(R_SS*0.8, 1, rf'$R_{{SS}}$ = {R_SS}', fontsize=11, alpha=1,
              bbox=dict(facecolor='white', edgecolor='none', boxstyle='round,pad=0.2'))
 
 ax2.set_xlabel(xlabel,fontsize=20)
@@ -321,7 +321,8 @@ ax2.set_ylim([1e-3,1e2])
 if STUDY == "D_ORB":    
     #ax2.axvspan(x[0], R_SS, facecolor='gray', alpha=0.7)
     ax2.axvline(R_SS, color='grey', alpha=0.9, linestyle='-', lw=3)
-    ax2.text(3.5, 2e-3, rf'$R_{{SS}}$ = {R_SS}', fontsize=11, alpha=1,
+    #ax2.text(3.5, 2e-3, rf'$R_{{SS}}$ = {R_SS} $R_{{*}}$', fontsize=14, alpha=1,
+    ax2.text(R_SS*0.8, 2e-3, rf'$R_{{SS}}$', fontsize=20, alpha=1,
              bbox=dict(facecolor='white', edgecolor='none', boxstyle='round,pad=0.2'))
 if STUDY == 'M_DOT':   
     ax2.set_xscale('log')    

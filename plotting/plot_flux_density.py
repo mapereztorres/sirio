@@ -142,9 +142,13 @@ if STUDY == 'D_ORB':
     ax1.set_xlabel(r"Orbital period (days)")
     
     if Bfield_geom_arr[ind] == 'pfss': 
-        # ax2.axvline(x = R_SS, ls='--', color='k', lw=2)
+        #ax2.axvline(x = R_SS, ls='--', color='k', lw=2)
         #ax2.axvspan(x[0], R_SS, facecolor='grey', alpha=0.5,hatch='x')
-        ax2.axvspan(x[0], R_SS, facecolor='gray', alpha=0.7)
+        #ax2.axvspan(x[0], R_SS, facecolor='gray', alpha=0.7)
+        ax2.axvline(R_SS, color='grey', alpha=0.9, linestyle='-', lw=3)
+        #ax2.text(R_SS, 2e-3, rf'$R_{{SS}}$ = {R_SS} $R_{{*}}$', fontsize=14, alpha=1,bbox=dict(facecolor='white', edgecolor='none', boxstyle='round,pad=0.2'),rotation=90)
+        ax2.text(R_SS*0.8, 2e-3, rf'$R_{{SS}}$', fontsize=18, alpha=1,
+                 bbox=dict(facecolor='white', edgecolor='none', boxstyle='round,pad=0.2'))
     def tick_function(X):
         V = spi.Kepler_P(M_star/M_sun,X*R_star/au)
         return ["%.1f" % z for z in V]

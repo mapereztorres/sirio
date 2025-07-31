@@ -343,6 +343,8 @@ ax2.set_xlabel(xlabel,fontsize=20)
 ax2.set_ylabel(r"$M_{\rm A}$")
 #ax2.axvspan(x[0], R_SS, facecolor='gray', alpha=0.7)
 ax2.axvline(x=R_SS, color='gray', alpha=0.7)
+ax2.text(R_SS*0.8, 0.8, rf'$R_{{SS}}$', fontsize=20, alpha=1,
+             bbox=dict(facecolor='white', edgecolor='none', boxstyle='round,pad=0.2'))
 secax_ax2 = ax2.secondary_yaxis('right', functions=(spi.identity,spi.identity))
 ax2.axvline(x = xnom, ls='-.', color='k', lw=2)
 ax2.axvline(x = 0.02156*au/R_star, ls='-.', color='k', lw=2)
