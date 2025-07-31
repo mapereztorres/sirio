@@ -288,9 +288,15 @@ secax = ax4.secondary_yaxis('right', functions=(spi.identity,spi.identity))
 
 #print('geometry', geometry)
 if STUDY == "D_ORB" and Bfield_geom_arr[ind] == 'pfss':
-    ax1.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
+    #ax1.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
+    #ax4.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
+    ax1.axvline(R_SS, color='grey', alpha=0.9, linestyle='-', lw=3)
+    ax4.axvline(R_SS, color='grey', alpha=0.9, linestyle='-', lw=3)
+    ax1.text(3.5, 2e1, rf'$R_{{SS}}$', fontsize=20, alpha=1,
+             bbox=dict(facecolor='white', edgecolor='none', boxstyle='round,pad=0.2'))
+    ax4.text(3.5, 5e-7, rf'$R_{{SS}}$', fontsize=20, alpha=1,
+             bbox=dict(facecolor='white', edgecolor='none', boxstyle='round,pad=0.2'))
 
-    ax4.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
         
 #if (M_A > 1).any():
  

@@ -126,7 +126,7 @@ ax4.axvline(x = xnom, ls='--', color='k', lw=2)
 if STUDY == "D_ORB" and Bfield_geom_arr[ind] == 'pfss':
     for ax in [ax1, ax2, ax3, ax4]:
         ax.axvline(R_SS, color='grey', alpha=0.9, linestyle='-', lw=3)
-    ax4.text(3.5, 1, rf'$R_{{SS}}$ = {R_SS}', fontsize=11, alpha=1,
+    ax4.text(2.5, 1, rf'$R_{{SS}}$ = {R_SS} $R_{{*}}$', fontsize=15, alpha=1,
          bbox=dict(facecolor='white', edgecolor='none', boxstyle='round,pad=0.2'))
 
 if (M_A > 1).any():
