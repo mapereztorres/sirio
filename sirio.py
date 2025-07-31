@@ -328,6 +328,12 @@ for indi in planet_array:
 
             # Stellar wind pressure, in erg/cm3
             P_sw, P_dyn_sw, P_th_sw, P_B_sw = spi.get_P_sw(n_sw_planet, v_rel, T_corona, B_sw, mu)
+
+            if Bfield_geom_arr[ind] == 'closed_dipole':
+                r_ss_estimate = spi.get_rss(P_th_sw, P_dyn_sw,P_B_sw, d_orb)
+                print(len(d_orb))
+                print('r_ss_estimate :',r_ss_estimate/R_star)
+                print('R_alfven :', R_alfven, type(R_alfven))
             eta = spi.get_confinement(P_dyn_sw, P_B_sw)
             #alfven_alt = spi.get_alfven_alt(eta, POLAR_ANGLE)
             
@@ -473,7 +479,7 @@ for indi in planet_array:
             #sigma_A=1/v_alf
             
             #sigma_P=15.475*()
-
+            '''
             v_sound_equator, r_sonic_equator, v_sw_equator = spi.v_stellar_wind(np.ones(1)*R_star, M_star, T_corona, m_av)
             v_orb_equator, v_corot_equator, Omega_star_equator = spi.get_velocity_comps(M_star, np.ones(1)*R_star, P_rot_star)
 
@@ -493,13 +499,13 @@ for indi in planet_array:
             #    1 + (B_sw_equator ** 2 / (4. * np.pi * rho_sw_planet_equator * c ** 2)))
 
             #v_A_v_esc,f=spi.get_rss(B_star,M_star,R_star,Omega_star)
-            v_A_v_esc,f = spi.get_rss(Omega_star,M_star, R_star, v_alf[0])
-            print('v_A_v_esc: ',v_A_v_esc)
-            print('f: ',f)
+            #v_A_v_esc,f = spi.get_rss(Omega_star,M_star, R_star, v_alf[0])
+            #print('v_A_v_esc: ',v_A_v_esc)
+            #print('f: ',f)
 
             #print('v_A_v_esc: {:.3e}'.format(v_A_v_esc))
             #print('f: {:.3e}'.format(f))
-            
+            '''
             
             
 
@@ -549,11 +555,13 @@ for indi in planet_array:
              #Specific for comparison with Turnpenney
                 #filename = 'plotting/plot_flux_density_turnpenney.py'
                 filename = 'plotting/plot_flux_density_turnpenney.py'
+                print('plotting/plot_flux_density_turnpenney.py')
             else:
                 filename = 'plotting/plot_flux_density.py'
+                print('plotting/plot_flux_density.py')
                 #filename = 'plotting/plot_flux_and_radius.py'            
             with open(filename) as file:
-                exec(file.read())            
+                exec(file.read()) #plotting/plot_flux_density.py
             filename = 'plotting/plot_poynting.py'
             with open(filename) as file:
                 exec(file.read())   
