@@ -886,7 +886,7 @@ def get_interaction_strength(r_orb,B_star,Bplanet_field,v_alf):
   return Sigma_P, Sigma_A, alpha_interaction_strength
 '''
 
-
+'''
 def get_rss(Omega_star,M_star, R_star,v_alf_equator):
     # https://iopscience.iop.org/article/10.1088/0004-637X/814/2/99/pdf
     # convert to cgs:
@@ -909,7 +909,7 @@ def get_rss(Omega_star,M_star, R_star,v_alf_equator):
     f = Omega_star * R_star ** (3 / 2) * (np.sqrt(G * M_star)) ** (-1)
 
     return v_A_v_esc, f
-
+'''
 
 def get_interaction_strength(r_orb, B_star, Bplanet_field, v_alf):
     kappa = 15.475
@@ -934,3 +934,41 @@ def get_interaction_strength(r_orb, B_star, Bplanet_field, v_alf):
     # print('alpha_interaction_strength_SI :',alpha_interaction_strength_SI)
 
     return Sigma_P, Sigma_A, alpha_interaction_strength
+
+
+def get_rss(P_th_sw, P_dyn_sw, P_B_sw, d_orb):
+    P_hydro_sw = P_th_sw + P_dyn_sw
+    diff =   P_B_sw - P_hydro_sw
+    sign_changes = np.where(np.diff(np.sign(diff)))[0]
+    if len(sign_changes) == 0:
+        raise ValueError("No sign change found in diff — cannot estimate r_ss.")
+    idx = sign_changes[0]
+    x0, x1 = d_orb[idx], d_orb[idx + 1]
+    y0, y1 = diff[idx], diff[idx + 1]
+
+
+    r_ss_estimate = x0 - y0 * (x1 - x0) / (y1 - y0)
+
+
+    return r_ss_estimate
+
+
+'''
+def get_rss (P_th_sw, P_dyn_sw,P_B_sw, d_orb):
+    P_hydro_sw = P_th_sw + P_dyn_sw
+    differences = np.abs(P_hydro_sw - P_B_sw)
+    closest_index = np.argmin(differences)
+    print('at the start')
+    print(P_hydro_sw[0])
+    print(P_B_sw[0])
+    print('at the end')
+    print(P_hydro_sw[-1])
+    print(P_B_sw[-1])
+    print('at the rss')
+    print(P_hydro_sw[closest_index])
+    print(P_B_sw[closest_index])
+    print('closest_index :', closest_index)
+    r_ss_estimate = d_orb[closest_index]
+    return r_ss_estimate
+'''
+
