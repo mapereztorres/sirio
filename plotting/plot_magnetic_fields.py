@@ -11,13 +11,22 @@ ax = plt.subplot2grid((1,1),(0,0),rowspan=1,colspan=1)
 ax.plot(x, y, color='black', lw=2, label="Parker spiral magnetic field line")
 #ax.scatter(0, 0, color='yellow', s=(10)**2,label=starname) 
 #ax.scatter(r_orb/R_star, 0 , color='black', s=10, label=Exoplanet)  
-circle= plt.Circle((r_orb/R_star, 0), 0.1, color='black', fill=False, linewidth=0.2)
-ax.add_patch(circle)
-star= plt.Circle((0, 0), 1, color='orange', fill=True, linewidth=2)
-ax.add_patch(star)
+
+
+#circle= plt.Circle((r_orb/R_star, 0), 0.1, color='black', fill=False, linewidth=0.2)
+#ax.add_patch(circle)
+
+
+
+#star= plt.Circle((0, 0), 1, color='orange', fill=True, linewidth=2)
+#ax.add_patch(star)
+
+
+
 ax.set_xlabel("X ($R_{star}$)")
 ax.set_ylabel("Y ($R_{star}$)")
 ax.set_facecolor("white")
+
 #ax.text(0, -2,starname,ha='center',fontsize=13)
 #ax.text(r_orb/R_star, -1,Exoplanet,ha='center',fontsize=13)
 #plt.title("Espiral de Parker (Vista desde el eje Z)")
@@ -26,7 +35,9 @@ ax.set_facecolor("white")
 #plt.grid()
 #plt.axis("equal")  # Mantiene la escala de los ejes iguales
 #plt.savefig('OUTPUT/foo.pdf')
-ax.axis('equal')
+
+#ax.axis('equal')
+
 #ax.set_aspect('equal')
 #black_patch = mpatches.Patch(color='black', label='$R_{mp}$')
 #red_patch = mpatches.Patch(color='red', label='$R_{eff}$')
@@ -38,7 +49,9 @@ print(ax.get_ylim())
 limy=ax.get_ylim()
 limy=limy[0]
 
-ax.text(5, 5*limy,starname,ha='center',fontsize=13)
+#ax.text(5, 5*limy,starname,ha='center',fontsize=13)
+
+ax.set_ylim([-3,3])
 
 plt.legend()
 
