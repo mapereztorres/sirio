@@ -179,8 +179,8 @@ for indi in planet_array:
     #
     if STUDY == "D_ORB":
         Nsteps = int(2*d_orb_max)
-        #d_orb  = np.linspace(1.02, d_orb_max, Nsteps) * R_star # Array of (orbital) distances to the star, in cm
-        d_orb = np.linspace(1.00, d_orb_max, Nsteps) * R_star  # Array of (orbital) distances to the star, in cm
+        d_orb  = np.linspace(1.02, d_orb_max, Nsteps) * R_star # Array of (orbital) distances to the star, in cm
+        #d_orb = np.linspace(1.00, d_orb_max, Nsteps) * R_star  # Array of (orbital) distances to the star, in cm
         M_star_dot_arr = np.array([M_star_dot]) # Convert to a numpy array of 1 element for safety reasons
     elif STUDY == "M_DOT":
         d_orb  = np.array([r_orb])
@@ -514,11 +514,23 @@ for indi in planet_array:
             #print(d_orb[closest_index])
             v_alf_planet=v_alf[closest_index]
 
-            Sigma_P, Sigma_A, alpha_interaction_strength=spi.get_interaction_strength(r_orb,B_star,Bplanet_field,v_alf_planet)
+            Sigma_P, Sigma_A, alpha_interaction_strength=spi.get_interaction_strength(r_orb,B_star,Bplanet_field,v_alf_planet,M_A,geom_f)
             print('Sigma_P: {:.3e}'.format(Sigma_P))
+            
             with np.printoptions(precision=3, suppress=False, formatter={'float': '{:0.3e}'.format}):
-                print('Sigma_A:', Sigma_A)
-                print('alpha_interaction_strength:', alpha_interaction_strength)
+                #print('Sigma_A:', Sigma_A)
+                print('Sigma_A_max:', max(Sigma_A))
+                print('Sigma_A_min:', min(Sigma_A))
+                #print('alpha_interaction_strength:', alpha_interaction_strength)
+                print('alpha_interaction_strength_max:', max(alpha_interaction_strength))
+                print('alpha_interaction_strength_min:', min(alpha_interaction_strength))
+                #loc_max_alpha = np.where(alpha_interaction_strength == max(alpha_interaction_strength))
+                #loc_min_alpha = np.where(alpha_interaction_strength == min(alpha_interaction_strength))
+                loc_max_alpha = np.argmax(alpha_interaction_strength)
+                loc_min_alpha = np.argmin(alpha_interaction_strength)
+                print(d_orb[loc_max_alpha]/r_orb)
+                print(d_orb[loc_min_alpha]/r_orb)
+                
 
             #print('Sigma_A: {:.3e}'.format(Sigma_A))
             #print('alpha_interaction_strength: {:.3e}'.format(alpha_interaction_strength))
