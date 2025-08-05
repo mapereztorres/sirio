@@ -156,15 +156,24 @@ def get_bfield_comps(Bfield_geom, B_star, d_orb, R_star, v_corot, v_sw, angle_v_
     angle_B = np.arctan2(B_phi, B_r) # Angle the B-field makes with the radial direction
     # Angle between the stellar wind magnetic field and the impinging plasma velocity
     # Eqn 23 in Turnpenney 2018. It's also Eq. 13 in Zarka 2007
-    theta = np.absolute(angle_B - angle_v_rel) 
-    #theta = angle_B - angle_v_rel
-    geom_f = 1.0 # Geometric factor. 1 for closed dipole configuration, different for the open field configuration
-    if Bfield_geom == 'open_parker_spiral': 
+    theta = np.absolute(angle_B - angle_v_rel) # theta is the angle between the B_sw (the insterstellar magnetic field), and the
+    # incident stellar wind velocity.  See Fig. 1 in Turnpenney+2018
+    #
+    
+    if Bfield_geom == 'closed_dipole':
+        theta = np.pi/2 # np.pi/2 for closed dipole configuration, different for the open field configuration
+        #geom_f = (np.sin(theta))**2 # Geometric factor is 1 for the dipolar configuration
+        #print('geom_f for dipolar configuration: ',geom_f)
+ 
+    #if Bfield_geom == 'open_parker_spiral': 
         # theta is the angle between the B_sw (the insterstellar magnetic field), and the
         # incident stellar wind velocity.  See Fig. 1 in Turnpenney+2018
         #
-        geom_f = (np.sin(theta))**2 # Geometric factor in efficiency 
-        
+        #geom_f = (np.sin(theta))**2 # Geometric factor in efficiency 
+       
+    geom_f = (np.sin(theta))**2
+    
+         
     if Bfield_geom == 'pfss': 
         geom_f = (1 - heaviside)+(np.sin(theta))**2 * heaviside # Geometric factor in efficiency 
     #geom_f = 1.0
@@ -783,7 +792,7 @@ def get_S_poynt(R_obs, B_sw, v_alf, v_rel, M_A, ALPHA_SPI, geom_f):
     
     return S_poynt, S_poynt_Z
 
-def get_S_reconnect(R_obs, B_sw, v_rel, gamma = 0.5):
+def get_S_reconnect(geom_f, R_obs, B_sw, v_rel, gamma = 1.0):
         """
         OUTPUT: 
             S_reconnect - Poynting flux (array), in cgs
@@ -793,7 +802,7 @@ def get_S_reconnect(R_obs, B_sw, v_rel, gamma = 0.5):
             P_d is computed using Eq. (8) in Lanza (2009; A&A 505, 339–350).
             
         """
-        P_d_mks = gamma * np.pi / mu_0_mks * (B_sw/1e4)**2 * (R_obs/1e2)**2 * (v_rel/1e2)
+        P_d_mks = gamma * np.pi / mu_0_mks * (B_sw/1e4)**2 * (R_obs/1e2)**2 * (v_rel/1e2)*geom_f
         P_d     = P_d_mks * 1e7 # in cgs units 
         S_reconnect = P_d / EPSILON
         #print(type(S_reconnect))
@@ -801,6 +810,22 @@ def get_S_reconnect(R_obs, B_sw, v_rel, gamma = 0.5):
         #print(R_obs)
 
         return S_reconnect, P_d, P_d_mks
+        
+        
+def get_S_stretch_and_break(R_obs, B_sw, v_rel, B_planet_arr, geom_f): 
+    """
+        OUTPUT: 
+            S_sb - Poynting flux (array), in cgs
+                          
+            S_sb is computed using Eq. (5) in Strugarek 2022: MNRAS 512, 4556–4572 (2022)
+            
+    """  
+    xi = B_sw / B_planet_arr
+    f_ap = 1 - (1-(3 * xi**(1/3)/(2+xi)))**(1/2)
+    S_sb = 2 * np.pi * (R_obs/1e2)**2 * (xi**(-2) * f_ap) * geom_f * (B_sw/1e4)**2 * (v_rel/1e2)/mu_0_mks
+    S_sb = S_sb * 1e7 # in cgs units 
+    return S_sb     
+                
 
 def get_Flux(Omega_min, Omega_max, Delta_nu_cycl, d, S_poynt):
     """ Computes the minimum and maximum expected flux densities to be received at
@@ -826,4 +851,52 @@ def get_confinement(P_dyn_sw, P_B_sw):
     return eta
 
 def identity(x):
-    return x    
+    return x
+
+
+
+def get_interaction_strength(r_orb, B_star, Bplanet_field, v_alf,M_A,geom_f):
+    kappa = 15.475
+    lamba = -2.082
+    mu_parameter = 0.5
+    B_jupiter = 4.170
+    L_XUV = 1  # times the solar value
+
+    mu_0 = 4 * np.pi * 10 ** (-7)
+    v_alf_SI = v_alf * 1e-2
+
+
+    #Sigma_A_SI = 1 / (mu_0 * v_alf_SI)
+    Sigma_A=1/(mu_0*v_alf_SI*np.sqrt(1+M_A**2-2*M_A*np.sqrt(1-geom_f)))
+    #Sigma_A_neg=1/(mu_0*v_alf_SI*np.sqrt(1+M_A**2-2*M_A*np.sqrt(1-geom_f)))
+
+
+    Sigma_P = kappa * (r_orb / au) ** lamba * (B_jupiter / Bplanet_field) * (L_XUV) ** mu_parameter
+
+    alpha_interaction_strength = Sigma_P / (Sigma_P + 2 * Sigma_A)
+    #alpha_interaction_strength_neg = Sigma_P / (Sigma_P + 2 * Sigma_A_neg)
+    #alpha_interaction_strength_SI = Sigma_P / (Sigma_P + 2 * Sigma_A_SI)
+    # print('alpha_interaction_strength :',alpha_interaction_strength)
+    # print('alpha_interaction_strength_SI :',alpha_interaction_strength_SI)
+
+    return Sigma_P, Sigma_A, alpha_interaction_strength
+
+
+def get_rss(P_th_sw, P_dyn_sw, P_B_sw, d_orb):
+    P_hydro_sw = P_th_sw + P_dyn_sw
+    diff =   P_B_sw - P_hydro_sw
+    sign_changes = np.where(np.diff(np.sign(diff)))[0]
+    if len(sign_changes) == 0:
+        raise ValueError("No sign change found in diff — cannot estimate r_ss.")
+    idx = sign_changes[0]
+    x0, x1 = d_orb[idx], d_orb[idx + 1]
+    y0, y1 = diff[idx], diff[idx + 1]
+
+
+    r_ss_estimate = x0 - y0 * (x1 - x0) / (y1 - y0)
+
+
+    return r_ss_estimate
+
+
+
