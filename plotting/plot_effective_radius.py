@@ -19,7 +19,14 @@ ax.set_facecolor("white")
 
 ax.set_ylim([0,2])
 
+ax.set_xlim(left=0)
+
 ax.axvline(x = xnom, ls='--', color='k', lw=2)
+
+if Bfield_geom_arr[ind] == 'pfss':
+    ax.axvline(R_SS, color='grey', alpha=0.9, linestyle='-', lw=3)
+    #ax.text(7.5, 0.1, rf'$R_{{SS}}$ = {R_SS} $R_{{*}}$', fontsize=14, alpha=1,bbox=dict(facecolor='white', edgecolor='none', boxstyle='round,pad=0.2'),rotation=90)
+    ax.text(R_SS*0.8, 0.1, rf'$R_{{SS}}$', fontsize=18, alpha=1,bbox=dict(facecolor='white', edgecolor='none', boxstyle='round,pad=0.2'))
 black_patch = mpatches.Patch(color='black', label='$R_{eff}$')
 red_patch = mpatches.Patch(color='red', label='$R_{mp}$')
 #blue_patch = mpatches.Patch(color='blue', label='$R_{mp\_Lanza}$')
@@ -35,13 +42,4 @@ plt.savefig(FOLDER + '/' 'R_EFF_PDF'+'/'+ str(Exoplanet.replace(" ", "_"))
         +'-effective_radius_variation-'+STUDY+geometry+ "-Bplanet" +'['+"{:.3f}".format(Bplanet_field)+']' + "G" +'-'+'T_corona'+str(T_corona/1e6)+'MK'+'-'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'+'.pdf', bbox_inches='tight')
    
    
-        
-'''
 
-ax_r_eff= plt.subplot2grid((1,3),(0,0),rowspan=1,colspan=1)
-ax_r_eff.plot(x, R_obs_normalized, color='k')
-ax_r_eff.plot(x, Rmp/Rp, color='r')
-ax_r_eff.set_ylabel(r"$R(R_{pl})$")
-ax2.legend(handles=[blue_patch,orange_patch],loc='upper right',fontsize=16,facecolor='white',edgecolor='white', framealpha=1)             
-
-'''

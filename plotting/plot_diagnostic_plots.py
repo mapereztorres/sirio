@@ -84,10 +84,9 @@ secax = ax4.secondary_yaxis('right', functions=(spi.identity,spi.identity))
 
 #print('geometry', geometry)
 if STUDY == "D_ORB" and Bfield_geom_arr[ind] == 'pfss':
-    ax1.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
-    ax2.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
-    ax3.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
-    ax4.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
+    for ax in [ax1, ax2, ax3, ax4]:
+        ax.axvline(R_SS, color='grey', alpha=0.9, linestyle='-', lw=2)
+
         
 #if (M_A > 1).any():
 ax3.axhline(y = 1, ls='-.', color='grey', lw=2)   
@@ -100,14 +99,7 @@ fig.set_figwidth(8)
 fig.set_figheight(20)
 #ax1.set_xscale('log')
 
-if Exoplanet == 'GJ1151 hypothetical 2' and STUDY == 'D_ORB':
-    #x_pl1=spi.Kepler_r(M_star*M_sun, P_orb=5) * au/R_star
-    x_pl1=12.927
-    ax1.axvline(x = x_pl1, ls='--', color='k', lw=2)
-    ax2.axvline(x = x_pl1, ls='--', color='k', lw=2)
-    ax3.axvline(x = x_pl1, ls='--', color='k', lw=2)
-    ax4.axvline(x = x_pl1, ls='--', color='k', lw=2)
-    ax1.set_ylim([10,7e4])
+
     
 
 

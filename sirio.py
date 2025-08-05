@@ -312,6 +312,12 @@ for indi in planet_array:
 
             # Stellar wind pressure, in erg/cm3
             P_sw, P_dyn_sw, P_th_sw, P_B_sw = spi.get_P_sw(n_sw_planet, v_rel, T_corona, B_sw, mu)
+
+            if Bfield_geom_arr[ind] == 'closed_dipole':
+                r_ss_estimate = spi.get_rss(P_th_sw, P_dyn_sw,P_B_sw, d_orb)
+                print(len(d_orb))
+                print('r_ss_estimate :',r_ss_estimate/R_star)
+                print('R_alfven :', R_alfven, type(R_alfven))
             eta = spi.get_confinement(P_dyn_sw, P_B_sw)
             #alfven_alt = spi.get_alfven_alt(eta, POLAR_ANGLE)
             
@@ -364,13 +370,26 @@ for indi in planet_array:
             R_obs_reconnect=np.copy(R_obs)
             R_obs_reconnect[np.isclose(R_obs_reconnect, Rp, atol=1e-2)] = np.nan
             
-            S_reconnect, P_d, P_d_mks = spi.get_S_reconnect(R_obs_reconnect, B_sw, v_rel, gamma = 0.5)
+            #S_reconnect, P_d, P_d_mks = spi.get_S_reconnect(geom_f,R_obs_reconnect, B_sw, v_rel, gamma = 0.5)
+            S_reconnect, P_d, P_d_mks = spi.get_S_reconnect(geom_f,R_obs_reconnect, B_sw, v_rel, gamma = 1)
+            
+            
             
             #20250124-TBC: if R_obs < Rp:
             Flux_reconnect_min, Flux_reconnect_max = spi.get_Flux(Omega_min, Omega_max, Delta_nu_cycl, d, S_reconnect)
             Flux_reconnect_inter = 10**((np.log10(Flux_reconnect_max) + np.log10(Flux_reconnect_min))/2)
 
 
+
+
+            # Get flux for the stretch and break model (Lanza 2013 and Strugarek et al.2022)            
+            S_sb = spi.get_S_stretch_and_break(R_obs=R_obs_reconnect, B_sw=B_sw, v_rel=v_rel, B_planet_arr=B_planet_arr,geom_f=geom_f)
+            
+            
+            Flux_sb_min, Flux_sb_max = spi.get_Flux(Omega_min, Omega_max, Delta_nu_cycl, d, S_sb)
+            Flux_sb_inter = 10**((np.log10(Flux_sb_max) + np.log10(Flux_sb_min))/2)           
+            
+            
             ###
             ### COMPUTATION OF FREE-FREE Absorption by the stellar wind 
             ###
@@ -391,6 +410,11 @@ for indi in planet_array:
             Flux_reconnect_min_no_abs = np.copy(Flux_reconnect_min)
             Flux_reconnect_max_no_abs = np.copy(Flux_reconnect_max)
             Flux_reconnect_inter_no_abs = np.copy(Flux_reconnect_inter)
+            
+            
+            Flux_sb_min_no_abs = np.copy(Flux_sb_min)
+            Flux_sb_max_no_abs = np.copy(Flux_sb_max)
+            Flux_sb_inter_no_abs = np.copy(Flux_sb_inter)           
             # Compute flux density, taking into account free-free absorption
             if freefree == True:
                 print('Applying ff-absorption')
@@ -415,8 +439,14 @@ for indi in planet_array:
                 Flux_reconnect_min *= absorption_factor
                 Flux_reconnect_max *= absorption_factor
                 Flux_reconnect_inter *= absorption_factor
-
-            
+                Flux_sb_min *= absorption_factor
+                Flux_sb_max *= absorption_factor   
+                Flux_sb_inter *= absorption_factor         
+                
+                
+            #print('Flux_sb_min :',Flux_sb_min)
+            #print('Flux_reconnect_min :',Flux_reconnect_min)
+                
             """
             Moving parts of plotting outside the loop
             """
@@ -430,8 +460,64 @@ for indi in planet_array:
             M_star_dot_loc  = np.where(M_star_dot_diff == M_star_dot_diff.min())
             
             
+            #sigma_A=1/v_alf
+            
+            #sigma_P=15.475*()
+            '''
+            v_sound_equator, r_sonic_equator, v_sw_equator = spi.v_stellar_wind(np.ones(1)*R_star, M_star, T_corona, m_av)
+            v_orb_equator, v_corot_equator, Omega_star_equator = spi.get_velocity_comps(M_star, np.ones(1)*R_star, P_rot_star)
 
+            v_rel_equator = np.sqrt(v_orb_equator ** 2 + v_sw_equator ** 2)  # in cm/s
+            angle_v_rel_equator = np.arctan2(v_orb_equator, v_sw_equator)  # in radians
 
+            B_r_equator, B_phi_equator, B_sw_equator, angle_B_equator, theta_equator, geom_f_equator = spi.get_bfield_comps(
+                Bfield_geom_arr[ind], B_spi, np.ones(1)*R_star, R_star, v_corot_equator, v_sw_equator, angle_v_rel_equator)
+
+            n_sw_planet_equator = spi.n_wind(M_star_dot_arr, R_star, v_sw_equator, m_av)
+            rho_sw_planet_equator = m_av * n_sw_planet_equator  # wind density at the distance to the planet, in g * cm^(-3)
+
+            v_alf_equator, M_A_equator, v_alf_r_equator, M_A_radial_equator = spi.get_alfven(rho_sw_planet_equator, B_sw_equator, B_r_equator, v_rel_equator, v_sw_equator)
+
+            #v_alf_equator_equator = m_av * n_sw_planet_equator  # wind density at the distance to the planet, in g * cm^(-3)
+            #v_alf_equator = B_sw_equator / np.sqrt(4.0 * np.pi * rho_sw_planet_equator) * 1. / np.sqrt(
+            #    1 + (B_sw_equator ** 2 / (4. * np.pi * rho_sw_planet_equator * c ** 2)))
+
+            #v_A_v_esc,f=spi.get_rss(B_star,M_star,R_star,Omega_star)
+            #v_A_v_esc,f = spi.get_rss(Omega_star,M_star, R_star, v_alf[0])
+            #print('v_A_v_esc: ',v_A_v_esc)
+            #print('f: ',f)
+
+            #print('v_A_v_esc: {:.3e}'.format(v_A_v_esc))
+            #print('f: {:.3e}'.format(f))
+            '''
+            
+            
+
+            closest_index = np.argmin(np.abs(d_orb - r_orb))
+            #print(r_orb)
+            #print(d_orb[closest_index])
+            v_alf_planet=v_alf[closest_index]
+
+            Sigma_P, Sigma_A, alpha_interaction_strength=spi.get_interaction_strength(r_orb,B_star,Bplanet_field,v_alf_planet,M_A,geom_f)
+            print('Sigma_P: {:.3e}'.format(Sigma_P))
+            
+            with np.printoptions(precision=3, suppress=False, formatter={'float': '{:0.3e}'.format}):
+                #print('Sigma_A:', Sigma_A)
+                print('Sigma_A_max:', max(Sigma_A))
+                print('Sigma_A_min:', min(Sigma_A))
+                #print('alpha_interaction_strength:', alpha_interaction_strength)
+                print('alpha_interaction_strength_max:', max(alpha_interaction_strength))
+                print('alpha_interaction_strength_min:', min(alpha_interaction_strength))
+                #loc_max_alpha = np.where(alpha_interaction_strength == max(alpha_interaction_strength))
+                #loc_min_alpha = np.where(alpha_interaction_strength == min(alpha_interaction_strength))
+                loc_max_alpha = np.argmax(alpha_interaction_strength)
+                loc_min_alpha = np.argmin(alpha_interaction_strength)
+                print(d_orb[loc_max_alpha]/r_orb)
+                print(d_orb[loc_min_alpha]/r_orb)
+                
+
+            #print('Sigma_A: {:.3e}'.format(Sigma_A))
+            #print('alpha_interaction_strength: {:.3e}'.format(alpha_interaction_strength))
 
             ###########################################################################
             ####                  PLOTTING                                         ####
