@@ -911,7 +911,7 @@ def get_rss(Omega_star,M_star, R_star,v_alf_equator):
     return v_A_v_esc, f
 '''
 
-def get_interaction_strength(r_orb, B_star, Bplanet_field, v_alf):
+def get_interaction_strength(r_orb, B_star, Bplanet_field, v_alf,M_A,geom_f):
     kappa = 15.475
     lamba = -2.082
     mu_parameter = 0.5
@@ -922,14 +922,16 @@ def get_interaction_strength(r_orb, B_star, Bplanet_field, v_alf):
     v_alf_SI = v_alf * 1e-2
 
 
-    Sigma_A_SI = 1 / (mu_0 * v_alf_SI)
-    Sigma_A=1/(mu_0*v_alf_SI)
+    #Sigma_A_SI = 1 / (mu_0 * v_alf_SI)
+    Sigma_A=1/(mu_0*v_alf_SI*np.sqrt(1+M_A**2-2*M_A*np.sqrt(1-geom_f)))
+    #Sigma_A_neg=1/(mu_0*v_alf_SI*np.sqrt(1+M_A**2-2*M_A*np.sqrt(1-geom_f)))
 
 
     Sigma_P = kappa * (r_orb / au) ** lamba * (B_jupiter / Bplanet_field) * (L_XUV) ** mu_parameter
 
     alpha_interaction_strength = Sigma_P / (Sigma_P + 2 * Sigma_A)
-    alpha_interaction_strength_SI = Sigma_P / (Sigma_P + 2 * Sigma_A_SI)
+    #alpha_interaction_strength_neg = Sigma_P / (Sigma_P + 2 * Sigma_A_neg)
+    #alpha_interaction_strength_SI = Sigma_P / (Sigma_P + 2 * Sigma_A_SI)
     # print('alpha_interaction_strength :',alpha_interaction_strength)
     # print('alpha_interaction_strength_SI :',alpha_interaction_strength_SI)
 
