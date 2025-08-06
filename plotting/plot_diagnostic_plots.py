@@ -158,7 +158,7 @@ if Exoplanet == 'Trappist-1_b':
 	ax3.set_facecolor("white")
 	ax3.axvline(x = xnom, ls='--', color='k', lw=2)
 
-	#print('geometry', geometry)
+	
 	if STUDY == "D_ORB" and Bfield_geom_arr[ind] == 'pfss':
 	    ax3.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
 		
@@ -230,7 +230,7 @@ if Exoplanet == 'GJ1151 hypothetical 2' and STUDY == 'D_ORB':
 	ax3.set_facecolor("white")
 	ax3.axvline(x = xnom, ls='--', color='k', lw=2)
 
-	#print('geometry', geometry)
+	
 	if STUDY == "D_ORB" and Bfield_geom_arr[ind] == 'pfss':
 	    ax3.axvspan(x[0], R_SS, facecolor='grey', alpha=0.6)
 		

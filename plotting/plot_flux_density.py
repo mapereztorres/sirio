@@ -74,7 +74,7 @@ if indices_Flux_larger_rms.size > 0:
     x_last_larger=x_last_larger[0]
     x_last_larger="{:.2f}".format(x_last_larger)    
     x_last_larger=str(x_last_larger)
-    #print('value of x where there is clear detection for the Alfvén Wing model: ( ',x_larger_rms+' , '+x_last_larger+' )')
+    
     x_larger_rms=x_larger_rms+' , '+x_last_larger
 else:
     x_larger_rms=np.nan
@@ -91,33 +91,13 @@ if indices_Flux_smaller_rms.size > 0:
     x_last_smaller=x_last_smaller[0]
     x_last_smaller="{:.2f}".format(x_last_smaller)    
     x_last_smaller=str(x_last_smaller)
-    #print('value of x where there is clear NON detection for the Alfvén Wing model: ( ',x_smaller_rms+' , '+x_last_smaller+' )')
+    
     x_smaller_rms=x_smaller_rms+' , '+x_last_smaller
 else:
     x_smaller_rms=np.nan
     x_smaller_rms=str(x_smaller_rms)
-'''
-if freefree==True:
-    ax2.fill_between(x, y_min, y_max,color="orange", alpha=0.7, label="ff absorption")
-    ax2.fill_between(x, y_min_reconnect, y_max_reconnect,color="blue", alpha=0.7, label="ff absorption")
-    ax2.plot(x,y_inter,color='black',lw=4)
-    ax2.plot(x,y_inter,color='orange',lw=3)
-    ax2.plot(x,y_inter_reconnect,color='black',lw=4)
-    ax2.plot(x,y_inter_reconnect,color='blue',lw=3)
-    ax2.fill_between(x, Flux_r_S_min_no_abs, Flux_r_S_max_no_abs,color="none", alpha=0.2, label="No ff absorption",hatch="X",edgecolor="orange")
-    ax2.fill_between(x, Flux_reconnect_min_no_abs, Flux_reconnect_max_no_abs,color="none", alpha=0.2, label="No ff absorption",hatch="X",edgecolor="blue")
-    ax2.plot(x,Flux_r_S_inter_no_abs,color='black',lw=4)
-    ax2.plot(x,Flux_r_S_inter_no_abs,color='orange',lw=3)
-    ax2.plot(x,Flux_reconnect_inter_no_abs,color='black',lw=4)
-    ax2.plot(x,Flux_reconnect_inter_no_abs,color='blue',lw=3)
-else:
-    ax2.fill_between(x, y_min, y_max,color="orange", alpha=0.7)
-    ax2.fill_between(x, y_min_reconnect, y_max_reconnect,color="blue", alpha=0.7)
-    ax2.plot(x,y_inter,color='black',lw=1.5)
-    #ax2.plot(x,y_inter,color='orange',lw=3)
-    ax2.plot(x,y_inter_reconnect,color='black',lw=1.5)
-    #ax2.plot(x,y_inter_reconnect,color='blue',lw=3)
-'''   
+
+
 ax2.fill_between(x, y_min, y_max,color="orange", alpha=0.7)
 ax2.fill_between(x, y_min_reconnect, y_max_reconnect,color="blue", alpha=0.7)
 ax2.fill_between(x, y_min_sb, y_max_sb,color="green", alpha=0.7)
@@ -130,7 +110,7 @@ if STUDY == 'D_ORB':
     ax2.set_yscale('log') 
     # Draw vertical line at nominal orbital separation of planet
     xnom = r_orb/R_star
-    #print('Planet '+Exoplanet+' at an orbital separation of '+ str(xnom))
+    
     #xlabel=r"Distance / Stellar radius"
     xlabel=r"Orbital separation / Stellar radius"
     if PLOT_M_A == True:
@@ -150,10 +130,7 @@ if STUDY == 'D_ORB':
         return ["%.1f" % z for z in V]
     xtickslocs = ax2.get_xticks()    
     new_tick_locations=xtickslocs[1:-1]
-    #print(new_tick_locations)
-    #print(type(new_tick_locations))
-    #print(tick_function(new_tick_locations))
-    
+
     ax1.set_xlim(ax2.get_xlim())
     ax1.set_xticks(new_tick_locations)
     ax1.set_xticklabels(tick_function(new_tick_locations))
@@ -196,44 +173,7 @@ ax2.set_ylim([1.001e-3,1e2])
 ax2.set_ylabel(r"Flux density [mJy]")
 #ax3 = ax2.twinx()
 #ax3.tick_params(left=False, labelleft=False, top=False, labeltop=False,right=False, labelright=False, bottom=False, labelbottom=False)
-'''
-orange_patch = mpatches.Patch(color='orange', label='ff absorption')
-blue_patch = mpatches.Patch(facecolor='none',label='No ff absorption',edgecolor="blue",linewidth = 0.1,hatch='\ ')
-if freefree==True:
-    if STUDY == "M_DOT":
-        ax2.legend(handles=[blue_patch,orange_patch],loc='upper left',fontsize=16,facecolor='white',edgecolor='white', framealpha=0)
-        if magnetized_pl_arr[ind1]:
-            ax2.text(1e-1, 10**((np.log10(YLIMHIGH)-1)*0.9), r'B$_{pl} = $'+"{:.2f}".format(B_planet_arr[0])+' G', fontsize = 16,bbox=dict(facecolor='white', alpha=0,edgecolor='white'))
-        else:
-            ax2.text(1e-1, 10**((np.log10(YLIMHIGH)-1)*0.9), r'B$_{pl} = $'+'0 G', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
-        ax2.text(1e-1, 10**((np.log10(YLIMHIGH)-1)*1.07), r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK', fontsize = 16,bbox=dict(facecolor='white', alpha=0,edgecolor='white'))
-        pos_arg=2
-        rot=20
-        
-    if STUDY == "B_PL":
-        ax2.legend(handles=[blue_patch,orange_patch],loc='upper left',fontsize=16,facecolor='white',edgecolor='white', framealpha=1)
-        ax2.text(0, 10**((np.log10(YLIMLOW)))*4, r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK', fontsize = 18,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
-        pos_arg=2
-        rot=5
 
-else:
-    if STUDY == "M_DOT":
-        
-        if magnetized_pl_arr[ind1]:
-            ax2.text(1e-1, 14.9, r'B$_{pl} = $'+"{:.2f}".format(B_planet_arr[0])+' G', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
-            rot=5
-        else:
-            ax2.text(1e-1, 14.9, r'B$_{pl} = $'+'0 G', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
-            rot=9
-        ax2.text(1e-1, 6.9, r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
-        pos_arg=2
-        
-    if STUDY == "B_PL":
-        
-        ax2.text(0, 4e-3, r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK', fontsize = 18,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
-        pos_arg=2
-        rot=5
-'''
 orange_patch = mpatches.Patch(color='orange', label='Alfvén wing')
 blue_patch = mpatches.Patch(facecolor='blue',label='Reconnection')
 green_patch = mpatches.Patch(facecolor='green',label='Stretch and break')
@@ -246,7 +186,7 @@ if STUDY == "D_ORB":
     #ax2.text(d_orb_max*0.7, 10**((np.log10(YLIMHIGH)-1)*0.82), r'B$_{pl} = $'+"{:.2f}".format(B_planet_arr[0])+' G', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))     
              
     #ax2.text(d_orb_max*0.7, 10**((np.log10(YLIMHIGH)-1)*0.8), r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK'+'\n'+'B$_{pl} = $'+"{:.2f}".format(B_planet_arr[0])+' G', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
-    #print(B_planet_arr[loc_pl][0])
+    
     ax2.text(d_orb_max*0.7, 10**((np.log10(YLIMHIGH)-1)*1.0), r'B$_{pl} = $'+"{:.2f}".format(Bplanet_field)+' G', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
     ax2.text(d_orb_max*0.7, 10**((np.log10(YLIMHIGH)-1)*0.7), r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
 
@@ -318,7 +258,7 @@ if (DRAW_EARTH == True) and (STUDY == 'D_ORB'):
 d_diff = np.abs((d_orb - r_orb) / R_star)
 loc_pl = np.where(d_diff == d_diff.min())
 #if STUDY == 'D_ORB':
-#print('Position in d_orb array where the planet is located', loc_pl)
+
 
 # Print in the graph the value of the planetary magnetic field, in units of bfield_earth
 if STUDY == 'B_PL':
@@ -364,88 +304,10 @@ secax = ax2.secondary_yaxis('right', functions=(spi.identity,spi.identity))
 if Exoplanet=='Proxima b kavanagh'and STUDY=='D_ORB':
     ax2.set_xlim([1,140])
 
-'''
-if Exoplanet=='YZCet b Model A' or STUDY == 'M_DOT':
-    #figure.set_size_inches(7,8)
-    bbox = ax2.get_position()  # Bounding box of the axes
-    figure.set_size_inches(bbox.width * figure.dpi, bbox.height * figure.dpi)
-    
-    secax.set_yticklabels([])
-    ax2.set_yticklabels([])
-    ax2.set_ylabel("")  # Removes the label
-    #ax2.yaxis.set_visible(False)          # Hides the whole y-axis (ticks + labels)
-    #ax2.spines['left'].set_visible(False) # Hides the left spine
-    #ax2.spines['right'].set_visible(False)  # Optional: if you're using twinx or want symmetry
 
-if Exoplanet=='YZCet b Model B' and STUDY == 'B_PL':
-    bbox = ax2.get_position()  # Bounding box of the axes
-    figure.set_size_inches(bbox.width * figure.dpi, bbox.height * figure.dpi)
-    secax.set_yticklabels([])
-    
-'''    
-    
-
-'''
-# Get current ticks (positions)
-ticks = ax2.get_yticks()
-
-# Create blank label for the first, keep others
-labels = ["" if i == 0 else ax2.yaxis.get_major_formatter().format_data(t) for i, t in enumerate(ticks)]
-
-# Get tick positions
-ticks = ax2.get_yticks()
-
-# Set tick labels: hide the first one
-labels = ["" if i == 0 else f"{t:.1f}" for i, t in enumerate(ticks)]
-'''
-
-#ticks = ax2.get_yticks()
-#labels = ["" if i == 0 else f"{t:.1f}" for i, t in enumerate(ticks)]
-#ax2.set_yticklabels(labels)
-
-#ticks = ax2.get_yticks()
-#labels = [label.get_text() for label in ax2.get_yticklabels()]
-
-# Remove first and last tick labels
-#ticks_to_use = ticks[1:]
-#ax2.set_yticks(ticks_to_use)
-
-
-
-
-'''
-if Exoplanet=='Trappist-1 b' or Exoplanet=='Proxima b Turnpenney':
-    ax2.set_ylim([1e-5, 1e4])  
-    #ax2.set_xscale('log') 
-    ax2.set_xlim([9,2e2])
-'''
-
-
-
-
-'''
-if PLOT_R_eff == True:
-    ax_r_eff= plt.subplot2grid((1,3),(0,0),rowspan=1,colspan=1)
-    ax_r_eff.plot(x, R_obs_normalized, color='k')
-    ax_r_eff.plot(x, Rmp/Rp, color='r')
-    ax_r_eff.set_ylabel(r"$R(R_{pl})$")
-    ax2.legend(handles=[blue_patch,orange_patch],loc='upper right',fontsize=16,facecolor='white',edgecolor='white', framealpha=1)            
-'''
-#print(B_planet_arr[loc_pl][0])
-#bplanet=  Bplanet_field
-#bplanet= "{:.3f}".format(bplanet)
-#bplanet='['+bplanet+']'
-#bplanet='['+"{:.3f}".format(Bplanet_field)+']'
-#print(bplanet)
-#sda
 common_string = "{:.1f}".format(B_star) + "G" + "-Bplanet" +'['+"{:.3f}".format(Bplanet_field)+']' + "G" + '-'+"{:.1e}".format(BETA_EFF_MIN)+'-'+"{:.1e}".format(BETA_EFF_MAX)+'-'+'T_corona'+str(T_corona/1e6)+'MK'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'             
-#if Bfield_geom_arr[ind] == 'open_parker_spiral':
-#    outfile = FOLDER + '/' + STUDY + "_" + str(Exoplanet.replace(" ", "_")) + "-Open-spiral-Bstar" + common_string 
-#elif Bfield_geom_arr[ind]== 'closed_dipole':
-#    outfile = FOLDER + '/' + STUDY + "_" + str(Exoplanet.replace(" ", "_")) + "-Closed-dipole-Bstar" + common_string 
-#else:
 
-#outfile = FOLDER + '/' +'Flux_'+ STUDY +  "_" + str(Exoplanet.replace(" ", "_")) + geometry + common_string     
+   
 outfile =  STUDY +  "_" + str(Exoplanet.replace(" ", "_")) + geometry + common_string   
 # Variable to send output to files (PLOTOUT= True), or show them in
 # the terminal (PLOTOUT = False) 

@@ -117,9 +117,9 @@ for indi in planet_array:
         starname,d, R_star, M_star, P_rot_star, B_star, Exoplanet, Mp, Rp, r_orb, P_orb,eccentricity, q, Q = load_target(data, indi)
         T_corona = data['T_corona(MK)'][indi]*1e6
         M_star_dot = data['mdot(mdot_sun)'][indi]
-        print(f'RUNNING SPIROU FOR EXOPLANET {planet_array[indi]}: {Exoplanet}\n')
+        print(f'RUNNING SIRIO FOR EXOPLANET {planet_array[indi]}: {Exoplanet}\n')
     else: 
-        print(f'RUNNING SPIROU FOR EXOPLANET {Exoplanet}\n')
+        print(f'RUNNING SIRIO FOR EXOPLANET {Exoplanet}\n')
     # Fill B_star column if empty. Uses original units from table
     # B_star - stellar magnetic field at the equator, in Gauss
     if pd.isna(B_star):
@@ -213,8 +213,7 @@ for indi in planet_array:
         R_alfven =np.array(R_alfven)
         R_alfven_pole = spi.get_R_alfven_alt(eta_star, colatitude = 0)
         R_alfven_pole = np.array(R_alfven_pole)
-    print('R_alfven :', R_alfven, type(R_alfven))
-    print('R_alfven_pole: ', R_alfven_pole,type(R_alfven_pole))
+
     #Alfven radius at the pole, in stellar radii
     #R_alfven_pole = spi.get_R_alfven(eta_star, colatitude = 0)
 
@@ -249,7 +248,7 @@ for indi in planet_array:
         n_sw_planet = np.ones(Nsteps) * 1e4  
 
     rho_sw_planet = m_av * n_sw_planet #wind density at the distance to the planet, in g * cm^(-3)
-    #print('rho_sw_planet :', rho_sw_planet)
+    
     for ind in range(len(Bfield_geom_arr)):
         for ind1 in range(len(magnetized_pl_arr)):
             # Bfield_geom_arr defines the geometry of the magnetic field (closed / open)
@@ -315,9 +314,7 @@ for indi in planet_array:
 
             if Bfield_geom_arr[ind] == 'closed_dipole':
                 r_ss_estimate = spi.get_rss(P_th_sw, P_dyn_sw,P_B_sw, d_orb)
-                print(len(d_orb))
-                print('r_ss_estimate :',r_ss_estimate/R_star)
-                print('R_alfven :', R_alfven, type(R_alfven))
+
             eta = spi.get_confinement(P_dyn_sw, P_B_sw)
             #alfven_alt = spi.get_alfven_alt(eta, POLAR_ANGLE)
             
@@ -444,12 +441,7 @@ for indi in planet_array:
                 Flux_sb_inter *= absorption_factor         
                 
                 
-            #print('Flux_sb_min :',Flux_sb_min)
-            #print('Flux_reconnect_min :',Flux_reconnect_min)
-                
-            """
-            Moving parts of plotting outside the loop
-            """
+
             # Find out the position of the planet in the distance array
             d_diff = np.abs((d_orb-r_orb)/R_star)
             loc_pl = np.where(d_diff == d_diff.min())
@@ -460,64 +452,16 @@ for indi in planet_array:
             M_star_dot_loc  = np.where(M_star_dot_diff == M_star_dot_diff.min())
             
             
-            #sigma_A=1/v_alf
-            
-            #sigma_P=15.475*()
-            '''
-            v_sound_equator, r_sonic_equator, v_sw_equator = spi.v_stellar_wind(np.ones(1)*R_star, M_star, T_corona, m_av)
-            v_orb_equator, v_corot_equator, Omega_star_equator = spi.get_velocity_comps(M_star, np.ones(1)*R_star, P_rot_star)
-
-            v_rel_equator = np.sqrt(v_orb_equator ** 2 + v_sw_equator ** 2)  # in cm/s
-            angle_v_rel_equator = np.arctan2(v_orb_equator, v_sw_equator)  # in radians
-
-            B_r_equator, B_phi_equator, B_sw_equator, angle_B_equator, theta_equator, geom_f_equator = spi.get_bfield_comps(
-                Bfield_geom_arr[ind], B_spi, np.ones(1)*R_star, R_star, v_corot_equator, v_sw_equator, angle_v_rel_equator)
-
-            n_sw_planet_equator = spi.n_wind(M_star_dot_arr, R_star, v_sw_equator, m_av)
-            rho_sw_planet_equator = m_av * n_sw_planet_equator  # wind density at the distance to the planet, in g * cm^(-3)
-
-            v_alf_equator, M_A_equator, v_alf_r_equator, M_A_radial_equator = spi.get_alfven(rho_sw_planet_equator, B_sw_equator, B_r_equator, v_rel_equator, v_sw_equator)
-
-            #v_alf_equator_equator = m_av * n_sw_planet_equator  # wind density at the distance to the planet, in g * cm^(-3)
-            #v_alf_equator = B_sw_equator / np.sqrt(4.0 * np.pi * rho_sw_planet_equator) * 1. / np.sqrt(
-            #    1 + (B_sw_equator ** 2 / (4. * np.pi * rho_sw_planet_equator * c ** 2)))
-
-            #v_A_v_esc,f=spi.get_rss(B_star,M_star,R_star,Omega_star)
-            #v_A_v_esc,f = spi.get_rss(Omega_star,M_star, R_star, v_alf[0])
-            #print('v_A_v_esc: ',v_A_v_esc)
-            #print('f: ',f)
-
-            #print('v_A_v_esc: {:.3e}'.format(v_A_v_esc))
-            #print('f: {:.3e}'.format(f))
-            '''
-            
             
 
             closest_index = np.argmin(np.abs(d_orb - r_orb))
-            #print(r_orb)
-            #print(d_orb[closest_index])
+
             v_alf_planet=v_alf[closest_index]
 
             Sigma_P, Sigma_A, alpha_interaction_strength=spi.get_interaction_strength(r_orb,B_star,Bplanet_field,v_alf_planet,M_A,geom_f)
-            print('Sigma_P: {:.3e}'.format(Sigma_P))
-            
-            with np.printoptions(precision=3, suppress=False, formatter={'float': '{:0.3e}'.format}):
-                #print('Sigma_A:', Sigma_A)
-                print('Sigma_A_max:', max(Sigma_A))
-                print('Sigma_A_min:', min(Sigma_A))
-                #print('alpha_interaction_strength:', alpha_interaction_strength)
-                print('alpha_interaction_strength_max:', max(alpha_interaction_strength))
-                print('alpha_interaction_strength_min:', min(alpha_interaction_strength))
-                #loc_max_alpha = np.where(alpha_interaction_strength == max(alpha_interaction_strength))
-                #loc_min_alpha = np.where(alpha_interaction_strength == min(alpha_interaction_strength))
-                loc_max_alpha = np.argmax(alpha_interaction_strength)
-                loc_min_alpha = np.argmin(alpha_interaction_strength)
-                print(d_orb[loc_max_alpha]/r_orb)
-                print(d_orb[loc_min_alpha]/r_orb)
-                
 
-            #print('Sigma_A: {:.3e}'.format(Sigma_A))
-            #print('alpha_interaction_strength: {:.3e}'.format(alpha_interaction_strength))
+            loc_max_alpha = np.argmax(alpha_interaction_strength)
+            loc_min_alpha = np.argmin(alpha_interaction_strength)            
 
             ###########################################################################
             ####                  PLOTTING                                         ####
@@ -646,24 +590,3 @@ print('###########################################################')
 print(f'SPIROU HAS FINISHED SUCCESSFULLY!!\n')
 print('###########################################################')
 
-    
-            #print('M_star_dot_loc = ', M_star_dot_loc)
-            #print('Type of M_star_dot_loc : ', type(M_star_dot_loc))
-            #print(f'n_base_corona[M_star_dot_loc] = {n_base_corona[M_star_dot_loc][0]:.2e}')
-            #print('############################')
-            #print(x_larger_rms)
-            #if x_larger_rms is np.nan or 'nan':
-            #    print('NO value of '+STUDY+' where there is clear detection for the Alfvén Wing model')
-            #else:
-            #    print('value of '+STUDY+' where there is clear detection for the Alfvén Wing model: ',x_larger_rms)
-                
-
-            # Print out the expected flux received at Earth from the SPI at the position of the planet
-
-            #print("\nPrint out minimum and maximum values of flux density at the planet location")
-            #print('B_planet_ref = {0:.3f} G'.format(B_planet_ref * bfield_earth*Tesla2Gauss))
-            #print("Saur/Turnpenney (mJy): ", Flux_r_S_min[loc_pl], Flux_r_S_max[loc_pl])
-            #print("Zarka: (mJy)", Flux_r_S_Z_min[loc_pl], Flux_r_S_Z_max[loc_pl])
-            #print("Reconnection: (mJy)", Flux_reconnect_min[loc_pl], Flux_reconnect_max[loc_pl])
-            #### TEMPORARY TABLE
-            ####################

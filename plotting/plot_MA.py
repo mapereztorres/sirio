@@ -7,17 +7,11 @@ plt.style.use(['bmh','SPIworkflow/spi.mplstyle'])
 
 
 #Individual MA plot
-print('##########################101############################')
-print(Exoplanet)
-print('##########################202############################')
+
 height=30
 #if Exoplanet == 'Trappist-1 b Turn-regular':
 if Exoplanet == 'Trappist-1 b':
-	print('##########################303############################')
-	print('##########################404############################')
-	print(Exoplanet)
-	print('##########################505############################')
-	print('##########################606############################')
+
 	fig, ax3 = plt.subplots(1, 1,figsize=(6, 6), sharex=True)
 	ax3.plot(x, M_A*np.ones(len(x)), color='k', lw=lw)
 	xlabel=r"Orbital separation / Stellar radius"

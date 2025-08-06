@@ -85,7 +85,7 @@ def get_bfield_comps(Bfield_geom, B_star, d_orb, R_star, v_corot, v_sw, angle_v_
     B_r_parker_pfss =  B_continuity * (d_orb/R_star)**(-2)
     B_theta_parker_pfss = 0.0
     B_phi_parker_pfss = B_r_parker_pfss * v_corot/v_sw * np.sin(POLAR_ANGLE)
-    #print('B_r_parker_pfss)
+    
 
     # pffs_r_factor and pfss_theta_factor taken as in Jardine+2002 (MNRAS). See Eqs. 7 and 8 
     #pfss_r_factor=  ((d_orb/R_star)**3 + 2*R_SS**3) / (1 + 2*R_SS**3) 
@@ -152,7 +152,7 @@ def get_bfield_comps(Bfield_geom, B_star, d_orb, R_star, v_corot, v_sw, angle_v_
 
     # Eq. 23 of Turnpenney 2018 -  First term of RHS
     #angle_B = np.arctan(B_phi/B_r) # Angle the B-field makes with the radial direction
-    print(type(B_r),type(B_phi))
+    
     angle_B = np.arctan2(B_phi, B_r) # Angle the B-field makes with the radial direction
     # Angle between the stellar wind magnetic field and the impinging plasma velocity
     # Eqn 23 in Turnpenney 2018. It's also Eq. 13 in Zarka 2007
@@ -688,7 +688,7 @@ def B_color(starname,star_mass,Prot):
   alpha=-1.26
   #eachstar=data['star_name'][indi]
   result_table = Simbad.query_object(starname)
-  print(result_table['MAIN_ID'][0],result_table['FLUX_V'][0],result_table['FLUX_K'][0])
+  #print(result_table['MAIN_ID'][0],result_table['FLUX_V'][0],result_table['FLUX_K'][0])
   #pdn['B_color'][ind]=result_table['FLUX_B'][0]
   V_color=result_table['FLUX_V'][0]
   K_color=result_table['FLUX_K'][0]  
@@ -805,9 +805,7 @@ def get_S_reconnect(geom_f, R_obs, B_sw, v_rel, gamma = 1.0):
         P_d_mks = gamma * np.pi / mu_0_mks * (B_sw/1e4)**2 * (R_obs/1e2)**2 * (v_rel/1e2)*geom_f
         P_d     = P_d_mks * 1e7 # in cgs units 
         S_reconnect = P_d / EPSILON
-        #print(type(S_reconnect))
-        #print('R_obs') 
-        #print(R_obs)
+
 
         return S_reconnect, P_d, P_d_mks
         
@@ -874,10 +872,7 @@ def get_interaction_strength(r_orb, B_star, Bplanet_field, v_alf,M_A,geom_f):
     Sigma_P = kappa * (r_orb / au) ** lamba * (B_jupiter / Bplanet_field) * (L_XUV) ** mu_parameter
 
     alpha_interaction_strength = Sigma_P / (Sigma_P + 2 * Sigma_A)
-    #alpha_interaction_strength_neg = Sigma_P / (Sigma_P + 2 * Sigma_A_neg)
-    #alpha_interaction_strength_SI = Sigma_P / (Sigma_P + 2 * Sigma_A_SI)
-    # print('alpha_interaction_strength :',alpha_interaction_strength)
-    # print('alpha_interaction_strength_SI :',alpha_interaction_strength_SI)
+
 
     return Sigma_P, Sigma_A, alpha_interaction_strength
 
