@@ -1,7 +1,7 @@
 import numpy as np
 from SPIworkflow.constants import *
 
-#python spirou.py 2>&1 | tee logfile.txt
+#python sirio.py 2>&1 | tee logfile.txt
 
 #####################################################
 # ARRAY OF PLANETS TO COMPUTE RADIO EMISSION FROM SPI
@@ -258,20 +258,21 @@ YLIMLOW   = 1e-3
 YLIMHIGH  = 1e2
 #PLOT_R_eff = False
 
-### WELCOME TO SPIROU
+### WELCOME TO SIRIO
+print(f'\n\n\n\n')
 print('###########################################################')
 print('###                                                     ###')
-print('### SPIROU code @Pérez-Torres & Peña-Moñino 2025        ###')
+print('### SIRIO code @Pérez-Torres & Peña-Moñino 2025        ###')
 print('###                                                     ###')
 print('### If you use fully or partial parts of this code,     ###')
 print('### please acknowledge our work by citing the paper     ###') 
 print('### XXXX and indicating the url address for the code:   ###') 
-print('### https://github.com/mapereztorres/spirou             ###') 
+print('### https://github.com/mapereztorres/sirio              ###') 
 print('###                                                     ###')
 print('###########################################################\n')
 
 ###
-print('You have chosen the following setup parameters for SPIROU:\n')
+print('You have chosen the following setup parameters for SIRIO:\n')
 
 ###
 if INPUT_TABLE == False:

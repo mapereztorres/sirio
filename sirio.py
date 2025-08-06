@@ -92,7 +92,7 @@ if INPUT_TABLE == True:
     data.reset_index(inplace = True) # to prevent funny jumps in the indices
 
     ############## PRINT INDEX OF EACH PLANET AFTER RESETTING INDICES IN data
-    print('SPIROU WILL BE RUN FOR THE FOLLOWING TARGETS\n')
+    print('SIRIO WILL BE RUN FOR THE FOLLOWING TARGETS\n')
     print(data['planet_name'])
     print('\n')
     planet_array = range(len(data))
@@ -587,6 +587,6 @@ for indi in planet_array:
     print('###########################################################\n')
 
 print('###########################################################')
-print(f'SPIROU HAS FINISHED SUCCESSFULLY!!\n')
+print(f'SIRIO HAS FINISHED SUCCESSFULLY!!\n')
 print('###########################################################')
 

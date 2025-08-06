@@ -66,7 +66,7 @@ python sirio.py
 
 ## File structure
 
-The following file structure of spirou should be self-explanatory. 
+The following file structure of SIRIO should be self-explanatory. 
 
 ```
 ├── INPUT          - folder containing the input target/targets
@@ -84,7 +84,7 @@ The following file structure of spirou should be self-explanatory.
 │   ├── plot_effective_radius.py
 │   └── plot_flux_density.py
 ├── README.md
-├── setup.py       - file to set up the parameters for the runs of spirou.py
+├── setup.py       - file to set up the parameters for the runs of sirio.py
 ├── sirio.py      - main script
 ├── sirio.yml     - yml file to create a python environment to run the code
 └── SPIworkflow
