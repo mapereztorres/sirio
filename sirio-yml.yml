@@ -1,0 +1,12 @@
+name: sirio-yml
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - astropy
+  - numpy
+  - pandas
+  - scipy
+  - importlib-resources
+  - matplotlib
