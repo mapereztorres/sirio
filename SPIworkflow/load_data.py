@@ -61,6 +61,7 @@ def get_spi_data(infile_data='./INPUT/SPI-targets.csv',
         df['radius_planet(r_earth)']=''
     # Create new pandas.Dataframe with a subset of rows (easy to display in,
     # e.g., jupyter notebook.
+    print('infile_data: ', infile_data)
     if infile_data =='./INPUT/SPI-sources_planets_MASTER.csv':
         df2 = df[["star_name", "SP_TYPE", "d_star(pc)", "mass_star(m_sun)",
             "radius_star(r_sun)", "p_rot(days)", "bfield_star(gauss)",
@@ -211,8 +212,8 @@ def load_target(data, indi):
         # Planet - 
     Exoplanet = data['planet_name'][indi]
     Mp = float(data['mass_planet(m_earth)'][indi])*M_earth # Planetary mass, in grams
-    if pd.isna(Mp): # If there is no mass value, use mass * sin(i)
-        Mp = data['mass_sini'][indi] * M_earth 
+    #if pd.isna(Mp): # If there is no mass value, use mass * sin(i)
+    #    Mp = data['mass_sini'][indi] * M_earth 
     Rp = data['radius_planet(r_earth)'][indi]
     if pd.isna(Rp): 
         # Rp - as in Mueller+2019. Better than Zeng+2016 for Mp >~ 4 M_Earth

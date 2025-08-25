@@ -106,6 +106,13 @@ ax2.plot(x,y_inter,color='black',lw=1.5)
 ax2.plot(x,y_inter_reconnect,color='black',lw=1.5)
 #ax2.plot(x,y_inter_reconnect,color='blue',lw=3)
 ax2.plot(x,y_inter_sb,color='black',lw=1.5)
+
+
+
+ax2.scatter(x[closest_index], Flux_r_S_inter_planet,color='orange',s=300)
+ax2.scatter(x[closest_index], Flux_reconnect_inter_planet,color='blue',s=300)
+ax2.scatter(x[closest_index], Flux_sb_inter_planet,color='green',s=300)
+
 if STUDY == 'D_ORB':
     ax2.set_yscale('log') 
     # Draw vertical line at nominal orbital separation of planet
