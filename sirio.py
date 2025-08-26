@@ -92,7 +92,7 @@ if INPUT_TABLE == True:
     data.reset_index(inplace = True) # to prevent funny jumps in the indices
 
     ############## PRINT INDEX OF EACH PLANET AFTER RESETTING INDICES IN data
-    print('SPIROU WILL BE RUN FOR THE FOLLOWING TARGETS\n')
+    print('SIRIO WILL BE RUN FOR THE FOLLOWING TARGETS\n')
     print(data['planet_name'])
     print('\n')
     planet_array = range(len(data))
@@ -117,9 +117,9 @@ for indi in planet_array:
         starname,d, R_star, M_star, P_rot_star, B_star, Exoplanet, Mp, Rp, r_orb, P_orb,eccentricity, q, Q = load_target(data, indi)
         T_corona = data['T_corona(MK)'][indi]*1e6
         M_star_dot = data['mdot(mdot_sun)'][indi]
-        print(f'RUNNING SPIROU FOR EXOPLANET {planet_array[indi]}: {Exoplanet}\n')
+        print(f'RUNNING SIRIO FOR EXOPLANET {planet_array[indi]}: {Exoplanet}\n')
     else: 
-        print(f'RUNNING SPIROU FOR EXOPLANET {Exoplanet}\n')
+        print(f'RUNNING SIRIO FOR EXOPLANET {Exoplanet}\n')
     # Fill B_star column if empty. Uses original units from table
     # B_star - stellar magnetic field at the equator, in Gauss
     if pd.isna(B_star):
@@ -701,7 +701,7 @@ for indi in planet_array:
     print('###########################################################\n')
 
 print('###########################################################')
-print(f'SPIROU HAS FINISHED SUCCESSFULLY!!\n')
+print(f'\nSIRIO HAS FINISHED SUCCESSFULLY!!\n')
 print('###########################################################')
 
     
