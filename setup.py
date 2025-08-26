@@ -11,8 +11,8 @@ from SPIworkflow.constants import *
 # for a single target (INPUT_TABLE = False). 
 
 # Uncomment the line that applies
-INPUT_TABLE = True
-#INPUT_TABLE = False
+#INPUT_TABLE = True
+INPUT_TABLE = False
 
 #######################################################################
 #  STUDY CASES
