@@ -167,7 +167,6 @@ for indi in planet_array:
         T_corona = data['T_corona(MK)'][indi]*1e6
         M_star_dot = data['mdot(mdot_sun)'][indi]
         print(f'RUNNING SIRIO FOR EXOPLANET {planet_array[indi]}: {Exoplanet}\n')
-        print('Rp: ',Rp, ' quitar')
     else: 
         print(f'RUNNING SIRIO FOR EXOPLANET {Exoplanet}\n')
     # Fill B_star column if empty. Uses original units from table
