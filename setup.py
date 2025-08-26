@@ -58,8 +58,8 @@ R_SPI = 1.0
 ####################################################
 
 ### Consider free-free absorption (True => Yes; False => No)
-freefree = True
-#freefree = False
+#freefree = True
+freefree = False
 
 # Ionization state (Z = 1 - fully ionized hydrogen)
 Z = 1 
