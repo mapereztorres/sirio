@@ -157,10 +157,10 @@ for indi in planet_array:
     #gyrofreq = e*B_spi/(2*np.pi * m_e * c) # in cgs units
     #Delta_nu_cycl = gyrofreq # Hz - width of ECMI emission  assumed to be  (0.5 * gyrofreq), 
     if Exoplanet=='Trappist-1 b' or Exoplanet=='Proxima b Turnpenney' or Exoplanet=='Proxima b Reville'or Exoplanet=='Proxima b kavanagh' or Exoplanet=='Trappist-1 b Reville': 
-        print('d_orb limit like in Turnpenny')
+        #print('d_orb limit like in Turnpenny')
         d_orb_max = 3e3
     elif Exoplanet=='YZCet b Model A' or Exoplanet=='YZCet b Model B':
-        print('d_orb limit like in Pineda')
+        #print('d_orb limit like in Pineda')
         d_orb_max = 60
     elif Exoplanet == 'GJ1151 hypothetical 2' or Exoplanet == 'GJ1151 hypothetical 1':
         #print('d_orb limit like in Pineda')
@@ -223,8 +223,8 @@ for indi in planet_array:
         R_alfven =np.array(R_alfven)
         R_alfven_pole = spi.get_R_alfven_alt(eta_star, colatitude = 0)
         R_alfven_pole = np.array(R_alfven_pole)
-    print('R_alfven :', R_alfven, type(R_alfven))
-    print('R_alfven_pole: ', R_alfven_pole,type(R_alfven_pole))
+    #print('R_alfven :', R_alfven, type(R_alfven))
+    #print('R_alfven_pole: ', R_alfven_pole,type(R_alfven_pole))
     #Alfven radius at the pole, in stellar radii
     #R_alfven_pole = spi.get_R_alfven(eta_star, colatitude = 0)
 
@@ -254,9 +254,8 @@ for indi in planet_array:
         n_sw_planet = spi.n_wind(M_star_dot_arr, d_orb, v_sw, m_av) # Plasma number density at distance (R/R_star)
         if Exoplanet=='YZCet b Model A' or Exoplanet=='YZCet b Model B':
             #print(M_star_dot_arr, d_orb, v_sw, m_av)
-            print(M_star_dot_arr)
-            
-            print(f'n_sw_planet for planet {Exoplanet}: {n_sw_planet}')
+             print(M_star_dot_arr)
+            #print(f'n_sw_planet for planet {Exoplanet}: {n_sw_planet}')
     else:
         # WARNING: This (arbitrary) value of 1e4 for n_sw_planet to be set up in setup.py
         #n_sw_planet = np.ones(len(d_orb)) * 1e4  
@@ -284,7 +283,7 @@ for indi in planet_array:
             # Compute Alfvén parameters in the stellar wind at a distance d_orb 
             v_alf, M_A, v_alf_r, M_A_radial = spi.get_alfven(rho_sw_planet, B_sw, B_r, v_rel, v_sw)
             if Exoplanet=='YZCet b Model A' or Exoplanet=='YZCet b Model B':
-                print('v_alf [-1]: ',v_alf[-1])
+                 print('v_alf [-1]: ',v_alf[-1])
             # defines whether planet is unmagnetized (magnetized_pl_arr[ind1] = 0), or magnetized (magnetized_pl_arr[ind1] = 1)
             if magnetized_pl_arr[ind1]: # magnetized planet
                 planet_magnetized='MAGNETIZED PLANET'
@@ -305,7 +304,7 @@ for indi in planet_array:
             else:  # unmagnetized planet
                 planet_magnetized='UNMAGNETIZED PLANET'
                 B_planet_arr  = np.zeros(len(d_orb)) # unmagnetized planet
-            print(f'\nRUNNING FOR {selected_geometry} \nAND {planet_magnetized}')
+            print(f'\nRUNNING FOR {selected_geometry} AND {planet_magnetized}')
             
             if STUDY == "B_PL":
                 B_planet_Sano = B_planet_arr # Planet magnetic field at r_orb. 1-element array, in Gauss. 
@@ -331,9 +330,9 @@ for indi in planet_array:
 
             if Bfield_geom_arr[ind] == 'closed_dipole':
                 r_ss_estimate = spi.get_rss(P_th_sw, P_dyn_sw,P_B_sw, d_orb)
-                print(len(d_orb))
-                print('r_ss_estimate :',r_ss_estimate/R_star)
-                print('R_alfven :', R_alfven, type(R_alfven))
+                #print(len(d_orb))
+                #print('r_ss_estimate :',r_ss_estimate/R_star)
+                #print('R_alfven :', R_alfven, type(R_alfven))
             eta = spi.get_confinement(P_dyn_sw, P_B_sw)
             #alfven_alt = spi.get_alfven_alt(eta, POLAR_ANGLE)
             
@@ -515,26 +514,21 @@ for indi in planet_array:
             v_alf_planet=v_alf[closest_index]
 
             Sigma_P, Sigma_A, alpha_interaction_strength=spi.get_interaction_strength(r_orb,B_star,Bplanet_field,v_alf_planet,M_A,geom_f)
-            print('Sigma_P: {:.3e}'.format(Sigma_P))
             
             with np.printoptions(precision=3, suppress=False, formatter={'float': '{:0.3e}'.format}):
                 #print('Sigma_A:', Sigma_A)
-                print('Sigma_A_max:', max(Sigma_A))
-                print('Sigma_A_min:', min(Sigma_A))
+                #print('Sigma_A_max:', max(Sigma_A))
+                #print('Sigma_A_min:', min(Sigma_A))
                 #print('alpha_interaction_strength:', alpha_interaction_strength)
-                print('alpha_interaction_strength_max:', max(alpha_interaction_strength))
-                print('alpha_interaction_strength_min:', min(alpha_interaction_strength))
+                #print('alpha_interaction_strength_max:', max(alpha_interaction_strength))
+                #print('alpha_interaction_strength_min:', min(alpha_interaction_strength))
                 #loc_max_alpha = np.where(alpha_interaction_strength == max(alpha_interaction_strength))
                 #loc_min_alpha = np.where(alpha_interaction_strength == min(alpha_interaction_strength))
                 loc_max_alpha = np.argmax(alpha_interaction_strength)
                 loc_min_alpha = np.argmin(alpha_interaction_strength)
-                print(d_orb[loc_max_alpha]/r_orb)
-                print(d_orb[loc_min_alpha]/r_orb)
+                #print(d_orb[loc_max_alpha]/r_orb)
+                #print(d_orb[loc_min_alpha]/r_orb)
                 
-
-            #print('Sigma_A: {:.3e}'.format(Sigma_A))
-            #print('alpha_interaction_strength: {:.3e}'.format(alpha_interaction_strength))
-
             ###########################################################################
             ####                  PLOTTING                                         ####
             ###########################################################################
@@ -567,10 +561,10 @@ for indi in planet_array:
              #Specific for comparison with Turnpenney
                 #filename = 'plotting/plot_flux_density_turnpenney.py'
                 filename = 'plotting/plot_flux_density_turnpenney.py'
-                print('plotting/plot_flux_density_turnpenney.py')
+                #print('plotting/plot_flux_density_turnpenney.py')
             else:
                 filename = 'plotting/plot_flux_density.py'
-                print('plotting/plot_flux_density.py')
+                #print('plotting/plot_flux_density.py')
                 #filename = 'plotting/plot_flux_and_radius.py'            
             with open(filename) as file:
                 exec(file.read()) #plotting/plot_flux_density.py

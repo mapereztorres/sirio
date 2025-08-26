@@ -2,7 +2,7 @@
 #R0=R_STAR
 #v=v_sw
 #r=d_orb
-print('PLOTTING PARKER SPIRAL')
+#print('PLOTTING PARKER SPIRAL')
 theta = (Omega_star / v_sw) * (d_orb - R_star)
 x = d_orb * np.cos(theta)/R_star
 y = d_orb * np.sin(theta)/R_star
