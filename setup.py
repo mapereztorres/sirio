@@ -271,7 +271,7 @@ print('###                                                     ###')
 print('### If you use fully or partial parts of this code,     ###')
 print('### please acknowledge our work by citing the paper     ###') 
 print('### XXXX and indicating the url address for the code:   ###') 
-print('### https://github.com/mapereztorres/spirou             ###') 
+print('### https://github.com/mapereztorres/sirio              ###') 
 print('###                                                     ###')
 print('###########################################################\n')
 

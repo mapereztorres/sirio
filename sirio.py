@@ -666,20 +666,20 @@ for indi in planet_array:
     ################################        
     if Bfield_geom_arr == ['open_parker_spiral','closed_dipole','pfss']:
         '''
-        if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet'+ '['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv'):
+        if os.path.isfile('/home/luis/github/sirio/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet'+ '['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv'):
             print('Model A done')
-        if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet'+ '['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv'):
+        if os.path.isfile('/home/luis/github/sirio/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet'+ '['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv'):
             print('Model B done')
     
-        if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet'+ '['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv') and os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet'+ '['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv') and STUDY == 'D_ORB' and Exoplanet=='YZCet b Model B':
+        if os.path.isfile('/home/luis/github/sirio/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet'+ '['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv') and os.path.isfile('/home/luis/github/sirio/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet'+ '['+"{:.3f}".format(Bplanet_field)+']'+'G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv') and STUDY == 'D_ORB' and Exoplanet=='YZCet b Model B':
         '''
         ## Specific for the Pineda plots
-        if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet[0.194]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv'):
+        if os.path.isfile('/home/luis/github/sirio/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet[0.194]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv'):
             print('Model A done')
-        if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet[0.194]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv'):
+        if os.path.isfile('/home/luis/github/sirio/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet[0.194]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv'):
             print('Model B done')
     
-        #if os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet[0.194]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv') and os.path.isfile('/home/luis/github/spirou/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet[0.194]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv') and STUDY == 'D_ORB' and Exoplanet=='YZCet b Model B':   
+        #if os.path.isfile('/home/luis/github/sirio/OUTPUT/YZCet_b_Model_A/CSV/D_ORB_YZCet_b_Model_A-open-parker-spiral-Bstar220.0G-Bplanet[0.194]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv') and os.path.isfile('/home/luis/github/sirio/OUTPUT/YZCet_b_Model_B/CSV/D_ORB_YZCet_b_Model_B-open-parker-spiral-Bstar220.0G-Bplanet[0.194]G-1.0e-03-1.0e-03-T_corona1.5MKSPI_at_1.0R_star_freefree_reconnection_model.csv') and STUDY == 'D_ORB' and Exoplanet=='YZCet b Model B':   
         if STUDY == 'D_ORB' and Exoplanet=='YZCet b Model B':  
             filename = 'plotting/plot_model_comparison_pineda.py'
             with open(filename) as file:
