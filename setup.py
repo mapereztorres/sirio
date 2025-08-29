@@ -11,8 +11,8 @@ from SPIworkflow.constants import *
 # for a single target (INPUT_TABLE = False). 
 
 # Uncomment the line that applies
-#INPUT_TABLE = True
-INPUT_TABLE = False
+INPUT_TABLE = True
+#INPUT_TABLE = False
 
 #######################################################################
 #  STUDY CASES
@@ -58,8 +58,8 @@ R_SPI = 1.0
 ####################################################
 
 ### Consider free-free absorption (True => Yes; False => No)
-#freefree = True
-freefree = False
+freefree = True
+#freefree = False
 
 # Ionization state (Z = 1 - fully ionized hydrogen)
 Z = 1 
@@ -252,7 +252,7 @@ PLOTOUT = True
 # DRAW_RMS?
 DRAW_RMS = False
 # DRAW Little Earth?
-DRAW_EARTH = True
+DRAW_EARTH = False
 LIMS_MA = True
 LIM_MA_LOW = 1e-2
 LIM_MA_HIGH = 1e0
