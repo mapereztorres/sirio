@@ -71,9 +71,7 @@ if Exoplanet == 'Trappist-1 b':
 	yticks3 = ax3.get_yticks()
 	ax3.set_yticks(yticks3[2:-2]) 
 
-	#secax3 = ax3.secondary_yaxis('right', functions=(spi.identity,spi.identity))
 
-	#secax3.set_yticks(yticks3[2:-2]) 
 
 	out_M_A =  FOLDER + '/DIAG_PDF'+ '/'+ "-MA-variation"  + "_" + str(Exoplanet.replace(" ", "_")) +  geometry + diagnostic_string +'.pdf' 
 	print('saving: ',out_M_A)

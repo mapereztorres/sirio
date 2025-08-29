@@ -14,16 +14,7 @@ ax1.plot(x, v_alf/1e5*np.ones(len(x)), color='g', linestyle='dashdot')
 ax1.plot(x, v_sw/1e5*np.ones(len(x)), color='b', linestyle='dashed')
 ax1.plot(x, v_rel/1e5*np.ones(len(x)), color='k', linestyle='solid')
 ax1.plot(x, v_sound/1e5*np.ones(len(x)), color='orange', linestyle=(0,(1,3.5)))
-'''
-red_patch = mpatches.Patch(color='red', label=r'v$_{\rm orb}$')
-black_patch = mpatches.Patch(color='black', label=r'v$_{\rm rel}$')
-green_patch = mpatches.Patch(color='green', label=r'v$_{\rm alf}$')
-blue_patch = mpatches.Patch(color='blue', label=r'v$_{\rm sw}$')
-orange_patch = mpatches.Patch(color='orange', label=r'v$_{\rm sound}$')      
-#ax1.set_ylim(100,2000)
-ax1.legend(handles=[blue_patch,red_patch,black_patch,orange_patch,green_patch],loc='upper left',fontsize=20,facecolor='white',edgecolor='white', framealpha=0)
-'''
-#ax1.axhline(y = v_sw_terminal/1e5)
+
 legend_elements = [
 Line2D([0], [0], color='r', linestyle='dotted', label=r'v$_{\rm orb}$'),
 Line2D([0], [0], color='green', linestyle='dashdot', label=r'v$_{\rm alf}$'),
@@ -40,13 +31,7 @@ ax2.plot(x, B_phi*np.ones(len(x)), color='g', linestyle='dashdot')
 ax2.plot(x, B_sw*np.ones(len(x)), color='b', linestyle='solid')
 ax2.plot(x, B_sw*np.ones(len(x))*np.sqrt(geom_f), color='k', linestyle='dashed')
 
-'''
-red_patch = mpatches.Patch(color='red', label=r'B$_{\rm r}$')
-green_patch = mpatches.Patch(color='green', label=r'B$_{\rm phi}$')
-blue_patch = mpatches.Patch(color='blue', label=r'B$_{\rm tot}$')
-black_patch = mpatches.Patch(color='black', label=r'B$_{\rm perp}$')
-ax2.legend(handles=[red_patch,green_patch,blue_patch,black_patch],loc='upper right',fontsize=20,facecolor='white',edgecolor='white', framealpha=0)
-'''
+
 legend_elements = [
 Line2D([0], [0], color='red', linestyle='dotted', label=r'B$_{\rm r}$'),
 Line2D([0], [0], color='green', linestyle='dashdot', label=r'B$_{\rm phi}$'),
@@ -61,24 +46,12 @@ ax2.legend(handles=legend_elements, loc='upper right', fontsize=15, facecolor='w
 ax3.plot(x, M_A*np.ones(len(x)), color='k', lw=lw)
 
 
-#ax3.plot(x, eta*np.ones(len(x)), color='k', lw=lw)
-#ax3.axyline(y = xnom, ls='--', color='k', lw=2)
-#ax3.axvline(x = R_alfven)
 
 ax4.plot(x, P_B_sw*np.ones(len(x)), color='b', linestyle='dashdot')
 ax4.plot(x, P_dyn_sw*np.ones(len(x)), color='r', linestyle='solid')
 ax4.plot(x, P_th_sw*np.ones(len(x)), color='g', linestyle=(0,(1,3.5)))
-# LPM - CHECK IF USEFUL
-#ax4.plot(x, P_sw*np.ones(len(x)), color='k', ls=(0, (1, 2)))
-#ax4.plot(x, P_B_planet*np.ones(len(x)), color='magenta', ls=(0, (1, 2)))
-'''
-black_patch = mpatches.Patch(color='black', label=r'P$_{\rm sw}$') #r'Primary T$_{\rm eff}$')
-red_patch = mpatches.Patch(color='red', label=r'P$_{\rm dyn_{\rm sw}}$')
-green_patch = mpatches.Patch(color='green', label=r'P$_{\rm th_{\rm sw}}$')
-blue_patch = mpatches.Patch(color='blue', label=r'P$_{\rm B_{\rm sw}}$')
-magenta_patch = mpatches.Patch(color='magenta', label=r'P$_{\rm B_planet}$')             
-ax4.legend(handles=[blue_patch,red_patch,green_patch],loc='upper right',fontsize=20,facecolor='white',edgecolor='white', framealpha=0)
-'''
+
+
 legend_elements = [
 Line2D([0], [0],  color='r', linestyle='solid', label=r'P$_{\rm dyn_{\rm sw}}$'),
 Line2D([0], [0],color='g', linestyle=(0,(1,3.5)), label=r'P$_{\rm th_{\rm sw}}$'),
@@ -125,17 +98,12 @@ if STUDY == "D_ORB":
 
 fig.set_figwidth(8)
 fig.set_figheight(20)
-#ax1.set_xscale('log')
+
 
 if Exoplanet == 'GJ1151 hypothetical 2' and STUDY == 'D_ORB':
-    #x_pl1=spi.Kepler_r(M_star*M_sun, P_orb=5) * au/R_star
     x_pl1=12.927
     for ax in [ax1, ax2, ax3, ax4]:
             ax.axvline(x = x_pl1, ls='--', color='k', lw=2)      
-    #ax1.axvline(x = x_pl1, ls='--', color='k', lw=2)
-    #ax2.axvline(x = x_pl1, ls='--', color='k', lw=2)
-    #ax3.axvline(x = x_pl1, ls='--', color='k', lw=2)
-    #ax4.axvline(x = x_pl1, ls='--', color='k', lw=2)
     ax1.set_ylim([10,7e4])
     
 
@@ -154,17 +122,10 @@ ax1.margins(x=0)
 ax2.margins(x=0)      
 ax3.margins(x=0)
 ax4.margins(x=0)    
-#diagnostic_string = "-Bplanet" + str(B_planet_arr[loc_pl]) + "G" +'-'+'T_corona'+str(T_corona/1e6)+'MK'+'-'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'+'.pdf' 
-#diagnostic_string = "{:.1f}".format(B_star) + "G" + "-Bplanet" + str(B_planet_arr[loc_pl]) + "G" + '-'+"{:.1e}".format(BETA_EFF_MIN)+'-'+"{:.1e}".format(BETA_EFF_MAX)+'-'+'T_corona'+str(T_corona/1e6)+'MK'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'
+
+
 diagnostic_string = "{:.1f}".format(B_star) + "G" + "-Bplanet" + '['+"{:.3f}".format(Bplanet_field)+']' + "G" + '-'+"{:.1e}".format(BETA_EFF_MIN)+'-'+"{:.1e}".format(BETA_EFF_MAX)+'-'+'T_corona'+str(T_corona/1e6)+'MK'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'
-#if Bfield_geom_arr[ind] == 'open_parker_spiral':
-    #out_diagnos =  FOLDER + '/' + STUDY + "_" + str(Exoplanet.replace(" ", "_")) + "-diagnostic" + "-Open-Bstar" + diagnostic_string 
-#    geometry = "-Open-spiral-Bstar" 
-#elif Bfield_geom_arr[ind]== 'closed_dipole':
-    #out_diagnos =  FOLDER + '/' + STUDY + "_" + str(Exoplanet.replace(" ", "_")) + "-diagnostic" + "-Closed-Bstar" + diagnostic_string 
-#    geometry = "-Closed-dipole-Bstar"
-#else:
-#    geometry = "-Closed-PFSS-Bstar"
+
 out_diagnos =  FOLDER + '/'+'/DIAG_PDF'+ '/'+ STUDY +"-diagnostic-"  + "_" + str(Exoplanet.replace(" ", "_")) +  geometry + diagnostic_string +'.pdf' 
 out_diagnos=str(out_diagnos)
 plt.savefig(out_diagnos,bbox_inches='tight')
