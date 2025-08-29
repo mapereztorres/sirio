@@ -37,6 +37,23 @@ the user.
 * Miguel Pérez-Torres
 * Luis Peña-Moñino
 
+## Acknowledgments
+
+If you use our code for your research, please recognize our work by citing the following paper: 
+
+`Modelling magnetic star-planet interaction in the iconic M dwarfs Proxima Centauri, YZ Ceti and GJ 1151` by Luis Peña-Moñino and Miguel Pérez-Torres (accepted for publication in MNRAS, cite as arXiv:2508.20891,  	
+https://doi.org/10.48550/arXiv.2508.20891). 
+
+
+Please incude also the link to this
+repository: https://github.com/mapereztorres/sirio. 
+Note that the code to generate all figures published in the paper are located in the branch `sirio-paper`. 
+
+If you copy parts of this code, or fully, please acknowledge this in your research and
+repositories. We do not get any money for this, but our funding agencies recognize our
+work, if it is of use to the community, so we rely on you.
+
+
 ## Running SIRIO
 
 The main script is `sirio.py`. To be sure the code runs without any issues, run it within the `sirio` environment. To create the `sirio` environment, run the following commad:
