@@ -9,7 +9,7 @@ Sub-Alfvénic star-planet interaction (SPI), via the electron-cyclotron maser
 instability mechanism. `Sirio` is the Spanish name of the brightest star in the night sky, `Sirius`.  
 
 
-SIRIO computes the expected flux density from SPI (1) as a function of the orbital
+`SIRIO` computes the expected flux density from SPI (1) as a function of the orbital
 distance (i.e., the semi-major axis) to the planet, or (2) as a function of the
 exoplanetary magnetic field, or (3) as a function of the stellar wind mass loss rate.
 For cases (2) and (3), the orbital distance of the planet to its host star is kept
@@ -41,11 +41,13 @@ the user.
 
 If you use our code for your research, please recognize our work by citing the following paper: 
 
-`Modelling magnetic star-planet interaction in the iconic M dwarfs Proxima Centauri, YZ Ceti and GJ 1151' by Luis Peña-Moñino and Miguel Pérez-Torres (accepted for publication in MNRAS, cite as arXiv:2508.20891,  	
-https://doi.org/10.48550/arXiv.2508.20891). Please incude also the link to this
-repository: https://github.com/mapereztorres/sirio. 
+`Modelling magnetic star-planet interaction in the iconic M dwarfs Proxima Centauri, YZ Ceti and GJ 1151` by Luis Peña-Moñino and Miguel Pérez-Torres (accepted for publication in MNRAS, cite as arXiv:2508.20891,  	
+https://doi.org/10.48550/arXiv.2508.20891). 
 
-Note that the code to generate all figures published in the paper are located in the branch `sirio-paper'. 
+
+Please incude also the link to this
+repository: https://github.com/mapereztorres/sirio. 
+Note that the code to generate all figures published in the paper are located in the branch `sirio-paper`. 
 
 If you copy parts of this code, or fully, please acknowledge this in your research and
 repositories. We do not get any money for this, but our funding agencies recognize our
