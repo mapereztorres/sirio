@@ -262,14 +262,21 @@ YLIMHIGH  = 1e2
 print(f'\n\n\n\n')
 print('###########################################################')
 print('###                                                     ###')
-print('### SIRIO code @Pérez-Torres & Peña-Moñino 2025        ###')
+print('### SIRIO code @Pérez-Torres & Peña-Moñino 2025         ###')
 print('###                                                     ###')
 print('### If you use fully or partial parts of this code,     ###')
 print('### please acknowledge our work by citing the paper     ###') 
-print('### XXXX and indicating the url address for the code:   ###') 
+print('### "Modelling magnetic star-planet interaction in the  ###')
+print('### iconic M dwarfs Proxima Cen, YZ Ceti and GJ 1151"   ###') 
+print('### by Peña-Moñino & Pérez-Torres (accepted in MNRAS,   ###') 
+print('### cite as: arXiv:2508.20891)                          ###') 
+print('### URL: https://arxiv.org/abs/2508.20891               ###') 
+print('###                                                     ###')
+print('### Please, include the url address for the code:       ###') 
 print('### https://github.com/mapereztorres/sirio              ###') 
 print('###                                                     ###')
 print('###########################################################\n')
+
 
 ###
 print('You have chosen the following setup parameters for SIRIO:\n')
