@@ -154,10 +154,17 @@ else:
     
     
 flux_data = {
-    'open_parker_spiral': {'x': [], 'Flux_r_S': [], 'Flux_reconnect': [], 'Flux_sb': [], 'name': []},
-    'closed_dipole':      {'x': [], 'Flux_r_S': [], 'Flux_reconnect': [], 'Flux_sb': [], 'name': []},
-    'pfss':               {'x': [], 'Flux_r_S': [], 'Flux_reconnect': [], 'Flux_sb': [], 'name': []}
+    'open_parker_spiral': {
+        'x': [], 'Flux_r_S': [], 'Flux_reconnect': [], 'Flux_sb': [], 'obs_freq': [], 'name': []
+    },
+    'closed_dipole': {
+        'x': [], 'Flux_r_S': [], 'Flux_reconnect': [], 'Flux_sb': [], 'obs_freq': [], 'name': []
+    },
+    'pfss': {
+        'x': [], 'Flux_r_S': [], 'Flux_reconnect': [], 'Flux_sb': [], 'obs_freq': [], 'name': []
+    }
 }
+
 
     
 for indi in planet_array:
@@ -364,8 +371,8 @@ for indi in planet_array:
             # Stellar wind pressure, in erg/cm3
             P_sw, P_dyn_sw, P_th_sw, P_B_sw = spi.get_P_sw(n_sw_planet, v_rel, T_corona, B_sw, mu)
 
-            if Bfield_geom_arr[ind] == 'closed_dipole':
-                r_ss_estimate = spi.get_rss(P_th_sw, P_dyn_sw,P_B_sw, d_orb)
+            #if Bfield_geom_arr[ind] == 'closed_dipole':
+            #    r_ss_estimate = spi.get_rss(P_th_sw, P_dyn_sw,P_B_sw, d_orb)
 
             eta = spi.get_confinement(P_dyn_sw, P_B_sw)
             #alfven_alt = spi.get_alfven_alt(eta, POLAR_ANGLE)
@@ -550,6 +557,7 @@ for indi in planet_array:
             flux_data[geom]['Flux_reconnect'].append(Flux_reconnect_inter_planet)
             flux_data[geom]['Flux_sb'].append(Flux_sb_inter_planet)
             flux_data[geom]['name'].append(Exoplanet)
+            flux_data[geom]['obs_freq'].append(2.8*B_star)
 
             '''      
             #M_star,d_orb_planet,P_rot_star,M_star,T_corona,m_av,Bfield_geom_arr[ind], B_spi, R_star
@@ -690,7 +698,8 @@ for indi in planet_array:
 
             out_to_file.write_parameters(T_corona, M_star_dot, mu, d, R_star, M_star, P_rot_star, B_star, Exoplanet, Rp, Mp, r_orb, P_orb, loc_pl, M_star_dot_loc, n_base_corona,
                 nu_plasma_corona, nu_ecm, Flux_r_S_min, Flux_r_S_max, rho_sw_planet, n_sw_planet, v_sw_base, Flux_r_S_Z_min,
-                Flux_r_S_Z_max, v_sw, v_rel, v_alf, M_A, B_sw,Bplanet_field, Rmp, R_obs,x_larger_rms,x_smaller_rms,STUDY,Omega_min, Omega_max,R_obs_normalized,x_superalfv)
+                Flux_r_S_Z_max, v_sw, v_rel, v_alf, M_A, B_sw,Bplanet_field, Rmp, R_obs,x_larger_rms,x_smaller_rms,STUDY,Omega_min, Omega_max,R_obs_normalized,x_superalfv,
+                Flux_r_S_inter_planet,Flux_reconnect_inter_planet,Flux_sb_inter_planet)
 
             print(f'\nSAVING USEFUL VALUES TO {outfileTXT}')
             
@@ -743,7 +752,143 @@ colors = {
 
 
 
+for geom in geom_list:
+    #plot_data = flux_data[geom]
+    #plot_data['Flux_r_S'] = plot_data['Flux_r_S'].apply(lambda x: x[0] if isinstance(x, list) else x)
+    #plot_data['Flux_r_S'] = pd.to_numeric(plot_data['Flux_r_S'], errors="coerce")
+    
+    
+    plot_data = pd.DataFrame(flux_data[geom])   # ensure DataFrame
+    plot_data['Flux_r_S'] = plot_data['Flux_r_S'].apply(lambda x: x[0] if isinstance(x, list) else x)
+    plot_data['Flux_r_S'] = pd.to_numeric(plot_data['Flux_r_S'], errors="coerce")
+    #plot_data = plot_data[(plot_data['Flux_r_S'] > 1e-3) & (plot_data['Flux_r_S'] < 1e2)]
+    
+    
+    
+    
+    
+    
+    
+    
+    #plot_data = plot_data[(plot_data['Flux_r_S'] > 1e-3) & (plot_data['Flux_r_S'] < 1e2)]
+        
+        
+        
+        
+        
+        
+        
+        
+    #### Plotting flux vs orbital separation for all targets
+    
+        
+    fig, ax = plt.subplots(figsize=(8, 12))
 
+    #ax.set_ylim([1.001e-3, 1e2])
+    #ax.set_xlim([10, 50])
+    ax.set_yscale('log')
+    
+    ax.set_ylim([1.001e-6, 1e-1])
+    ax.set_xlim([1, 150])
+
+    # Scatter plots
+    ax.scatter(plot_data['x'], plot_data['Flux_r_S'], color=colors['Flux_r_S'], s=60)
+    #ax.scatter(plot_data['x'], plot_data['Flux_reconnect'], color=colors['Flux_reconnect'], marker='x', s=60)
+    #ax.scatter(plot_data['x'], plot_data['Flux_sb'], color=colors['Flux_sb'], marker='^', s=60)
+
+    # Assign numbers to names
+    number_map = {name: i+1 for i, name in enumerate(plot_data['name'])}
+
+    # Annotate points with numbers
+    for xi, frs, name in zip(plot_data['x'], plot_data['Flux_r_S'], plot_data['name']):
+        if pd.notna(xi) and pd.notna(frs) and np.isfinite(xi) and np.isfinite(frs):
+            if 1e-6 < frs < 1e-1:
+                if 1 < xi < 150:
+                    ax.text(xi, frs, str(number_map[name]), fontsize=6, ha='right', va='bottom', rotation=0)
+
+    # Create a legend mapping numbers to names
+    mapping_handles = [Line2D([0], [0], color='none', label=f"{num} = {name}") 
+                       for name, num in number_map.items()]
+
+    ax.legend(handles=mapping_handles, loc='upper right', fontsize=6, title='Targets')
+
+    # Axis labels & title
+    ax.set_xlabel('Orbital separation / Stellar radius')
+    ax.set_ylabel('Flux (mJy)')
+    ax.set_title(geom.replace('_', ' ').title())
+    #ax.set_xlabel(xlabel,fontsize=20)
+    
+    plt.tight_layout()
+    plt.savefig('OUTPUT/alltargets_flux_separation_' + geom + '.pdf', bbox_inches='tight')
+    plt.close()   
+    
+    
+    
+    
+    
+    
+    
+    
+    #### Plotting flux vs observing frequency for all targets    
+    
+    fig, ax = plt.subplots(figsize=(8, 12))
+
+    #ax.set_ylim([1.001e-3, 1e2])
+    #ax.set_xlim([10, 50])
+    ax.set_yscale('log')
+    
+    ax.set_ylim([1.001e-6, 1e-1])
+    ax.set_xlim([1, 4000])
+
+    # Scatter plots
+    ax.scatter(plot_data['obs_freq'], plot_data['Flux_r_S'], color=colors['Flux_r_S'], s=60)
+    #ax.scatter(plot_data['x'], plot_data['Flux_reconnect'], color=colors['Flux_reconnect'], marker='x', s=60)
+    #ax.scatter(plot_data['x'], plot_data['Flux_sb'], color=colors['Flux_sb'], marker='^', s=60)
+
+    # Assign numbers to names
+    number_map = {name: i+1 for i, name in enumerate(plot_data['name'])}
+
+    # Annotate points with numbers
+    for xi, frs, name in zip(plot_data['obs_freq'], plot_data['Flux_r_S'], plot_data['name']):
+        if pd.notna(xi) and pd.notna(frs) and np.isfinite(xi) and np.isfinite(frs):
+            if 1e-6 < frs < 1e-1:
+                if 1 < xi < 4000:
+                    ax.text(xi, frs, str(number_map[name]), fontsize=6, ha='right', va='bottom', rotation=0)
+
+    # Create a legend mapping numbers to names
+    mapping_handles = [Line2D([0], [0], color='none', label=f"{num} = {name}") 
+                       for name, num in number_map.items()]
+
+    ax.legend(handles=mapping_handles, loc='upper right', fontsize=6, title='Targets')
+
+    # Axis labels & title
+    ax.set_xlabel('Observing frequency (MHz)')
+    ax.set_ylabel('Flux (mJy)')
+    ax.set_title(geom.replace('_', ' ').title())
+    #ax.set_xlabel(xlabel,fontsize=20)
+    
+    plt.tight_layout()
+    plt.savefig('OUTPUT/alltargets_flux_freq_' + geom + '.pdf', bbox_inches='tight')
+    plt.close()   
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+print('###########################################################')
+print(f'SIRIO HAS FINISHED SUCCESSFULLY!!\n')
+print('###########################################################')
+
+    
+'''
 for geom in geom_list:
     plot_data = flux_data[geom]
 
@@ -772,23 +917,20 @@ for geom in geom_list:
     ax.set_title(geom.replace('_', ' ').title())
 
     # Legend for scatter markers (top-right)
-    ax.legend(loc='upper right', title='Flux Types')
+    ax.legend(loc='upper left', title='Flux Types')
 
     # Create inset axes for number → name mapping
     ax2 = fig.add_axes([0.75, 0.55, 0.2, 0.4])  # [left, bottom, width, height] in figure coords
     ax2.axis('off')
     for i, (name, num) in enumerate(number_map.items()):
-        ax2.text(0, 1 - i*0.05, f"{num} = {name}", fontsize=8, va='top')
+        ax2.text(0, 1 - i*0.05, f"{num} : {name}", fontsize=8, va='top')
 
     plt.tight_layout()
     plt.savefig('OUTPUT/alltargetsflux_' + geom + '.pdf', bbox_inches='tight')
     plt.close()
 
+'''
 
-
-print('###########################################################')
-print(f'SIRIO HAS FINISHED SUCCESSFULLY!!\n')
-print('###########################################################')
 
 
 
