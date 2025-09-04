@@ -39,7 +39,7 @@ D_ORB_LIM = np.nan
 M_DOT_STRETCH = 50
 M_DOT_MIN = 1e-1
 M_DOT_MAX = 1e+2
-
+M_DOT_DEFAULT = 1e0
 #  STUDY = 'B_PL' SETUP
 #
 # B_PL_MIN, B_PL_MAX: Minimum and maximum planetary magnetic field to carry out 
