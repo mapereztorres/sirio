@@ -13,7 +13,8 @@ from SPIworkflow.constants import *
 # Uncomment the line that applies
 INPUT_TABLE = True
 #INPUT_TABLE = False
-
+#TABLE = 'lotss'
+TABLE = 'vlass'
 #######################################################################
 #  STUDY CASES
 #  STUDY == 'D_ORB' - Predicted flux as a function of orbital distance
@@ -23,8 +24,8 @@ INPUT_TABLE = True
 #######################################################################
 
 # Uncomment the line that applies
-STUDY = "D_ORB"
-#STUDY = "M_DOT"
+#STUDY = "D_ORB"
+STUDY = "M_DOT"
 #STUDY = "B_PL"
 
 # STUDY = "D_ORB" SETUP
@@ -39,7 +40,7 @@ D_ORB_LIM = np.nan
 M_DOT_STRETCH = 50
 M_DOT_MIN = 1e-1
 M_DOT_MAX = 1e+2
-M_DOT_DEFAULT = 1e0
+M_DOT_DEFAULT = 1e1
 #  STUDY = 'B_PL' SETUP
 #
 # B_PL_MIN, B_PL_MAX: Minimum and maximum planetary magnetic field to carry out 
@@ -58,7 +59,7 @@ R_SPI = 1.0
 ####################################################
 
 ### Consider free-free absorption (True => Yes; False => No)
-freefree = False
+freefree = True
 
 # Ionization state (Z = 1 - fully ionized hydrogen)
 Z = 1 
@@ -171,8 +172,8 @@ RMS = 0.015
 # "isothermality" of stellar plasma 
 
 # Default value: 2.0e6 K. Solar value
-T_CORONA_DEF = 2.0e6 
-
+#T_CORONA_DEF = 2.0e6 
+T_CORONA_DEF = 4.7e6 
 
 
 
