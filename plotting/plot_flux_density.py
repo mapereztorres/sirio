@@ -16,7 +16,6 @@ lw = LW
 # Kepler's third law, with d_orb_mark in units of R_star, 
 # so that period_mark is in days.
 #
-#period_mark = np.array([1, 10, 20, 40, 80, 100, 120, 140, 160,])
 period_mark = np.array([1, 10, 30, 60, 100, 200, 500, 1000, 2000])
 d_orb_mark = (period_mark/yr)**(2/3) * (M_star/M_sun)**(1/3) * (au/R_star)
 
@@ -47,7 +46,7 @@ elif STUDY == 'B_PL':
     figure=plt.figure(figsize=(8,7.5))
     ax2 = plt.subplot2grid((1,1),(0,0),rowspan=1,colspan=1)
     ax2.set_facecolor("white")	
-#plt.tight_layout()
+
 
 y_min = Flux_r_S_min # minimum flux (array), Saur/Turnpenney model
 y_max = Flux_r_S_max # maximum flux (array)
