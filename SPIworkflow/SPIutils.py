@@ -244,10 +244,11 @@ def bfield_sano(M_planet = 1.0, R_planet = 1.0, Omega_rot_planet = 1.0):
         (From Sano, J. Geomag. Geolectr., 45, 65-77, 1993), 
         OUTPUT: B_planet: Surface magnetic field of the planet, in units of B_Earth 
         INPUT : M_planet: Planet radius, in units of the Earth mass
-                R_planet: in units of the Earth radius
+                R_planet: in units of the Earth radius                
                 Omega_rot_planet: Rotational speed of the planet. It is assumed that the 
                         planets are tidally locked, hence P_rot_planet = P_orb_planet. 
                         In units of the rotational speed of Earth (radians/sec) 
+                        
                 rho_core - Planet outer core density, in g/cm^3. 
     """
     # Scaling law for the planet's core radius, from Curtis & Ness (1986)
@@ -257,6 +258,69 @@ def bfield_sano(M_planet = 1.0, R_planet = 1.0, Omega_rot_planet = 1.0):
     B_planet  = magn_moment_planet / R_planet**3 # in units of B_earth
  
     return r_core, rho_core, magn_moment_planet, B_planet
+
+
+def bfield_fixed(M_planet = 1.0, R_planet = 1.0, Omega_rot_planet = 1.0):
+    logM = np.log10(M_planet)
+    print('M Planet :', M_planet)
+    print('logM :', logM)
+    #B_planet = 40/5     #Gauss
+    #B_planet = 8.4 / (bfield_earth * Tesla2Gauss)  #Earth units
+    
+    B_planet = B_PLANET_DEFAULT
+    #B_planet = 0.5 / (bfield_earth * Tesla2Gauss)
+    magn_moment_planet = B_planet * R_planet**3 # in units of B_earth
+    try:
+        B_planet= B_planet * np.ones(len(Omega_rot_planet))
+    except:
+        pass
+    return magn_moment_planet,B_planet
+    
+def bfield_input(M_planet = 1.0, R_planet = 1.0, Omega_rot_planet = 1.0, B_pl = 1.0):
+    logM = np.log10(M_planet)
+    print('M Planet :', M_planet)
+    print('logM :', logM)
+    B_planet = B_pl / (bfield_earth * Tesla2Gauss)
+    magn_moment_planet = B_planet * R_planet**3 # in units of B_earth
+    try:
+        B_planet= B_planet * np.ones(len(Omega_rot_planet))
+    except:
+        pass
+    return magn_moment_planet,B_planet   
+    
+    
+def bfield_average(M_planet = 1.0, R_planet = 1.0, Omega_rot_planet = 1.0):
+    """ Computes the surface magnetic field strength of a planet using a geometrical average of Sano, Busse and both Mizutani slow and moderate scaling laws.
+        OUTPUT: B_planet: Surface magnetic field of the planet, in units of B_Earth 
+        INPUT : M_planet: Planet radius, in units of the Earth mass
+                R_planet: in units of the Earth radius
+                Omega_rot_planet: Rotational speed of the planet. It is assumed that the 
+                        planets are tidally locked, hence P_rot_planet = P_orb_planet. 
+                        In units of the rotational speed of Earth (radians/sec) 
+                        
+                rho_core - Planet outer core density, in g/cm^3. 
+    """
+    #Summary of scaling laws in 10.1029/1998JE900050:
+    #https://www.scopus.com/pages/publications/0001173365
+        
+    
+    
+    # Scaling law for the planet's core radius, from Curtis & Ness (1986)    
+    r_core = M_planet**0.44 # in units of r_core_Earth
+    rho_core = M_planet/R_planet**3
+    sigma_conduct=1
+    magn_moment_planet_mizutani_slow = (Omega_rot_planet * rho_core / sigma_conduct)**(1/2) * r_core**(3) # Mizutani with slow convection: Magnetic moment, in units of Earth magn. moment
+    magn_moment_planet_mizutani_moderate = Omega_rot_planet**(3/2) * rho_core**(1/2) * sigma_conduct**(-1/4)  * r_core**(7/2) # Mizutani with moderate convection: Magnetic moment, in units of Earth magn. moment
+    magn_moment_planet_busse = Omega_rot_planet * rho_core**(1/2) * r_core**(4) # Busse: Magnetic moment, in units of Earth magn. moment
+    magn_moment_planet_sano = Omega_rot_planet * rho_core**(1/2) * r_core**(7/2) # Sano: Magnetic moment, in units of Earth magn. moment
+    
+    magn_moment_planet = (magn_moment_planet_mizutani_slow * magn_moment_planet_mizutani_moderate * magn_moment_planet_busse * magn_moment_planet_sano)**(1/4)
+    
+    magn_moment = ([magn_moment_planet_mizutani_slow * magn_moment_planet_mizutani_moderate * magn_moment_planet_busse * magn_moment_planet_sano])
+    
+    B_planet  = magn_moment_planet / R_planet**3 # in units of B_earth
+    
+    return r_core, rho_core, magn_moment_planet, B_planet,magn_moment_planet_mizutani_slow,magn_moment_planet_mizutani_moderate,magn_moment_planet_busse,magn_moment_planet_sano
 
 def Lrad_leto(B_star=1.0, R_star=1.0, P_rot=1.0):
     """ Returns the radio luminosity of an early-type magnetic star, 
@@ -357,57 +421,7 @@ def get_eta_star(B_star, R_star, M_star_dot_arr, v_sw_terminal):
 
     return eta_star
 
-def get_R_alfven(eta_star, colatitude):
-    """
-    Computes the Alfvén radius for a given colatitude value 
-    (colatitude = 90 deg implies at the magnetic equator)
-    We follow the formalism in ud-Doula & Owocki (2002, ApJ)
 
-    OUTPUT: 
-        R_alfvén (array) - Alfvén radius at a certain value of the POLAR_ANGLE (theta ==
-                           colatitude). 
-                           It returns an array of the same length as M_star_dot_arr.
-                           In units of stellar radii
-    INPUT: 
-        eta_star (array):  Magnetic confinement parameter at the equator of the stellar
-                           surface. Adimensional. As defined in ud-Doula & Owocki (2002, ApJ).
-        colatitude (float)  - colatitude at which to determine R_alfven, in radians
-    """
-    factor = 4 - 3 * np.sin(colatitude)**2  ## factor in RHS of Eq. 8 
-
-    def equation(R_ratio, eta_star):
-        return (R_ratio**(2*Q_DIPOLE-2) - R_ratio**(2*Q_DIPOLE-3)) - eta_star * factor
-
-
-    R_alfven = fsolve(equation, R_ALFVEN_GUESS, args=(eta_star))[0]
-
-    return R_alfven
-    
-def get_R_alfven_alt(eta_star, colatitude):
-    """
-    Computes the Alfvén radius for a given colatitude value 
-    (colatitude = 90 deg implies at the magnetic equator)
-    We follow the formalism in ud-Doula & Owocki (2002, ApJ)
-
-    OUTPUT: 
-        R_alfvén (array) - Alfvén radius at a certain value of the POLAR_ANGLE (theta ==
-                           colatitude). 
-                           It returns an array of the same length as M_star_dot_arr.
-                           In units of stellar radii
-    INPUT: 
-        eta_star (array):  Magnetic confinement parameter at the equator of the stellar
-                           surface. Adimensional. As defined in ud-Doula & Owocki (2002, ApJ).
-        colatitude (float)  - colatitude at which to determine R_alfven, in radians
-    """
-    factor = 4 - 3 * np.sin(colatitude)**2  ## factor in RHS of Eq. 8 
-
-    def equation(R_ratio, eta_star):
-        return (R_ratio**(2*Q_DIPOLE-2) - R_ratio**(2*Q_DIPOLE-3)) - eta_star * factor
-    R_alfven=[]
-    for ind in range(len(eta_star)):
-        R_alfven.append(fsolve(equation, R_ALFVEN_GUESS, args=(eta_star[ind]))[0])
-
-    return R_alfven
     
 def get_theta_A(R_alfven_pole):
     """
