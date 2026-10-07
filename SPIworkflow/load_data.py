@@ -224,7 +224,7 @@ def load_target(data, indi):
     Rp *= R_earth # Planetary radius, in cm
     r_orb  = data['a(au)'][indi] * au   # orbital distance, in cm
     P_orb = data['p_orb(days)'][indi] # orbital period of planet, in days
-    if pd.isna(r_orb): # If there is no mass value, use mass * sin(i)
+    if pd.isna(r_orb): 
         r_orb = spi.Kepler_r(M_star/M_sun, P_orb) * au
     eccentricity=data['eccentricity'][indi]
     #else:
