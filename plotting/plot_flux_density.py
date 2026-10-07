@@ -102,11 +102,8 @@ ax2.fill_between(x, y_min, y_max,color="orange", alpha=0.7)
 ax2.fill_between(x, y_min_reconnect, y_max_reconnect,color="blue", alpha=0.7)
 ax2.fill_between(x, y_min_sb, y_max_sb,color="green", alpha=0.7)
 ax2.plot(x,y_inter,color='black',lw=1.5)
-
 ax2.plot(x,y_inter_reconnect,color='black',lw=1.5)
-
 ax2.plot(x,y_inter_sb,color='black',lw=1.5)
-
 
 
 if STUDY == 'D_ORB':
@@ -118,7 +115,7 @@ if STUDY == 'D_ORB':
     xlabel=r"Orbital separation / Stellar radius"
     if PLOT_M_A == True:
         ax0.axvline(x = xnom, ls='--', color='k', lw=2)
-    #ax2.axvline(x = xnom, ls='--', color='k', lw=2)
+    ax2.axvline(x = xnom, ls='--', color='k', lw=2)
     ax2.set_xlabel(xlabel,fontsize=20)
     ax2.set_xlim(1,d_orb_max)
     ax1 = ax2.twiny()
@@ -144,7 +141,7 @@ elif STUDY == 'M_DOT':
     xnom = M_star_dot
     xlabel = r"Mass Loss rate [$\dot{M}_\odot$]"
     # Draw vertical line at nominal mass loss rate of the star
-    #ax2.axvline(x = xnom, ls='--', color='k', lw=2)
+    ax2.axvline(x = xnom, ls='--', color='k', lw=2)
     ax2.set_xlabel(xlabel,fontsize=20)
     ax2.set_xlim([x[0],x[-1]])
 
@@ -178,16 +175,6 @@ orange_patch = mpatches.Patch(color='orange', label='Alfvén wing')
 blue_patch = mpatches.Patch(facecolor='blue',label='Reconnection')
 green_patch = mpatches.Patch(facecolor='green',label='Stretch and break')
 
-
-
-
-
-if STUDY == 'M_DOT' and starname == 'TTauri':
-    ax2.axvline(x = 50, ls='--', color='k', lw=2)
-    ax2.text(3, 0.30, 'WTTS', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
-    ax2.text(300, 0.30, 'CTTS', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
-    #0 (eje x) las etiquetas "WTTS"  y "CTTS" a izquierda y derecha de la línea, respectivamente, indicando los distintos regímenes del viento. 
-    
 
 if STUDY == "D_ORB":
     label_location='upper right'       
