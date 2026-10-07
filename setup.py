@@ -23,8 +23,8 @@ INPUT_TABLE = False
 #######################################################################
 
 # Uncomment the line that applies
-#STUDY = "D_ORB"
-STUDY = "M_DOT"
+STUDY = "D_ORB"
+#STUDY = "M_DOT"
 #STUDY = "B_PL"
 
 # STUDY = "D_ORB" SETUP
@@ -53,7 +53,7 @@ B_PL_MAX = 4
 
 ##
 # Distance (from the centre of the star) where SPI emission takes place (in units of R_star)
-R_SPI = 1.0
+R_SPI = 1.00
 
 ####################################################
 # Stellar wind FREE ABSORPTION of SPI radio emission

@@ -302,25 +302,20 @@ for indi in planet_array:
                     r_core, rho_core, magn_moment_planet, B_planet_arr = spi.bfield_sano(M_planet = Mp / M_earth, 
                                                R_planet = Rp / R_earth, 
                                                Omega_rot_planet = Omega_planet / Omega_earth)  
-                    #print("B_planet_arr :",B_planet_arr)
+
                     B_planet_arr *= bfield_earth  # B_planet_arr, in Tesla
-                    #print("B_planet_arr (Tesla):",B_planet_arr)
+
                 
                 elif B_planet_law == 'bfield_input':
-                    if 'mi_variable' in locals():
-                        magn_moment_planet,B_planet_arr = spi.bfield_input(M_planet = Mp / M_earth, 
+                    magn_moment_planet,B_planet_arr = spi.bfield_input(M_planet = Mp / M_earth, 
                                                R_planet = Rp / R_earth, Omega_rot_planet = Omega_planet / Omega_earth, B_pl=B_pl)  
-                        #print("B_planet_arr :",B_planet_arr)
-                        B_planet_arr *= bfield_earth  # B_planet_arr, in Tesla
-                        #print("B_planet_arr (Tesla):",B_planet_arr)
-                        
+                    B_planet_arr *= bfield_earth  # B_planet_arr, in Tesla
+                          
                                       
                 elif B_planet_law == 'bfield_fixed':     
                     magn_moment_planet,B_planet_arr = spi.bfield_fixed(M_planet = Mp / M_earth, 
                                                R_planet = Rp / R_earth, Omega_rot_planet = Omega_planet / Omega_earth)  
-                    #print("B_planet_arr :",B_planet_arr)
                     B_planet_arr *= bfield_earth  # B_planet_arr, in Tesla
-                    #print("B_planet_arr (Tesla):",B_planet_arr)
                     
                 elif B_planet_law == 'bfield_average':
                     # Planetary magnetic field, using Sano's (1993) scaling law, in units of B_earth # Assumes a tidally locked planet, i.e., the rotation period of the
@@ -330,12 +325,10 @@ for indi in planet_array:
                     r_core, rho_core, magn_moment_planet, B_planet_arr,magn_moment_planet_mizutani_slow,magn_moment_planet_mizutani_moderate,magn_moment_planet_busse,magn_moment_planet_sano = spi.bfield_average(M_planet = Mp / M_earth, 
                                                R_planet = Rp / R_earth, 
                                                Omega_rot_planet = Omega_planet / Omega_earth)  
-                    #print("B_planet_arr :",B_planet_arr)
                     B_planet_arr *= bfield_earth  # B_planet_arr, in Tesla
-                    #print("B_planet_arr (Tesla):",B_planet_arr)       
                 else: 
                     B_planet_arr = np.ones(len(Omega_planet)) * B_PLANET_DEFAULT  # B_planet_arr, in Tesla
-                
+               
                 B_planet_arr    *=  Tesla2Gauss #  B_planet_arr, in Gauss 
 
             else:  # unmagnetized planet
@@ -709,8 +702,7 @@ for indi in planet_array:
                     
             
             filename = 'plotting/plot_diagnostic_plots.py'
-            
-            print(geom_f)        
+      
             with open(filename) as file:
                 exec(file.read())
 
