@@ -649,7 +649,7 @@ for indi in planet_array:
                 exec(file.read())            
      
             if STUDY == 'M_DOT':    
-                filename = 'plotting/colormap_beta_mdot.py'
+                filename = 'plotting/colormap_mdot.py'
                 with open(filename) as file:
                     exec(file.read())       
                 
