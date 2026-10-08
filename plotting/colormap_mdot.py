@@ -118,10 +118,16 @@ for tag, suffix, title_text in models:
     )
 
     def label_contours_at_midpoint(ax, cs, fmt, fontsize=20, color="white", threshold=None):
-        for collection, level in zip(cs.collections, cs.levels):
-            for path in collection.get_paths():
-                verts = path.vertices
-                mid = verts[len(verts) // 2]
+        for i, level in enumerate(cs.levels):
+            # matplotlib >= 3.8: .collections fue eliminado; usar allsegs
+            try:
+                segs = cs.allsegs[i]
+            except AttributeError:
+                segs = [path.vertices for path in cs.collections[i].get_paths()]
+            for seg in segs:
+                if len(seg) == 0:
+                    continue
+                mid = seg[len(seg) // 2]
                 if threshold is not None and level < threshold:
                     bbox = dict(boxstyle="round,pad=0.2", fc="black", alpha=0.8, ec="none")
                 else:
