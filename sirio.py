@@ -1,3 +1,4 @@
+
 ## Star-planet Interaction (model)
 ## Sub-Alfvenic flux for both a Parker spiral magnetic field configuration and a closed dipolar field configuration
 
@@ -35,19 +36,7 @@ from SPIworkflow.load_data import get_spi_data, create_data_tables, load_target,
 import importlib
 
 # Create output directory for the results 
-# Return df_planets and df_no_planets
-# Create CARMENES tables for targets 
-# with planets only, and with no planets, unless those already exist
-# 
-# outdir, df_planets, df_no_noplanets = create_data_tables()
 
-# Call empty lists to be used later in out_table
-# all_lists = table_lists()
-# LPM  - DOCUMENT BETTER
-#dipole_mag_pl_lists   = table_lists()
-#dipole_unmag_pl_lists = table_lists()
-#spiral_mag_pl_lists   = table_lists()
-#spiral_unmag_pl_lists = table_lists()
 
 if not os.path.exists('./OUTPUT'):
     os.makedirs('./OUTPUT')
@@ -65,7 +54,8 @@ Omega_min, Omega_max = spi.beam_solid_angle(COMPUTE_BSA, beta_min, beta_max)
 # INPUT_TABLE is defined in setup.py
 if INPUT_TABLE == True:
     # Read in the input data to estimate radio emission from SPI
-    data = get_spi_data(infile_data = './INPUT/table.csv')
+    #data = get_spi_data(infile_data = './INPUT/table.csv')
+    data = get_spi_data(infile_data = './INPUT/combined_'+TABLE+'.csv')
 
     ############## CHECK THAT THE DATA TABLE IS CORRECT
     print('Reading table: ')
@@ -77,17 +67,13 @@ if INPUT_TABLE == True:
     # Create column for M_star_dot to fill it with values
     data['M_star_dot(M_sun_dot)']=''
     # If bfield_star(gauss) is missing, set it to np.nan
-    #data['bfield_star(gauss)'].replace('', np.nan, inplace=True)
     data.replace({'bfield_star(gauss)': ''}, {'bfield_star(gauss)': np.nan}, inplace=True)
 
     # If p_rot is missing, set it to np.nan
-    #data['p_rot(days)'].replace('', np.nan, inplace=True)
     # Remove targets without p_rot
     data.dropna(subset=['p_rot(days)'], inplace=True)
 
     # Do not use stars with P_rot smaller than 10 days
-    #data = data[data['p_rot(days)'] > 10.0]
-    #data['radius_planet(r_earth)'].replace('', np.nan, inplace=True)
     data.replace({'radius_planet(r_earth)': ''}, {'radius_planet(r_earth)': np.nan}, inplace=True)
     data.reset_index(inplace = True) # to prevent funny jumps in the indices
 
@@ -101,16 +87,41 @@ else:
     planet_array = [0] 
 
     file_name = 'INPUT.target' 
-    
+
+        
     print(f'READING INFO FROM {file_name.replace(".","/")}'+'.py\n')
 
     # import all parameters into a single variable
     imported_parameters = importlib.import_module(file_name) 
-        
+
     # convert imported_parameters into global variables
     globals().update({k: v for k, v in imported_parameters.__dict__.items() if not k.startswith('__')})
+ 
+    if 'r_orb' not in locals() or pd.isna(r_orb): 
+        r_orb = spi.Kepler_r(M_star/M_sun, P_orb) * au
+        print('r_orb: ',r_orb)
+        
+    if 'P_orb' not in locals() or pd.isna(P_orb): 
+        P_orb = spi.Kepler_P(M_star/M_sun, r_orb/au) 
+        print('P_orb: ',P_orb)
+           
 
 
+#Useful to collect the nominal values if we run sirio for a sample of objects    
+flux_data = {
+    'open_parker_spiral': {
+        'x': [], 'Flux_r_S': [], 'Flux_reconnect': [], 'Flux_sb': [], 'obs_freq': [],'P_rot': [] , 'name': [], "T_c (MK)": [], "Altitude_spi(R_star)": [], 'Flux_r_S_NOABS': [], 'Flux_reconnect_NOABS': [], 'Flux_sb_NOABS': [],'M_A_nominal': [], 'Planet_magnetic_moment': []
+    },
+    'closed_dipole': {
+        'x': [], 'Flux_r_S': [], 'Flux_reconnect': [], 'Flux_sb': [], 'obs_freq': [], 'P_rot': []  , 'name': [], "T_c (MK)": [], "Altitude_spi(R_star)": [], 'Flux_r_S_NOABS': [], 'Flux_reconnect_NOABS': [], 'Flux_sb_NOABS': [],'M_A_nominal': [], 'Planet_magnetic_moment': []
+    },
+    'pfss': {
+        'x': [], 'Flux_r_S': [], 'Flux_reconnect': [], 'Flux_sb': [], 'obs_freq': [], 'P_rot': [] , 'name': [], "T_c (MK)": [], "Altitude_spi(R_star)": [], 'Flux_r_S_NOABS': [], 'Flux_reconnect_NOABS': [], 'Flux_sb_NOABS': [],'M_A_nominal': [], 'Planet_magnetic_moment': []
+    }
+}
+
+
+    
 for indi in planet_array:
 # Read parameters from a table containing multiple targets or from a single target file
     if INPUT_TABLE == True: 
@@ -127,9 +138,13 @@ for indi in planet_array:
          data['bfield_star(gauss)'][indi]=B_star
          # Eventually include uncertainties in B _star
          data['e_bfield_star'][indi]='TBD'
+    Exoplanet=Exoplanet.replace("'s","")
+    starname=starname.replace("'s","")
 
+    B_star_copy=np.copy(B_star)
     B_spi = B_star * (R_SPI)**-3                        # Magnetic field where the SPI emission takes place (R_SPI)  
-
+    B_star=np.copy(B_star_copy)
+    altitude = (B_star/B_spi)**(1/3)
     #nu_ecm = 2.8e6 * B_star # cyclotron freq, in Hz
 
     # cyclotron (= ECM) frequency, and ECM bandwith, in Hz
@@ -137,6 +152,7 @@ for indi in planet_array:
     Delta_nu_cycl = nu_ecm 
 
     #  Check whether M_star_dot is read from input table/file
+    
     if np.isnan(M_star_dot):
         if INPUT_TABLE == True:       
             #data['M_star_dot(M_sun_dot)'][indi] = spi.Mdot_star(R_star=data['radius_star(r_sun)'][indi], M_star=data['mass_star(m_sun)'][indi], Prot_star=data['p_rot(days)'][indi])/M_sun_dot
@@ -146,6 +162,11 @@ for indi in planet_array:
             M_star_dot = spi.Mdot_star(R_star=R_star/R_sun, M_star=M_star/M_sun, Prot_star=P_rot_star/day)/M_sun_dot
         print(f'Estimated value of M_star_dot: {M_star_dot:.2e} M_dot_sun')
     #  Check whether M_star_dot is read from input table/file
+    
+    #M_star_dot = M_DOT_DEFAULT
+    print('M_star_dot: ',M_star_dot)
+    #break
+    
     if np.isnan(T_corona):
         T_corona = T_CORONA_DEF
      
@@ -158,7 +179,8 @@ for indi in planet_array:
     #Delta_nu_cycl = gyrofreq # Hz - width of ECMI emission  assumed to be  (0.5 * gyrofreq), 
     
     # Max. orbital distance, in units of R_star
-    d_orb_max = max(2*r_orb/R_star, D_ORB_LIM) 
+    d_orb_max = 2*r_orb/R_star
+
 
     # The type of STUDY (D_ORB, M_DOT or B_PL) is set up in setup.py 
     # and tells us whether the computaion is done 
@@ -171,6 +193,7 @@ for indi in planet_array:
     if STUDY == "D_ORB":
         Nsteps = int(2*d_orb_max)
         d_orb  = np.linspace(1.02, d_orb_max, Nsteps) * R_star # Array of (orbital) distances to the star, in cm 
+        #d_orb  = np.linspace(1.02, r_orb/R_star, 2)
         M_star_dot_arr = np.array([M_star_dot]) # Convert to a numpy array of 1 element for safety reasons
     elif STUDY == "M_DOT":
         d_orb  = np.array([r_orb])
@@ -201,7 +224,7 @@ for indi in planet_array:
     
     # Magnetic confinement parameter at the stellar equator
     eta_star = spi.get_eta_star(B_star, R_star, M_star_dot_arr, v_sw_terminal)
-
+    '''
     #Alfven radius at the specified POLAR_ANGLE, in stellar radii
     if STUDY == "D_ORB" or STUDY == "B_PL":
         R_alfven = spi.get_R_alfven(eta_star, colatitude=POLAR_ANGLE)
@@ -219,7 +242,7 @@ for indi in planet_array:
 
     # Latitude above which all magnetic field lines are open
     theta_A_deg, latitude = spi.get_theta_A(R_alfven_pole)
-
+    '''
     # Plasma number density at base of the corona, in cm^(-3)
     n_base_corona = spi.n_wind(M_star_dot_arr, R_star, v_sw_base, m_av) 
 
@@ -264,7 +287,7 @@ for indi in planet_array:
             elif Bfield_geom_arr[ind] == 'pfss':   
                 selected_geometry="HYBRID PFSS - PARKER SPIRAL MAGNETIC FIELD GEOMETRY"
             # get magnetic field components
-            B_r, B_phi, B_sw, angle_B, theta, geom_f = spi.get_bfield_comps(Bfield_geom_arr[ind], B_spi, d_orb, R_star, v_corot, v_sw, angle_v_rel)
+            B_r, B_phi, B_sw, angle_B, theta, geom_f = spi.get_bfield_comps(Bfield_geom_arr[ind], B_star, d_orb, R_star, v_corot, v_sw, angle_v_rel)
             
             # Compute Alfvén parameters in the stellar wind at a distance d_orb 
             v_alf, M_A, v_alf_r, M_A_radial = spi.get_alfven(rho_sw_planet, B_sw, B_r, v_rel, v_sw)
@@ -279,10 +302,33 @@ for indi in planet_array:
                     r_core, rho_core, magn_moment_planet, B_planet_arr = spi.bfield_sano(M_planet = Mp / M_earth, 
                                                R_planet = Rp / R_earth, 
                                                Omega_rot_planet = Omega_planet / Omega_earth)  
+
+                    B_planet_arr *= bfield_earth  # B_planet_arr, in Tesla
+
+                
+                elif B_planet_law == 'bfield_input':
+                    magn_moment_planet,B_planet_arr = spi.bfield_input(M_planet = Mp / M_earth, 
+                                               R_planet = Rp / R_earth, Omega_rot_planet = Omega_planet / Omega_earth, B_pl=B_pl)  
+                    B_planet_arr *= bfield_earth  # B_planet_arr, in Tesla
+                          
+                                      
+                elif B_planet_law == 'bfield_fixed':     
+                    magn_moment_planet,B_planet_arr = spi.bfield_fixed(M_planet = Mp / M_earth, 
+                                               R_planet = Rp / R_earth, Omega_rot_planet = Omega_planet / Omega_earth)  
+                    B_planet_arr *= bfield_earth  # B_planet_arr, in Tesla
+                    
+                elif B_planet_law == 'bfield_average':
+                    # Planetary magnetic field, using Sano's (1993) scaling law, in units of B_earth # Assumes a tidally locked planet, i.e., the rotation period of the
+                    # planet equals its orbital one. 
+                    # WARNING: For small rotation periods, the inferred magnetic field
+                    # is too large to be reliable at all.
+                    r_core, rho_core, magn_moment_planet, B_planet_arr,magn_moment_planet_mizutani_slow,magn_moment_planet_mizutani_moderate,magn_moment_planet_busse,magn_moment_planet_sano = spi.bfield_average(M_planet = Mp / M_earth, 
+                                               R_planet = Rp / R_earth, 
+                                               Omega_rot_planet = Omega_planet / Omega_earth)  
                     B_planet_arr *= bfield_earth  # B_planet_arr, in Tesla
                 else: 
                     B_planet_arr = np.ones(len(Omega_planet)) * B_PLANET_DEFAULT  # B_planet_arr, in Tesla
-                
+               
                 B_planet_arr    *=  Tesla2Gauss #  B_planet_arr, in Gauss 
 
             else:  # unmagnetized planet
@@ -312,8 +358,8 @@ for indi in planet_array:
             # Stellar wind pressure, in erg/cm3
             P_sw, P_dyn_sw, P_th_sw, P_B_sw = spi.get_P_sw(n_sw_planet, v_rel, T_corona, B_sw, mu)
 
-            if Bfield_geom_arr[ind] == 'closed_dipole':
-                r_ss_estimate = spi.get_rss(P_th_sw, P_dyn_sw,P_B_sw, d_orb)
+            #if Bfield_geom_arr[ind] == 'closed_dipole':
+            #    r_ss_estimate = spi.get_rss(P_th_sw, P_dyn_sw,P_B_sw, d_orb)
 
             eta = spi.get_confinement(P_dyn_sw, P_B_sw)
             #alfven_alt = spi.get_alfven_alt(eta, POLAR_ANGLE)
@@ -322,7 +368,23 @@ for indi in planet_array:
             #magnetic field of the planet:
             v_orb_pl = (G * M_star / r_orb)**0.5
             Omega_pl =  v_orb_pl / r_orb 
-            _,_,_,Bplanet_field  = spi.bfield_sano(M_planet = Mp / M_earth, R_planet = Rp / R_earth, Omega_rot_planet = Omega_pl / Omega_earth)
+            if B_planet_law == 'Sano':
+                _,_,_,Bplanet_field  = spi.bfield_sano(M_planet = Mp / M_earth, R_planet = Rp / R_earth, Omega_rot_planet = Omega_pl / Omega_earth)
+                
+                
+            elif B_planet_law == 'bfield_fixed':   
+                _, Bplanet_field=spi.bfield_fixed(M_planet = Mp / M_earth, R_planet = Rp / R_earth, Omega_rot_planet = np.array(Omega_pl / Omega_earth))
+                
+            elif B_planet_law == 'bfield_input':   
+                _, Bplanet_field=spi.bfield_input(M_planet = Mp / M_earth, R_planet = Rp / R_earth, Omega_rot_planet = np.array(Omega_pl / Omega_earth), B_pl = B_pl)    
+              
+            elif B_planet_law == 'bfield_average':
+                _, _, _, Bplanet_field,_,_,_,_=spi.bfield_average(M_planet = Mp / M_earth, R_planet = Rp / R_earth, Omega_rot_planet = Omega_pl / Omega_earth)
+            #
+            
+            print('Bplanet_field :',Bplanet_field)
+            #_, _, _, Bplanet_field,_,_,_,_=spi.bfield_average(M_planet = Mp / M_earth, R_planet = Rp / R_earth, Omega_rot_planet = Omega_pl / Omega_earth)
+            #_, _, _, Bplanet_field,_,_,_,_=spi.bfield_average(M_planet = Mp / M_earth, R_planet = Rp / R_earth, Omega_rot_planet = Omega_pl / Omega_earth)
             Bplanet_field  *=  bfield_earth
             Bplanet_field  *=  Tesla2Gauss
             
@@ -360,8 +422,8 @@ for indi in planet_array:
             Flux_r_S_min, Flux_r_S_max =  spi.get_Flux(Omega_min, Omega_max, Delta_nu_cycl, d, S_poynt)
             Flux_r_S_Z_min, Flux_r_S_Z_max =  spi.get_Flux(Omega_min, Omega_max, Delta_nu_cycl, d, S_poynt_Z)
             # Compute flux density for an intermediate value of eps (in log scale)
-            Flux_r_S_inter = 10**((np.log10(Flux_r_S_max) + np.log10(Flux_r_S_min))/2)
-            
+            #Flux_r_S_inter = 10**((np.log10(Flux_r_S_max) + np.log10(Flux_r_S_min))/2)
+            Flux_r_S_inter = np.sqrt(Flux_r_S_max *Flux_r_S_min) 
             
             # Get flux for the reconnection model (Lanza 2009, A&A)
             R_obs_reconnect=np.copy(R_obs)
@@ -386,15 +448,15 @@ for indi in planet_array:
             Flux_sb_min, Flux_sb_max = spi.get_Flux(Omega_min, Omega_max, Delta_nu_cycl, d, S_sb)
             Flux_sb_inter = 10**((np.log10(Flux_sb_max) + np.log10(Flux_sb_min))/2)           
             
-            
+
             ###
             ### COMPUTATION OF FREE-FREE Absorption by the stellar wind 
             ###
             alphamatrix=[]
             
             #altitude over stellar surface where SPI takes place, in cm
-            R_ff_in  = R_star * R_SPI 
-
+            #R_ff_in  = R_star * R_SPI 
+            R_ff_in  = R_star * altitude 
             # Limit for integration of free-free absorption, in cm
             R_ff_out = R_star * R_ff_OBSERVER 
             pdn=pd.DataFrame(columns=np.linspace(R_ff_in, R_ff_out, NSTEPS_FF))
@@ -441,7 +503,7 @@ for indi in planet_array:
                 Flux_sb_inter *= absorption_factor         
                 
                 
-
+            #print('Fluxes: ',Flux_r_S_inter,Flux_reconnect_inter,Flux_sb_inter)
             # Find out the position of the planet in the distance array
             d_diff = np.abs((d_orb-r_orb)/R_star)
             loc_pl = np.where(d_diff == d_diff.min())
@@ -451,17 +513,105 @@ for indi in planet_array:
             M_star_dot_diff = np.abs(M_star_dot_arr - M_star_dot)
             M_star_dot_loc  = np.where(M_star_dot_diff == M_star_dot_diff.min())
             
+            if STUDY == 'D_ORB':
+                xnom = r_orb/R_star
+                closest_index = np.argmin(np.abs(d_orb/R_star - xnom))
+                
+            elif STUDY == 'M_DOT':
+                xnom = M_star_dot
+                closest_index = np.argmin(np.abs(M_star_dot_arr - M_star_dot))
+                
+            elif STUDY == 'B_PL':
+                xnom = Bplanet_field
+                closest_index = np.argmin(np.abs(B_planet_arr - Bplanet_field))
+            
+
+            
+
+            v_alf_planet_closest=v_alf[closest_index]
             
             
-
-            closest_index = np.argmin(np.abs(d_orb - r_orb))
-
-            v_alf_planet=v_alf[closest_index]
-
-            Sigma_P, Sigma_A, alpha_interaction_strength=spi.get_interaction_strength(r_orb,B_star,Bplanet_field,v_alf_planet,M_A,geom_f)
+            Sigma_P, Sigma_A, alpha_interaction_strength=spi.get_interaction_strength(r_orb,B_star,Bplanet_field,v_alf_planet_closest,M_A,geom_f)
 
             loc_max_alpha = np.argmax(alpha_interaction_strength)
             loc_min_alpha = np.argmin(alpha_interaction_strength)            
+            
+            Flux_r_S_inter_planet = Flux_r_S_inter[closest_index]
+            Flux_reconnect_inter_planet = Flux_reconnect_inter[closest_index]
+            Flux_sb_inter_planet = Flux_sb_inter[closest_index]
+            
+            
+            #print('Fluxes planet: ',Flux_r_S_inter_planet,Flux_reconnect_inter_planet,Flux_sb_inter_planet)
+            #all_targets.append(Exoplanet)
+            #flux_r_S_list.append(Flux_r_S_inter_planet)
+            #flux_reconnect_list.append(Flux_reconnect_inter_planet)
+            #flux_sb_list.append(Flux_sb_inter_planet)
+            
+            # Plotting is different, depending on the "STUDY" case
+            if STUDY == 'D_ORB':
+                x = d_orb / R_star # (distance array, in units of R_star)
+            elif STUDY == 'M_DOT':
+                x = M_star_dot_arr # (M_star_dot_arr array, in units of M_dot_sun)
+            elif STUDY == 'B_PL':
+                x = B_planet_arr # (B_planet_arr array, in Gauss )
+            plt.figure(figsize=(10,6))
+            
+
+            
+            #if "Luyten" in Exoplanet:
+            #print('what happens with Luyten')  
+            print('Flux_r_S_inter_planet: ',Flux_r_S_inter_planet)
+            print('Flux_reconnect_inter_planet: ',Flux_reconnect_inter_planet)
+            print('Flux_sb_inter_planet: ',Flux_sb_inter_planet)
+            
+            geom = Bfield_geom_arr[ind] 
+            #if geom=='Pfss':
+            #    geom='PFSS'
+            flux_data[geom]['x'].append(x[closest_index]); print('M_A_nominal',M_A[closest_index])
+            #if any(ind > 1 for ind in M_A):
+            if M_A[closest_index]>1:
+                flux_data[geom]['Flux_r_S'].append(np.nan)
+                flux_data[geom]['Flux_reconnect'].append(np.nan)
+                flux_data[geom]['Flux_sb'].append(np.nan)  
+                flux_data[geom]['Flux_r_S_NOABS'].append(np.nan)
+                flux_data[geom]['Flux_reconnect_NOABS'].append(np.nan)
+                flux_data[geom]['Flux_sb_NOABS'].append(np.nan)           
+            else:            
+                flux_data[geom]['Flux_r_S'].append(Flux_r_S_inter_planet)
+                flux_data[geom]['Flux_reconnect'].append(Flux_reconnect_inter_planet)
+                flux_data[geom]['Flux_sb'].append(Flux_sb_inter_planet)
+                flux_data[geom]['Flux_r_S_NOABS'].append(Flux_r_S_inter_no_abs[closest_index])
+                flux_data[geom]['Flux_reconnect_NOABS'].append(Flux_reconnect_inter_no_abs[closest_index])
+                flux_data[geom]['Flux_sb_NOABS'].append(Flux_sb_inter_no_abs[closest_index])  
+                
+            flux_data[geom]['name'].append(Exoplanet)
+            flux_data[geom]['obs_freq'].append(2.8*B_spi)
+            flux_data[geom]['P_rot'].append(P_rot_star/day)
+            flux_data[geom]['T_c (MK)'].append(T_corona)
+            flux_data[geom]["Altitude_spi(R_star)"].append(altitude)
+            flux_data[geom]['M_A_nominal'].append(M_A[closest_index])
+            if B_planet_law == 'bfield_average':
+                if STUDY=='M_DOT':
+                    print('magn_moment_planet: ')
+                    print(magn_moment_planet_mizutani_slow,magn_moment_planet_mizutani_moderate,magn_moment_planet_busse,magn_moment_planet_sano)
+                    magn_moment_planet = ([magn_moment_planet_mizutani_slow[0],magn_moment_planet_mizutani_moderate[0],magn_moment_planet_busse[0],magn_moment_planet_sano[0]])
+                else:
+                    magn_moment_planet = ([magn_moment_planet_mizutani_slow[closest_index],magn_moment_planet_mizutani_moderate[closest_index],magn_moment_planet_busse[closest_index],magn_moment_planet_sano[closest_index]])
+            
+            flux_data[geom]['Planet_magnetic_moment'].append(magn_moment_planet)
+            #print('flux_data :',flux_data)
+            print(f"--- Last values for geometry: {geom} ---")
+            for key, value in flux_data[geom].items():
+                if isinstance(value, list):
+                    last = value[-1] if len(value) else None
+                    print(f"{key:25} -> {last}")
+            #print('flux_data')
+            #print(flux_data)
+            print(f"\nLatest entry for geom = {geom}:")
+            for key in flux_data[geom]:
+                print(f"  {key}: {flux_data[geom][key][-1]}")
+            
+
 
             ###########################################################################
             ####                  PLOTTING                                         ####
@@ -486,28 +636,35 @@ for indi in planet_array:
                 os.system('mkdir OUTPUT/' + str(Exoplanet.replace(" ", "_"))+'/COMPARISON_PDF')    
             if not(os.path.isdir(FOLDER+'/S_poynting')):
                 os.system('mkdir OUTPUT/' + str(Exoplanet.replace(" ", "_"))+'/S_poynting')    
+            if not(os.path.isdir(FOLDER+'/contours')):
+                os.system('mkdir OUTPUT/' + str(Exoplanet.replace(" ", "_"))+'/contours')    
             # generate output files for the different magnetic field geometries
             geometry = "-" + Bfield_geom_arr[ind].replace('_','-') + '-Bstar'
 
             ### Plot received flux density as a function of distance from the star
             
             filename = 'plotting/plot_flux_density.py'
-                #filename = 'plotting/plot_flux_and_radius.py'            
+            
             with open(filename) as file:
                 exec(file.read())            
+     
+            if STUDY == 'M_DOT':    
+                filename = 'plotting/colormap_mdot.py'
+                with open(filename) as file:
+                    exec(file.read())       
+                
             filename = 'plotting/plot_poynting.py'
             with open(filename) as file:
                 exec(file.read())   
             
             if freefree == True and STUDY == 'M_DOT': #################
-                #plt.figure(figsize=(8,11))
+
                 plt.figure(figsize=(8,8))
                 ax = plt.subplot2grid((1,1),(0,0),rowspan=1,colspan=1)
                 ax.plot(M_star_dot_arr, absorption_factor, color='k')
                 ax.set_xscale('log')
                 ax.set_xlabel(r"Mass Loss rate [$\dot{M}_\odot$]",fontsize=20)
                 ax.set_ylabel(r"Fraction of transmitted flux")
-                #ax.text(1e-1¡, 0, r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK', fontsize = 22)
                 ax.text(1e1, 0.9, r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK', fontsize = 22)
                 ax.set_facecolor("white")	
                 secax = ax.secondary_yaxis('right', functions=(spi.identity,spi.identity))
@@ -518,27 +675,17 @@ for indi in planet_array:
                 plt.close()
                 
             #### Plot effective radius variation
-            
-            
-            
+           
             filename = 'plotting/plot_effective_radius.py'
             with open(filename) as file:
                 exec(file.read())
-    
-            
-           
+        
             li = [x,y_min.tolist(), y_max.tolist()]   
-            
-              
-            #df = pd.DataFrame(data=li)
-            #df = df.assign(column_name=column_series)
-            #df.index = [STUDY, 'flux_min'+str(T_corona/1e6)+'MK', 'flux_max'+str(T_corona/1e6)+'MK']
-            
+             
             if freefree == True: 
                 df = pd.DataFrame(zip(x,y_min, y_max), columns=[STUDY, 'flux_min'+str(T_corona/1e6)+'MK', 'flux_max'+str(T_corona/1e6)+'MK'])
                 df.to_csv(os.path.join(FOLDER + '/CSV/' +outfile+ ".csv"))            
                 df2= pd.DataFrame(zip(x,absorption_factor),columns=[STUDY,'abs_factor_'+str(T_corona/1e6)+'MK'])
-                #df2.to_csv(FOLDER + '/' + str(Exoplanet.replace(" ", "_"))+'-'+'absorption_vs_mdot'+'-'+'T_corona'+str(T_corona/1e6)+'MK'+'-'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'+'.csv')   
                 df2.to_csv(FOLDER + '/CSV/' + str(Exoplanet.replace(" ", "_"))
                          +'-'+'absorption_vs_mdot'+'-'+'T_corona'+str(T_corona/1e6)+'MK'+'-'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'+'.csv')   
                          
@@ -555,11 +702,13 @@ for indi in planet_array:
                     
             
             filename = 'plotting/plot_diagnostic_plots.py'
-            #Specific plots to benchmark against Turnpenney 2
-                    
+      
             with open(filename) as file:
                 exec(file.read())
-            
+
+            geom_f=geom_f*np.ones(len(x))
+ 
+                
             #Plot for just the variation of M_A
             filename = 'plotting/plot_MA.py'    
             with open(filename) as file:
@@ -574,7 +723,8 @@ for indi in planet_array:
 
             out_to_file.write_parameters(T_corona, M_star_dot, mu, d, R_star, M_star, P_rot_star, B_star, Exoplanet, Rp, Mp, r_orb, P_orb, loc_pl, M_star_dot_loc, n_base_corona,
                 nu_plasma_corona, nu_ecm, Flux_r_S_min, Flux_r_S_max, rho_sw_planet, n_sw_planet, v_sw_base, Flux_r_S_Z_min,
-                Flux_r_S_Z_max, v_sw, v_rel, v_alf, M_A, B_sw,Bplanet_field, Rmp, R_obs,x_larger_rms,x_smaller_rms,STUDY,Omega_min, Omega_max,R_obs_normalized,x_superalfv)
+                Flux_r_S_Z_max, v_sw, v_rel, v_alf, M_A, B_sw,Bplanet_field, Rmp, R_obs,x_larger_rms,x_smaller_rms,STUDY,Omega_min, Omega_max,R_obs_normalized,x_superalfv,
+                Flux_r_S_inter_planet,Flux_reconnect_inter_planet,Flux_sb_inter_planet)
 
             print(f'\nSAVING USEFUL VALUES TO {outfileTXT}')
             
@@ -586,7 +736,15 @@ for indi in planet_array:
     print(f'\nDONE WITH PLANET {Exoplanet}!!\n')
     print('###########################################################\n')
 
+
+
+
+
+
+
+plt.close('all') 
 print('###########################################################')
 print(f'SIRIO HAS FINISHED SUCCESSFULLY!!\n')
 print('###########################################################')
 
+  

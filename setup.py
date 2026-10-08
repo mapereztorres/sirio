@@ -11,8 +11,8 @@ from SPIworkflow.constants import *
 # for a single target (INPUT_TABLE = False). 
 
 # Uncomment the line that applies
-INPUT_TABLE = True
-#INPUT_TABLE = False
+#INPUT_TABLE = True
+INPUT_TABLE = False
 
 #######################################################################
 #  STUDY CASES
@@ -28,7 +28,9 @@ STUDY = "D_ORB"
 #STUDY = "B_PL"
 
 # STUDY = "D_ORB" SETUP
-D_ORB_LIM = np.nan
+#Value in R_star units.
+#If no value is provided, the default value is 2 times the orbital radius.
+D_ORB_LIM = np.nan      
 #D_ORB_LIM = 3000
 
 #  STUDY = 'M_DOT' SETUP
@@ -37,9 +39,9 @@ D_ORB_LIM = np.nan
 # In units of M_dot_sun 
 # M_DOT_STRETCH: Number of points per dex in the STUDY of M_DOT
 M_DOT_STRETCH = 50
-M_DOT_MIN = 1e-1
-M_DOT_MAX = 1e+2
-
+M_DOT_MIN = 5e-1
+M_DOT_MAX = 5e+4
+#M_DOT_DEFAULT = 1.4
 #  STUDY = 'B_PL' SETUP
 #
 # B_PL_MIN, B_PL_MAX: Minimum and maximum planetary magnetic field to carry out 
@@ -51,14 +53,14 @@ B_PL_MAX = 4
 
 ##
 # Distance (from the centre of the star) where SPI emission takes place (in units of R_star)
-R_SPI = 1.0
+R_SPI = 1.00
 
 ####################################################
 # Stellar wind FREE ABSORPTION of SPI radio emission
 ####################################################
 
 ### Consider free-free absorption (True => Yes; False => No)
-freefree = False
+freefree = True
 
 # Ionization state (Z = 1 - fully ionized hydrogen)
 Z = 1 
@@ -81,8 +83,6 @@ NSTEPS_FF = 10000
 # 
 # Stellar magnetic field geometry
 Bfield_geom_arr=['open_parker_spiral','closed_dipole','pfss']
-#Bfield_geom_arr=['pfss']
-
 # INDEX of the DIPOLE
 # Q_DIPOLE = 3.0 => DIPOLE
 Q_DIPOLE = 3.0
@@ -136,11 +136,14 @@ B_PLANET_DEFAULT = bfield_earth
 
 # Setting the stellar magnetic field geometry and the value of the 
 # Computation of planetary magnetic field 
-# B_pl_law = 'Sano' => Uses Sano's scaling law (Sano 1993)
-# B_pl_law = 'None' => Doesn't use any scaling law. Uses B_PLANET_DEFAULT instead.
-B_planet_law = 'Sano'
-#B_planet_law = 'None'
+# B_planet_law = 'Sano' => Uses Sano's scaling law (Sano 1993)
+# B_planet_law = 'bfield_average' => Uses a geometric average Sano's scaling law (Sano 1993), Busse (1976) and two from Mizatani (1992), for slow and moderate convection regimes.
+# B_planet_law = 'bfield_input' => Uses value provided in target.py
+# B_pl_law = 'bfield_fixed' => Doesn't use any scaling law. Uses B_PLANET_DEFAULT instead.
 
+B_planet_law = 'bfield_input'
+
+#B_planet_law = 'bfield_average'
 # K_MAGNETOPAUSE - factor by which the magnetopause currents enhance
 # the magnetospheric magnetic field at the magnetopause, which is a value
 # between 2 and 3. ADD REFERENCE
@@ -153,7 +156,8 @@ K_MAGNETOPAUSE = 2.0
 # Observing frequency, in  Hz
 #freq_obs = 400e6
 # Assumed rms noise figure, in mJy
-RMS = 0.015
+RMS = 0.140/3
+
 # Representative bandwidth of the ECMI emission, in Hz
 #Delta_nu_obs = freq_obs/2 
 
@@ -172,9 +176,6 @@ RMS = 0.015
 
 # Default value: 2.0e6 K. Solar value
 T_CORONA_DEF = 2.0e6 
-
-
-
 
 #####################################
 # STELLAR WIND
@@ -202,8 +203,7 @@ ALPHA_SPI = 1
 # Zarka (2024) shows that beta_eff is in the range from 1e-4 (BETA_EFF_MIN) to 1e-2
 # (BETA_EFF_MAX)
 # 
-#BETA_EFF_MIN = 1e-4; BETA_EFF_MAX = 1e-2 
-BETA_EFF_MIN = 1e-3; BETA_EFF_MAX = 1e-3 
+BETA_EFF_MIN = 1e-3; BETA_EFF_MAX = 2e-3 
 
 # Fraction of Poynting flux going to dissipated power (Eq. 2 in Zarka 2024)
 # Zarka (2024) quotes a value of 0.2 +/- 0.1
@@ -227,12 +227,12 @@ COMPUTE_BSA = False
 ## The standard avlue for OMEGA_MIN for SPI is
 ## taken from the Io-Jupiter interaction.
 ## OMEGA_JUPITER_IO = 0.16 sterradians (DAM emission from a single flux tube)
-OMEGA_MIN = OMEGA_JUPITER_IO
+OMEGA_MIN = 1.6#1*OMEGA_JUPITER_IO
 
 # OMEGA_MAX due to star-planet interaction is at most a few times OMEGA_MIN
 # Note: Many papers have wrongly assumed OMEGA_MAX = 1.6 (sterr), which is the 
 # beam solid angle of the whole Jupiter auroral oval. 
-OMEGA_MAX = 3*OMEGA_JUPITER_IO
+OMEGA_MAX = 0.5#3*OMEGA_JUPITER_IO
 
 #####################################
 # PLOTTING AND WRITING SETUP
@@ -257,6 +257,10 @@ FLUX_HIGH = 3*RMS * 1e2
 YLIMLOW   = 1e-3
 YLIMHIGH  = 1e2
 #PLOT_R_eff = False
+
+#COLOR MAP
+fill_below = True  # Set to False to fill above
+
 
 ### WELCOME TO SIRIO
 print(f'\n\n\n\n')
@@ -296,15 +300,7 @@ elif STUDY == "B_PL":
     print('CARRYING OUT A STUDY OF RADIO EMISSION VS PLANETARY MAGNETIC FIELD: STUDY == B_PL\n')
 
 ###
-'''
-#['open_parker_spiral','closed_dipole','closed_pfss']
-if 'open_parker_spiral' in Bfield_geom_arr:
-    print('RUNNING FOR AN OPEN PARKER SPIRAL MAGNETIC FIELD GEOMETRY\n')    
-if 'closed_dipole' in Bfield_geom_arr:
-    print('RUNNING FOR A CLOSED DIPOLAR MAGNETIC FIELD GEOMETRY\n')    
-if 'pfss' in Bfield_geom_arr:   
-    print('RUNNING FOR A CLOSED PFSS MAGNETIC FIELD GEOMETRY\n')   
-'''   
+
 ind=0
 printing_str='RUNNING FOR THE FOLLOWING GEOMETRIES:'
 while ind < len(Bfield_geom_arr):

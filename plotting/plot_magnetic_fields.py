@@ -4,11 +4,11 @@
 #r=d_orb
 print('PLOTTING PARKER SPIRAL')
 theta = (Omega_star / v_sw) * (d_orb - R_star)
-x = d_orb * np.cos(theta)/R_star
-y = d_orb * np.sin(theta)/R_star
+x_axis = d_orb * np.cos(theta)/R_star
+y_axis = d_orb * np.sin(theta)/R_star
 plt.figure(figsize=(8, 8))
 ax = plt.subplot2grid((1,1),(0,0),rowspan=1,colspan=1)
-ax.plot(x, y, color='black', lw=2, label="Parker spiral magnetic field line")
+ax.plot(x_axis, y_axis, color='black', lw=2, label="Parker spiral magnetic field line")
 #ax.scatter(0, 0, color='yellow', s=(10)**2,label=starname) 
 #ax.scatter(r_orb/R_star, 0 , color='black', s=10, label=Exoplanet)  
 circle= plt.Circle((r_orb/R_star, 0), 0.1, color='black', fill=False, linewidth=0.2)

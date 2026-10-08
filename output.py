@@ -10,7 +10,7 @@ class OutputWriter:
         loc_pl, M_star_dot_loc, n_base_corona, nu_plasma_corona, gyrofreq,
         Flux_r_S_min, Flux_r_S_max, rho_sw, n_sw_planet, v_sw_base, Flux_r_S_Z_min,
         Flux_r_S_Z_max, v_sw, v_rel, v_alf, M_A, B_sw,Bplanet_field, Rmp, R_planet_eff,x_larger_rms,x_smaller_rms,STUDY,
-        Omega_min, Omega_max,R_planet_eff_normalized,x_superalfv):
+        Omega_min, Omega_max,R_planet_eff_normalized,x_superalfv,Flux_r_S_inter_planet,Flux_reconnect_inter_planet,Flux_sb_inter_planet):
 
         with open(self.outfileTXT, 'w') as f:
              f.write('# INPUT PARAMETERS:               ########\n') 
@@ -71,3 +71,6 @@ class OutputWriter:
              f.write('maximum value of solid angle of the emission: {0:.2f} \n'.format(Omega_max))
              f.write('Maximum magnetopause radius in planet units: {0:.2f} \n'.format(np.max(R_planet_eff_normalized)))
              f.write('value of '+STUDY+' where the planet enters super-Alfvénic regime: '+ str(x_superalfv)+' \n')
+             f.write('Nominal flux (Alfvén wing model): '+ str(Flux_r_S_inter_planet)+' \n')
+             f.write('Nominal flux (reconnection model): '+ str(Flux_reconnect_inter_planet)+' \n')
+             f.write('Nominal flux (Stretch and break model): '+ str(Flux_sb_inter_planet)+' \n')

@@ -52,6 +52,11 @@ Note that the code to generate all figures published in the paper are located in
 If you copy parts of this code, or fully, please acknowledge this in your research and
 repositories. We do not get any money for this, but our funding agencies recognize our
 work, if it is of use to the community, so we rely on you.
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> colormap
 
 
 ## Running SIRIO
