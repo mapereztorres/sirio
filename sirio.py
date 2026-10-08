@@ -54,8 +54,8 @@ Omega_min, Omega_max = spi.beam_solid_angle(COMPUTE_BSA, beta_min, beta_max)
 # INPUT_TABLE is defined in setup.py
 if INPUT_TABLE == True:
     # Read in the input data to estimate radio emission from SPI
-    #data = get_spi_data(infile_data = './INPUT/table.csv')
-    data = get_spi_data(infile_data = './INPUT/combined_'+TABLE+'.csv')
+    data = get_spi_data(infile_data = './INPUT/table.csv')
+    #data = get_spi_data(infile_data = './INPUT/combined_'+TABLE+'.csv')
 
     ############## CHECK THAT THE DATA TABLE IS CORRECT
     print('Reading table: ')
