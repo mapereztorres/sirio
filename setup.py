@@ -11,8 +11,8 @@ from SPIworkflow.constants import *
 # for a single target (INPUT_TABLE = False). 
 
 # Uncomment the line that applies
-#INPUT_TABLE = True
-INPUT_TABLE = False
+INPUT_TABLE = True
+#INPUT_TABLE = False
 
 #######################################################################
 #  STUDY CASES
@@ -23,8 +23,8 @@ INPUT_TABLE = False
 #######################################################################
 
 # Uncomment the line that applies
-STUDY = "D_ORB"
-#STUDY = "M_DOT"
+#STUDY = "D_ORB"
+STUDY = "M_DOT"
 #STUDY = "B_PL"
 
 # STUDY = "D_ORB" SETUP
@@ -141,7 +141,7 @@ B_PLANET_DEFAULT = bfield_earth
 # B_planet_law = 'bfield_input' => Uses value provided in target.py
 # B_pl_law = 'bfield_fixed' => Doesn't use any scaling law. Uses B_PLANET_DEFAULT instead.
 
-B_planet_law = 'bfield_input'
+B_planet_law = 'bfield_average'
 
 #B_planet_law = 'bfield_average'
 # K_MAGNETOPAUSE - factor by which the magnetopause currents enhance
