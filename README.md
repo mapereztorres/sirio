@@ -28,7 +28,9 @@ relatively low stellar wind temperatures, and/or high-values of the stellar wind
 mass-loss rate, and/or low observing frequencies. 
 
 The code can be run for a single target, or for a whole table of targets, provided by
-the user.  
+the user. This is controlled from within file `setup.py` (`INPUT_TABLE = False` for a 
+single target; `INPUT_TABLE = True` for a list of targets), which reads the
+relevant input files in `INPUT/`. 
 
 ## colormap branch
 
