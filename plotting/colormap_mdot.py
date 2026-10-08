@@ -118,16 +118,14 @@ for tag, suffix, title_text in models:
     )
 
     def label_contours_at_midpoint(ax, cs, fmt, fontsize=20, color="white", threshold=None):
+        # matplotlib >= 3.8: usa allsegs[i] (lista de arrays Nx2 por nivel)
+        # cada allsegs[i] es una lista de segmentos para el nivel i
         for i, level in enumerate(cs.levels):
-            # matplotlib >= 3.8: .collections fue eliminado; usar allsegs
-            try:
-                segs = cs.allsegs[i]
-            except AttributeError:
-                segs = [path.vertices for path in cs.collections[i].get_paths()]
+            segs = cs.allsegs[i]          # lista de arrays shape (N, 2)
             for seg in segs:
                 if len(seg) == 0:
                     continue
-                mid = seg[len(seg) // 2]
+                mid = seg[len(seg) // 2]  # punto medio del segmento
                 if threshold is not None and level < threshold:
                     bbox = dict(boxstyle="round,pad=0.2", fc="black", alpha=0.8, ec="none")
                 else:
@@ -153,9 +151,9 @@ for tag, suffix, title_text in models:
         colors=["none"],
         zorder=0.1
     )
-    for collection in cf.collections:
-        collection.set_edgecolor("white")
-        collection.set_linewidth(0)
+    # matplotlib >= 3.8: ContourSet es directamente iterable como PathCollection
+    cf.set_edgecolor("white")
+    cf.set_linewidth(0)
 
     # --- "Undetectable" label inside the hatched region of the main plot ---
 
