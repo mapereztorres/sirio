@@ -58,16 +58,16 @@ for tag, suffix, title_text in models:
     # PLOT
     fig, ax = plt.subplots(figsize=(8, 6))
 
-    c = ax.pcolormesh(
+    pcm = ax.pcolormesh(
         mdot_vals, beta_values, masked_flux,
         shading="auto",
         norm=LogNorm(vmin=1e-2, vmax=1e2),
         linewidth=0, edgecolors="none", zorder=0
     )
-    c.set_rasterized(True)
+    pcm.set_rasterized(True)
 
     # COLORBAR
-    cb = plt.colorbar(c, ax=ax, label="Flux (mJy)")
+    cb = plt.colorbar(pcm, ax=ax, label="Flux (mJy)")
     cb.ax.axhline(sigma3, color="white", linewidth=3)
 
     # --- Hatching on the colorbar for the excluded region ---
