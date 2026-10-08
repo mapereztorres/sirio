@@ -146,7 +146,7 @@ for indi in planet_array:
     B_star=np.copy(B_star_copy)
     altitude = (B_star/B_spi)**(1/3)
     #nu_ecm = 2.8e6 * B_star # cyclotron freq, in Hz
-
+    print('Aquí: '); print(type(R_SPI))
     # cyclotron (= ECM) frequency, and ECM bandwith, in Hz
     nu_ecm = e * B_spi/(2*np.pi * m_e * c) 
     Delta_nu_cycl = nu_ecm 
@@ -709,11 +709,6 @@ for indi in planet_array:
             geom_f=geom_f*np.ones(len(x))
  
                 
-            #Plot for just the variation of M_A
-            filename = 'plotting/plot_MA.py'    
-            with open(filename) as file:
-                exec(file.read())    
-    
             ###########################################################
             ################### Send OUTPUT to external text file/s
             ###########################################################
