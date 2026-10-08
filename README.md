@@ -15,7 +15,6 @@ exoplanetary magnetic field, or (3) as a function of the stellar wind mass loss 
 For cases (2) and (3), the orbital distance of the planet to its host star is kept
 fixed. 
 
-
 The current version of the code assumes an isothermal Parker wind, so the user needs to
 set up a temperatures for the corona/stellar wind. The code considers up to three
 different geometries of the stellar wind magnetic field: a closed dipolar field, an open
@@ -31,6 +30,15 @@ mass-loss rate, and/or low observing frequencies.
 The code can be run for a single target, or for a whole table of targets, provided by
 the user.  
 
+## colormap branch
+
+This branch (`colormap`) was frozen on the 8th of October 2026. The main difference with
+the previous version (branch `sirio-paper`, which you can use to reproduce the
+results in the paper below) is that it automatically produces additional, useful
+plots of the beta-mdot parameter space (beta is the efficiency in
+converting Poynting flux into radio emission; mdot is the stellar mass-loss
+rate, in units of the solar mass-loss rate). Those plots are much more
+informative than the ones we used to use before.
 
 ##  Developers
 
@@ -52,8 +60,6 @@ Note that the code to generate all figures published in the paper are located in
 If you copy parts of this code, or fully, please acknowledge this in your research and
 repositories. We do not get any money for this, but our funding agencies recognize our
 work, if it is of use to the community, so we rely on you.
-
-
 
 
 ## Running SIRIO
