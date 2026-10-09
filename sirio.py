@@ -653,9 +653,9 @@ for indi in planet_array:
                 with open(filename) as file:
                     exec(file.read())       
                 
-            filename = 'plotting/plot_poynting.py'
-            with open(filename) as file:
-                exec(file.read())   
+            #filename = 'plotting/plot_poynting.py'
+            #with open(filename) as file:
+            #    exec(file.read())   
             
             if freefree == True and STUDY == 'M_DOT': #################
 
