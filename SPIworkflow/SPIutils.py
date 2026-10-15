@@ -267,8 +267,14 @@ def bfield_fixed(M_planet = 1.0, R_planet = 1.0, Omega_rot_planet = 1.0):
     #B_planet = 40/5     #Gauss
     #B_planet = 8.4 / (bfield_earth * Tesla2Gauss)  #Earth units
     
-    B_planet = B_PLANET_DEFAULT
-    #B_planet = 0.5 / (bfield_earth * Tesla2Gauss)
+    #B_planet = B_PLANET_DEFAULT
+    B_planet = 0.5 / (bfield_earth * Tesla2Gauss)
+    if M_planet <= 1.1:
+        B_planet = 0.4  / (bfield_earth * Tesla2Gauss) 
+    else:
+        B_planet = 4.170  / (bfield_earth * Tesla2Gauss)  
+    
+    
     magn_moment_planet = B_planet * R_planet**3 # in units of B_earth
     try:
         B_planet= B_planet * np.ones(len(Omega_rot_planet))
