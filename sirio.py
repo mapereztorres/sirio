@@ -179,8 +179,8 @@ for indi in planet_array:
     #Delta_nu_cycl = gyrofreq # Hz - width of ECMI emission  assumed to be  (0.5 * gyrofreq), 
     
     # Max. orbital distance, in units of R_star
-    d_orb_max = 2*r_orb/R_star
-
+    #d_orb_max = 2*r_orb/R_star
+    d_orb_max = 10
 
     # The type of STUDY (D_ORB, M_DOT or B_PL) is set up in setup.py 
     # and tells us whether the computaion is done 
@@ -653,9 +653,9 @@ for indi in planet_array:
                 with open(filename) as file:
                     exec(file.read())       
                 
-            #filename = 'plotting/plot_poynting.py'
-            #with open(filename) as file:
-            #    exec(file.read())   
+            filename = 'plotting/plot_poynting.py'
+            with open(filename) as file:
+                exec(file.read())   
             
             if freefree == True and STUDY == 'M_DOT': #################
 
