@@ -23,15 +23,15 @@ INPUT_TABLE = True
 #######################################################################
 
 # Uncomment the line that applies
-#STUDY = "D_ORB"
-STUDY = "M_DOT"
+STUDY = "D_ORB"
+#STUDY = "M_DOT"
 #STUDY = "B_PL"
 
 # STUDY = "D_ORB" SETUP
 #Value in R_star units.
 #If no value is provided, the default value is 2 times the orbital radius.
-D_ORB_LIM = np.nan      
-#D_ORB_LIM = 3000
+#D_ORB_LIM = np.nan      
+D_ORB_LIM = 10
 
 #  STUDY = 'M_DOT' SETUP
 #
@@ -130,9 +130,9 @@ R_ALFVEN_GUESS = 20.0
 #magnetized_pl_arr = [False, True]
 magnetized_pl_arr = [True]
 
-# Default planetary magnetic field, in Tesla
-# bfield_earth is defined in constants.py
-B_PLANET_DEFAULT = bfield_earth
+# Default planetary magnetic field
+B_PLANET_DEFAULT = 4.18 #units must be Gauss
+B_PLANET_DEFAULT /= (bfield_earth * Tesla2Gauss)  # convert to Earth units
 
 # Setting the stellar magnetic field geometry and the value of the 
 # Computation of planetary magnetic field 
@@ -141,7 +141,7 @@ B_PLANET_DEFAULT = bfield_earth
 # B_planet_law = 'bfield_input' => Uses value provided in target.py
 # B_pl_law = 'bfield_fixed' => Doesn't use any scaling law. Uses B_PLANET_DEFAULT instead.
 
-B_planet_law = 'bfield_average'
+B_planet_law = 'bfield_fixed'
 
 #B_planet_law = 'bfield_average'
 # K_MAGNETOPAUSE - factor by which the magnetopause currents enhance
