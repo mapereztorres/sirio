@@ -112,16 +112,18 @@ if STUDY == 'D_ORB':
     
     #xlabel=r"Distance / Stellar radius"
     xlabel=r"Orbital separation / Stellar radius"
-    if PLOT_M_A == True:
-        ax0.axvline(x = xnom, ls='--', color='k', lw=2)
-    ax2.axvline(x = xnom, ls='--', color='k', lw=2)
+    if xnom <= d_orb_max:
+        if PLOT_M_A == True:
+            ax0.axvline(x = xnom, ls='--', color='k', lw=2)
+        if xnom <= d_orb_max:    
+            ax2.axvline(x = xnom, ls='--', color='k', lw=2)
     ax2.set_xlabel(xlabel,fontsize=20)
     ax2.set_xlim(1,d_orb_max)
     ax1 = ax2.twiny()
     ax1.set_xlabel(r"Orbital period (days)")
     
-    if Bfield_geom_arr[ind] == 'pfss': 
-        # ax2.axvline(x = R_SS, ls='--', color='k', lw=2)
+    if Bfield_geom_arr[ind] == 'pfss' and R_SS <= d_orb_max: 
+        ax2.axvline(x = R_SS, ls='--', color='k', lw=2)
         #ax2.axvspan(x[0], R_SS, facecolor='grey', alpha=0.5,hatch='x')
         ax2.axvspan(x[0], R_SS, facecolor='gray', alpha=0.7)
     def tick_function(X):
@@ -140,7 +142,8 @@ elif STUDY == 'M_DOT':
     xnom = M_star_dot
     xlabel = r"Mass Loss rate [$\dot{M}_\odot$]"
     # Draw vertical line at nominal mass loss rate of the star
-    ax2.axvline(x = xnom, ls='--', color='k', lw=2)
+    if M_DOT_MIN <= xnom <= M_DOT_MAX:
+        ax2.axvline(x = xnom, ls='--', color='k', lw=2)
     ax2.set_xlabel(xlabel,fontsize=20)
     ax2.set_xlim([x[0],x[-1]])
 
@@ -151,7 +154,8 @@ elif STUDY == 'B_PL':
     xnom = Bplanet_field
     xlabel = r"Planetary magnetic field [Gauss]"
     # Draw vertical line at the reference planetary magnetic field
-    ax2.axvline(x = xnom, ls='--', color='k', lw=2)
+    if B_PL_MIN <= xnom <= B_PL_MAX:
+        ax2.axvline(x = xnom, ls='--', color='k', lw=2)
     ax2.set_xlabel(xlabel,fontsize=20)
     ax2.set_xlim([x[0],x[-1]])
     
@@ -238,7 +242,7 @@ if (DRAW_EARTH == True) and (STUDY == 'D_ORB'):
         ab_earth = AnnotationBbox(spi.getImage(path), (x0, y0), frameon=False)
         ax2.add_artist(ab_earth)  
 '''                 
-if (DRAW_EARTH == True) and ((STUDY == 'M_DOT') or (STUDY == 'D_ORB')):
+if (DRAW_EARTH == True) and ((STUDY == 'M_DOT') or (STUDY == 'D_ORB')) and (xnom <= d_orb_max):
     paths = ['./pics/earth.png']
     x_earth = [xnom]
     y = [3*RMS]
@@ -269,30 +273,21 @@ if any(ind > 1 for ind in M_A):
     M_A_superalfv_ind=M_A_superalfv_arr[0]
     M_A_superalfv_ind=M_A_superalfv_ind[0]
     x_superalfv=x[M_A_superalfv_ind]
-    if PLOT_M_A == True:
-        ax0.axvline(x = x_superalfv, color='grey',lw=2)
-        ax0.axvspan(x_superalfv, x[-1], facecolor='grey', alpha=0.5)
-    if x_superalfv!=x[0]: 
-        ax2.axvline(x = x_superalfv, color='black',lw=2)
-    ax2.axvspan(x_superalfv, x[-1], facecolor='black', alpha=0.6,hatch='x')
+    if x_superalfv <= d_orb_max:
+        if PLOT_M_A == True:
+            ax0.axvline(x = x_superalfv, color='grey',lw=2)
+            ax0.axvspan(x_superalfv, x[-1], facecolor='grey', alpha=0.5)
+        if x_superalfv != x[0]: 
+            ax2.axvline(x = x_superalfv, color='black',lw=2)
+        ax2.axvspan(x_superalfv, x[-1], facecolor='black', alpha=0.6,hatch='x')
     #print(f'For the study {STUDY}, planet enters a superalfvénic regime at value {STUDY}',x_superalfv)
 
 
 
 
-if Exoplanet=='YZCet b Model A' or Exoplanet=='YZCet b Model B':
-    if (STUDY == 'M_DOT') :
-        ax2.axvline(x = 0.25, ls='--', color='k', lw=2)
-        ax2.axvline(x = 5, ls='--', color='k', lw=2)
-    if (STUDY == 'B_PL') :
-        ax2.text(1.2,3e-3,'Model '+Exoplanet[-1])
-        ax2.set_xlim([0,4])
 
 secax = ax2.secondary_yaxis('right', functions=(spi.identity,spi.identity))
 
-
-if Exoplanet=='Proxima b kavanagh'and STUDY=='D_ORB':
-    ax2.set_xlim([1,140])
 
 
 common_string = "{:.1f}".format(B_star) + "G" + "-Bplanet" +'['+"{:.3f}".format(Bplanet_field)+']' + "G" + '-'+"{:.1e}".format(BETA_EFF_MIN)+'-'+"{:.1e}".format(BETA_EFF_MAX)+'-'+'T_corona'+str(T_corona/1e6)+'MK'+'SPI_at_'+str(R_ff_in/R_star)+'R_star'             
@@ -308,7 +303,7 @@ if freefree == True:
 if PLOTOUT == True:
     plt.tight_layout()
     outfilePDF = os.path.join(FOLDER + '/FLUX_PDF/' +'Flux_'+outfile+ ".pdf")
-    plt.savefig(outfilePDF, bbox_inches='tight')
+    plt.savefig(outfilePDF)#, bbox_inches='tight')
     outfilePNG = os.path.join(FOLDER + '/FLUX_PNG/' +'Flux_'+outfile +".png")
     plt.savefig(outfilePNG, bbox_inches='tight')
     plt.close()
