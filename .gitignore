@@ -36,3 +36,4 @@ __pycache__/
 ./OUTPUT/**/*.pdf
 ./OUTPUT/**/*.txt
 
+INPUT/table.csv
