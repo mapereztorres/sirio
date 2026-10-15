@@ -146,7 +146,7 @@ for indi in planet_array:
     B_star=np.copy(B_star_copy)
     altitude = (B_star/B_spi)**(1/3)
     #nu_ecm = 2.8e6 * B_star # cyclotron freq, in Hz
-    print('Aquí: '); print(type(R_SPI))
+    #print('Aquí: '); print(type(R_SPI))
     # cyclotron (= ECM) frequency, and ECM bandwith, in Hz
     nu_ecm = e * B_spi/(2*np.pi * m_e * c) 
     Delta_nu_cycl = nu_ecm 
@@ -170,7 +170,7 @@ for indi in planet_array:
     if np.isnan(T_corona):
         T_corona = T_CORONA_DEF
      
-
+    
 
     ###############################################
 
@@ -307,6 +307,15 @@ for indi in planet_array:
 
                 
                 elif B_planet_law == 'bfield_input':
+                
+                    if INPUT_TABLE == True:
+                        B_pl = data['B_pl(G)'][indi]
+                
+                    try:
+                        B_pl = float(B_pl)
+                    except (NameError, TypeError, ValueError):
+                        raise ValueError(f"B_planet_law = 'bfield_input' but B_pl is not defined in the input file or is not a valid number for {Exoplanet}.")
+                
                     magn_moment_planet,B_planet_arr = spi.bfield_input(M_planet = Mp / M_earth, 
                                                R_planet = Rp / R_earth, Omega_rot_planet = Omega_planet / Omega_earth, B_pl=B_pl)  
                     B_planet_arr *= bfield_earth  # B_planet_arr, in Tesla

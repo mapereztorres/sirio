@@ -141,7 +141,7 @@ B_PLANET_DEFAULT /= (bfield_earth * Tesla2Gauss)  # convert to Earth units
 # B_planet_law = 'bfield_input' => Uses value provided in target.py
 # B_pl_law = 'bfield_fixed' => Doesn't use any scaling law. Uses B_PLANET_DEFAULT instead.
 
-B_planet_law = 'bfield_fixed'
+B_planet_law = 'bfield_average'
 
 #B_planet_law = 'bfield_average'
 # K_MAGNETOPAUSE - factor by which the magnetopause currents enhance

@@ -122,6 +122,11 @@ def get_spi_data(infile_data='./INPUT/SPI-targets.csv',
     #data['freq_cycl(ghz)'] = data['bfield_star(gauss)']*2.8e-3
     data['freq_cycl(ghz)'] = data['bfield_star(gauss)']*2.8e-3
 
+    if B_planet_law == 'bfield_input':
+        if 'B_pl(G)' not in df.columns:
+            raise ValueError("B_planet_law = 'bfield_input' requires a 'B_pl(G)' column in the input table.")
+        data['B_pl(G)']=df['B_pl(G)']
+        
     data.reset_index(inplace=True)
 
     # Generate also latex_table? out_latex==True => Return. It will truncate 
