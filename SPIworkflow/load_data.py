@@ -102,10 +102,10 @@ def get_spi_data(infile_data='./INPUT/SPI-targets.csv',
         
         
     data = filter_data(data=df2.copy(),
-        distance_min=0.1, distance_max=1000.0,
-        p_orb_min=0.1, p_orb_max=1000.0,
-        bfield_min=10., bfield_max=10000.,
-        dec_min=-90.0, dec_max=90.)
+        distance_min=distance_min, distance_max=distance_max,
+        p_orb_min=p_orb_min, p_orb_max=p_orb_max,
+        bfield_min=bfield_min, bfield_max=bfield_max,
+        dec_min=dec_min, dec_max=dec_max)
         
     # Create column with cyclotron freq, in GHz
     # It gives a SetWarningCopy message, but it's seems to work fine.

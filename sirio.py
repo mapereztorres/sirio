@@ -31,7 +31,7 @@ from setup import *
 from SPIworkflow.constants import *
 import SPIworkflow.SPIutils as spi
 import SPIworkflow.freefree as ff
-from SPIworkflow.load_data import get_spi_data, create_data_tables, load_target, table_lists
+from SPIworkflow.load_data import get_spi_data, create_data_tables, load_target, table_lists, filter_data
 
 import importlib
 
@@ -662,9 +662,9 @@ for indi in planet_array:
                 with open(filename) as file:
                     exec(file.read())       
                 
-            #filename = 'plotting/plot_poynting.py'
-            #with open(filename) as file:
-            #    exec(file.read())   
+            filename = 'plotting/plot_poynting.py'
+            with open(filename) as file:
+                exec(file.read())   
             
             if freefree == True and STUDY == 'M_DOT': #################
 

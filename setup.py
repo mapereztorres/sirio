@@ -23,8 +23,8 @@ INPUT_TABLE = True
 #######################################################################
 
 # Uncomment the line that applies
-STUDY = "D_ORB"
-#STUDY = "M_DOT"
+#STUDY = "D_ORB"
+STUDY = "M_DOT"
 #STUDY = "B_PL"
 
 # STUDY = "D_ORB" SETUP
@@ -39,8 +39,8 @@ D_ORB_LIM = 10
 # In units of M_dot_sun 
 # M_DOT_STRETCH: Number of points per dex in the STUDY of M_DOT
 M_DOT_STRETCH = 50
-M_DOT_MIN = 5e-1
-M_DOT_MAX = 5e+4
+M_DOT_MIN = 1e-1
+M_DOT_MAX = 1e+2
 #M_DOT_DEFAULT = 1.4
 #  STUDY = 'B_PL' SETUP
 #
@@ -260,6 +260,18 @@ YLIMHIGH  = 1e2
 
 #COLOR MAP
 fill_below = True  # Set to False to fill above
+
+
+#TARGET FILTERING PARAMETERS
+#Filter table objects based on the following parameters:
+distance_min = 0.1
+distance_max=1000.0
+p_orb_min=0.1
+p_orb_max=1000.0
+bfield_min=10.
+bfield_max=10000.
+dec_min = -90.0
+dec_max=90.
 
 
 ### WELCOME TO SIRIO
