@@ -11,14 +11,15 @@ figure=plt.figure(figsize=(8,7.5))
 ax2 = plt.subplot2grid((1,1),(0,0),rowspan=1,colspan=1)
 ax2.set_facecolor("white")
 
+ax2.set_ylim([1e10,1e20])  
+ax2.set_ylabel(r"S [W]")
+
+lim_x=ax2.get_xlim()
 
 
 
-y_min = S_poynt*1e-7 # minimum flux (array), Saur/Turnpenney model
-y_max = S_poynt*1e-7 # maximum flux (array)
+
 y_inter = S_poynt*1e-7
-y_min_reconnect = S_reconnect*1e-7
-y_max_reconnect = S_reconnect*1e-7
 y_inter_reconnect = S_reconnect*1e-7
 y_min_Z = Flux_r_S_Z_min # minimum flux (array), Zarka model
 y_max_Z = Flux_r_S_Z_max # maximum flux (array)
@@ -61,9 +62,9 @@ else:
     x_smaller_rms=str(x_smaller_rms)
 
 
-ax2.plot(x,y_inter,color='black',lw=1.5)
-
-
+ax2.plot(x,S_poynt*1e-7,color='orange',lw=1.5)
+ax2.plot(x,S_reconnect*1e-7,color='blue',lw=1.5)
+ax2.plot(x,S_sb*1e-7,color='green',lw=1.5)
 
 
 if STUDY == 'D_ORB':
@@ -92,7 +93,7 @@ if STUDY == 'D_ORB':
     ax1.set_xticklabels(tick_function(new_tick_locations))
     label_location='upper right'       
     ax2.text(lim_x[1]*0.1, 1e11, r'B$_{pl} = $'+"{:.2f}".format(Bplanet_field)+' G', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
-    ax2.text(lim_x[1]*0.1, 2e11, r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
+    ax2.text(lim_x[1]*0.1, 4e11, r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
 
 elif STUDY == 'M_DOT':
     ax2.set_xscale('log') 
@@ -104,12 +105,12 @@ elif STUDY == 'M_DOT':
     ax2.set_xlabel(xlabel,fontsize=20)
     ax2.set_xlim([x[0],x[-1]])
     if magnetized_pl_arr[ind1]:
-        ax2.text(1.5e-1, 10**((np.log10(YLIMHIGH)-1)*1.1), r'B$_{pl} = $'+"{:.2f}".format(Bplanet_field)+' G', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
+        ax2.text(lim_x[1]*0.3, 1e11, r'B$_{pl} = $'+"{:.2f}".format(Bplanet_field)+' G', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
     else:
-        ax2.text(1.5e-1, 10**((np.log10(YLIMHIGH)-1)*1.1), r'B$_{pl} = $'+'0 G', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
+        ax2.text(lim_x[1]*0.3, 1e11, r'B$_{pl} = $'+'0 G', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
 
-    ax2.text(1.5e-1, 10**((np.log10(YLIMHIGH)-1)*0.85), r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
-        label_location='upper left'   
+    ax2.text(lim_x[1]*0.3, 4e11, r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK', fontsize = 16,bbox=dict(facecolor='white', alpha=1,edgecolor='white'))
+    label_location='upper left'   
 
     
 elif STUDY == 'B_PL':
@@ -121,7 +122,7 @@ elif STUDY == 'B_PL':
     ax2.axvline(x = xnom, ls='--', color='k', lw=2)
     ax2.set_xlabel(xlabel,fontsize=20)
     ax2.set_xlim([x[0],x[-1]])
-    ax2.text(0.1, 1.05e1, r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK', fontsize = 16,bbox=dict(facecolor='white', alpha=0,edgecolor='white'))
+    ax2.text(lim_x[1]*0.1, 2e11, r'T$_{c} = $'+"{:.1f}".format(T_corona/1e6)+' MK', fontsize = 16,bbox=dict(facecolor='white', alpha=0,edgecolor='white'))
     label_location='upper left'   
     if xnom<1: 
         ax2.set_xlim([0,1])
@@ -141,15 +142,13 @@ if (STUDY == 'D_ORB') or (STUDY == 'M_DOT'):
                 
 
 
-ax2.set_ylim([1e10,1e16])  
-ax2.set_ylabel(r"S [W]")
+
 
 orange_patch = mpatches.Patch(color='orange', label='Alfvén wing')
 blue_patch = mpatches.Patch(facecolor='blue',label='Reconnection')
+green_patch = mpatches.Patch(facecolor='green',label='Stretch and break')
 
-lim_x=ax2.get_xlim()
-lim_y=ax2.get_ylim()
-
+ax2.legend(handles=[green_patch,blue_patch,orange_patch],loc=label_location,fontsize=16,facecolor='white',edgecolor='white', framealpha=1)
 
 
 # Draw 3*RMS upper limit?
